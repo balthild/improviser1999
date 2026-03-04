@@ -1,0 +1,39 @@
+{
+	"includes": [
+		"package.json",
+		"tsconfig.json",
+		"dprint.json",
+		"*.config.{js,ts}",
+		"src/**/*.{svelte,js,ts,css,html}"
+	],
+	"excludes": [
+		"**/node_modules",
+		"**/*-lock.json"
+	],
+	"useTabs": true,
+	"indentWidth": 2,
+	"lineWidth": 120,
+	"oxc": {
+		"quoteStyle": "single",
+		"experimentalSortImports": {
+			"groups": [
+				["builtin"],
+				["external"],
+				["internal", "subpath"],
+				["parent", "sibling", "index"],
+				["style"],
+				["unknown"]
+			]
+		}
+	},
+	"markup": {
+		"styleIndent": true,
+		"scriptIndent": true,
+		"scriptFormatter": "biome"
+	},
+	"plugins": [
+		"https://plugins.dprint.dev/oxc-0.8.0.wasm",
+		"https://plugins.dprint.dev/json-0.21.1.wasm",
+		"https://plugins.dprint.dev/g-plane/markup_fmt-v0.26.0.wasm"
+	]
+}
