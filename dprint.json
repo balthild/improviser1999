@@ -5,7 +5,7 @@
 		"dprint.json",
 		"*.config.{js,ts}",
 		"src/**/*.{svelte,js,ts,css,html}",
-		".vscode/extensions.json"
+		".vscode/*.json"
 	],
 	"excludes": [
 		"**/node_modules",
@@ -34,7 +34,11 @@
 	},
 	"json": {
 		"trailingCommas": "jsonc",
-		"jsonTrailingCommaFiles": ["tsconfig.json", ".vscode/extensions.json"]
+		"jsonTrailingCommaFiles": [
+			"tsconfig.json",
+			".vscode/extensions.json",
+			".vscode/settings.json"
+		]
 	},
 	"plugins": [
 		"https://plugins.dprint.dev/oxc-0.8.0.wasm",
