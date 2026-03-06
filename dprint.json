@@ -4,12 +4,13 @@
 		"tsconfig.json",
 		"dprint.json",
 		"*.config.{js,ts}",
-		"src/**/*.{svelte,js,ts,css,html}",
-		".vscode/*.json"
+		"src/**/*.{svelte,js,ts,css,html,svg}",
+		".vscode/*.json",
 	],
 	"excludes": [
 		"**/node_modules",
-		"**/*-lock.json"
+		"**/*-lock.json",
+		"**/favicon.svg",
 	],
 	"useTabs": true,
 	"indentWidth": 2,
@@ -23,26 +24,32 @@
 				["internal", "subpath"],
 				["parent", "sibling", "index"],
 				["style"],
-				["unknown"]
-			]
-		}
+				["unknown"],
+			],
+		},
 	},
 	"markup": {
 		"styleIndent": true,
 		"scriptIndent": true,
-		"scriptFormatter": "biome"
+		"scriptFormatter": "biome",
+		"associations": ["*.{html,svelte,svg}"],
+	},
+	"malva": {
+		"quotes": "preferSingle",
 	},
 	"json": {
 		"trailingCommas": "jsonc",
 		"jsonTrailingCommaFiles": [
 			"tsconfig.json",
+			"dprint.json",
 			".vscode/extensions.json",
-			".vscode/settings.json"
-		]
+			".vscode/settings.json",
+		],
 	},
 	"plugins": [
 		"https://plugins.dprint.dev/oxc-0.8.0.wasm",
 		"https://plugins.dprint.dev/json-0.21.1.wasm",
-		"https://plugins.dprint.dev/g-plane/markup_fmt-v0.26.0.wasm"
-	]
+		"https://plugins.dprint.dev/g-plane/markup_fmt-v0.26.0.wasm",
+		"https://plugins.dprint.dev/g-plane/malva-v0.15.2.wasm",
+	],
 }

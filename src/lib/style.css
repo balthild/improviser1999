@@ -1,0 +1,35 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@iconify/tailwind4';
+
+@layer base {
+	:root {
+		@apply text-gray-700;
+		@apply bg-gray-50;
+		background-image: url('$lib/assets/noise.svg');
+	}
+}
+
+@utility text-ms {
+	font-size: 0.9375rem;
+}
+
+@utility text-ml {
+	font-size: 1.0625rem;
+}
+
+@utility text-link {
+	@apply text-sky-700 hover:text-sky-800 hover:underline;
+	@apply transition-colors;
+	@apply cursor-pointer;
+}
+
+.tooltip {
+	@apply hidden;
+	@apply absolute left-0 top-0 z-999;
+	@apply text-xs;
+	@apply w-max;
+	@apply px-1.25 py-0.75;
+	@apply bg-white;
+	@apply border border-gray-300 rounded;
+}
