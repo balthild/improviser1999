@@ -9,6 +9,7 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
+	<title>流浪即兴曲</title>
 </svelte:head>
 
 <div class="flex h-screen flex-col overflow-hidden">
