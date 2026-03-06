@@ -7,13 +7,13 @@
 	const tooltip: Action<HTMLAnchorElement, string> = (link, text) => {
 		const tooltip = document.createElement('div');
 		tooltip.role = 'tooltip';
-		tooltip.textContent = text;
 		tooltip.className = 'tooltip';
+		tooltip.textContent = text;
 
 		$effect(() => {
 			document.body.appendChild(tooltip);
 
-			link.addEventListener('mouseenter', async () => {
+			const show = async () => {
 				let { x, y } = await computePosition(link, tooltip, {
 					placement: 'right',
 					middleware: [flip(), offset(4), shift({ padding: 4 })],
@@ -22,13 +22,18 @@
 				tooltip.style.visibility = 'visible';
 				tooltip.style.left = `${x}px`;
 				tooltip.style.top = `${y}px`;
-			});
+			};
 
-			link.addEventListener('mouseleave', () => {
+			const hide = () => {
 				tooltip.style.visibility = 'hidden';
-			});
+			};
+
+			link.addEventListener('mouseenter', show);
+			link.addEventListener('mouseleave', hide);
 
 			return () => {
+				link.removeEventListener('mouseenter', show);
+				link.removeEventListener('mouseleave', hide);
 				tooltip.remove();
 			};
 		});
