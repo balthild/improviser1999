@@ -54,7 +54,7 @@
 		<details name="nav" class="nav-group" open={page.url.pathname.startsWith('/stage')}>
 			<summary class="nav-title">
 				<span class="icon-[ri--map-2-line]"></span>
-				<span class="text-sm ml-1.5">关卡统计</span>
+				<span class="text-sm ml-1.5">掉落统计 · 关卡</span>
 				<span class="nav-caret"></span>
 			</summary>
 			<ul>
@@ -76,33 +76,40 @@
 		<details name="nav" class="nav-group" open={page.url.pathname.startsWith('/material')}>
 			<summary class="nav-title">
 				<span class="icon-[ri--shapes-line]"></span>
-				<span class="text-sm ml-1.5">物品统计</span>
+				<span class="text-sm ml-1.5">掉落统计 · 物品</span>
 				<span class="nav-caret"></span>
 			</summary>
 			<ul>
 				<li class:active={page.url.pathname === '/material'}>
 					<a href={resolve('/material')}>全部</a>
 				</li>
-				<li class:active={page.url.pathname === '/material/category-1'}>
+				<li class:active={page.url.pathname === '/material/tooth'}>
 					<a href={resolve('/material/tooth')} use:tooltip={'颤颤之齿 · 液化战栗 · 啮咬盒'}>齿类材料</a>
 				</li>
-				<li class:active={page.url.pathname === '/material/category-2'}>
+				<li class:active={page.url.pathname === '/material/salt'}>
 					<a href={resolve('/material/salt')} use:tooltip={'苦盐簇 · 精磨苦盐 · 盐封曼德拉'}>盐类材料</a>
 				</li>
-				<li class:active={page.url.pathname === '/material/category-3'}>
+				<li class:active={page.url.pathname === '/material/bone'}>
 					<a href={resolve('/material/bone')} use:tooltip={'破碎骨片 · 未知种根骨 · 双头形骨架'}>骨类材料</a>
 				</li>
-				<li class:active={page.url.pathname === '/material/category-4'}>
+				<li class:active={page.url.pathname === '/material/silver'}>
 					<a href={resolve('/material/silver')} use:tooltip={'银矿原石 · 粗糙银锭 · 祝圣秘银'}>银类材料</a>
 				</li>
-				<li class:active={page.url.pathname === '/material/category-5'}>
+				<li class:active={page.url.pathname === '/material/spell'}>
 					<a href={resolve('/material/spell')} use:tooltip={'清扫咒 · 幸运咒语 · 百灵百验鸟'}>咒类材料</a>
 				</li>
-				<li class:active={page.url.pathname === '/material/category-6'}>
-					<a href={resolve('/material/other')}>非掉落物</a>
+				<li class:active={page.url.pathname === '/material/wilderness'}>
+					<a href={resolve('/material/wilderness')} use:tooltip={'柯恩宝贝 · 柯恩夫人'}>荒原材料</a>
 				</li>
 			</ul>
 		</details>
+
+		<div class="nav-group" class:active={page.url.pathname === '/summon'}>
+			<a href={resolve('/summon')} class="nav-title">
+				<span class="icon-[ri--suitcase-line]"></span>
+				<span class="text-sm ml-1.5">征集记录</span>
+			</a>
+		</div>
 	</nav>
 </aside>
 
