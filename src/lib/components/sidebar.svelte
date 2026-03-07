@@ -143,8 +143,10 @@
 			@apply pl-4 pr-3 py-1.75;
 			@apply font-medium;
 			@apply cursor-pointer;
-			@apply border-transparent;
-			@apply transition-[background-color,border-color,border-width];
+			@apply border-gray-200;
+			@apply transition-[background-color,border-width];
+			@apply duration-[150ms,250ms];
+			@apply ease-[ease-in-out,step-end];
 
 			&:hover {
 				@apply text-gray-700;
@@ -153,7 +155,8 @@
 
 			[open] & {
 				@apply bg-gray-900/2;
-				@apply border-b border-gray-200;
+				@apply border-b;
+				@apply ease-[ease-in-out,step-start];
 			}
 
 			.nav-caret {
