@@ -21,20 +21,17 @@
 			"groups": [
 				["builtin"],
 				["external"],
-				["framework"],
+				["svelte"],
 				["internal", "subpath"],
 				["parent", "sibling", "index"],
 				["style", "side_effect_style"],
 				["unknown"],
 			],
+			"internalPattern": ["~/", "@/", "$lib/"],
 			"customGroups": [
 				{
-					"groupName": "framework",
-					"elementNamePattern": ["$app/*", "$env/*", "$lib/*", "$service-worker"],
-				},
-				{
-					"groupName": "internal",
-					"elementNamePattern": ["$lib/*"],
+					"groupName": "svelte",
+					"elementNamePattern": ["$app/**", "$env/**", "$service-worker"],
 				},
 			],
 		},
@@ -44,6 +41,8 @@
 		"scriptIndent": true,
 		"scriptFormatter": "biome",
 		"associations": ["*.{html,svelte,svg}"],
+		"html.void.selfClosing": true,
+		"component.selfClosing": true,
 	},
 	"malva": {
 		"quotes": "preferSingle",
