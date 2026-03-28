@@ -21,10 +21,21 @@
 			"groups": [
 				["builtin"],
 				["external"],
+				["framework"],
 				["internal", "subpath"],
 				["parent", "sibling", "index"],
-				["style"],
+				["style", "side_effect_style"],
 				["unknown"],
+			],
+			"customGroups": [
+				{
+					"groupName": "framework",
+					"elementNamePattern": ["$app/*", "$env/*", "$lib/*", "$service-worker"],
+				},
+				{
+					"groupName": "internal",
+					"elementNamePattern": ["$lib/*"],
+				},
 			],
 		},
 	},
@@ -47,9 +58,9 @@
 		],
 	},
 	"plugins": [
-		"https://plugins.dprint.dev/oxc-0.8.0.wasm",
-		"https://plugins.dprint.dev/json-0.21.1.wasm",
-		"https://plugins.dprint.dev/g-plane/markup_fmt-v0.26.0.wasm",
+		"https://plugins.dprint.dev/oxc-0.14.0.wasm",
+		"https://plugins.dprint.dev/json-0.21.3.wasm",
+		"https://plugins.dprint.dev/g-plane/markup_fmt-v0.27.0.wasm",
 		"https://plugins.dprint.dev/g-plane/malva-v0.15.2.wasm",
 	],
 }
