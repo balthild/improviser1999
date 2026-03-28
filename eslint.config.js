@@ -40,4 +40,14 @@ export default defineConfig(
 			},
 		},
 	},
+	{
+		rules: {
+			'svelte/no-add-event-listener': 'error',
+			'svelte/prefer-class-directive': 'warn',
+			'svelte/prefer-style-directive': 'warn',
+			'svelte/require-event-prefix': 'warn',
+			'svelte/shorthand-attribute': ['error', { prefer: 'never' }],
+			'svelte/shorthand-directive': ['error', { prefer: 'never' }],
+		},
+	},
 );

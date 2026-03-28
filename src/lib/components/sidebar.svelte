@@ -4,7 +4,7 @@
 	import { computePosition, flip, offset, shift } from '@floating-ui/dom';
 	import type { Action } from 'svelte/action';
 
-	const tooltip: Action<HTMLAnchorElement, string> = (link, text) => {
+	const tooltip: Action<HTMLAnchorElement, string> = (el, text) => {
 		const tooltip = document.createElement('div');
 		tooltip.role = 'tooltip';
 		tooltip.className = 'tooltip';
@@ -13,8 +13,8 @@
 		$effect(() => {
 			document.body.appendChild(tooltip);
 
-			const show = async () => {
-				let { x, y } = await computePosition(link, tooltip, {
+			const offMouseEnter = on(el, 'mouseenter', async () => {
+				let { x, y } = await computePosition(el, tooltip, {
 					placement: 'right',
 					middleware: [flip(), offset(4), shift({ padding: 4 })],
 				});
@@ -22,18 +22,15 @@
 				tooltip.style.visibility = 'visible';
 				tooltip.style.left = `${x}px`;
 				tooltip.style.top = `${y}px`;
-			};
+			});
 
-			const hide = () => {
+			const offMouseLeave = on(el, 'mouseleave', () => {
 				tooltip.style.visibility = 'hidden';
-			};
-
-			link.addEventListener('mouseenter', show);
-			link.addEventListener('mouseleave', hide);
+			});
 
 			return () => {
-				link.removeEventListener('mouseenter', show);
-				link.removeEventListener('mouseleave', hide);
+				offMouseEnter();
+				offMouseLeave();
 				tooltip.remove();
 			};
 		});
