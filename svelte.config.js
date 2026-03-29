@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-auto';
+import cloudflare from '@sveltejs/adapter-cloudflare';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -9,7 +9,7 @@ const config = {
 		},
 	},
 	kit: {
-		adapter: adapter(),
+		adapter: cloudflare(),
 		experimental: {
 			remoteFunctions: true,
 		},

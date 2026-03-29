@@ -3,6 +3,7 @@
 		"package.json",
 		"tsconfig.json",
 		"dprint.json",
+		"wrangler.jsonc",
 		"*.config.{js,ts}",
 		"src/**/*.{svelte,js,ts,css,html,svg}",
 		".vscode/*.json",
@@ -52,6 +53,7 @@
 		"jsonTrailingCommaFiles": [
 			"tsconfig.json",
 			"dprint.json",
+			"wrangler.jsonc",
 			".vscode/extensions.json",
 			".vscode/settings.json",
 		],

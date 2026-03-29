@@ -5,6 +5,7 @@ import devtoolsJson from 'vite-plugin-devtools-json';
 
 export default defineConfig({
 	plugins: [tailwindcss(), sveltekit(), devtoolsJson()],
+	clearScreen: false,
 	css: {
 		transformer: 'lightningcss',
 	},
