@@ -20,9 +20,9 @@ async function doImportPage(userId: string, records: QuerySummonRecord[]) {
 	for (const [index, record] of records.entries()) {
 		const summon = await idb.summons.get({
 			userId,
-			poolId: record.poolId,
-			summonType: record.summonType,
-			createTime: record.createTime,
+			'record.poolId': record.poolId,
+			'record.summonType': record.summonType,
+			'record.createTime': record.createTime,
 		});
 
 		if (summon) {
@@ -31,7 +31,7 @@ async function doImportPage(userId: string, records: QuerySummonRecord[]) {
 
 		await idb.summons.add({
 			userId,
-			...record,
+			record,
 		});
 	}
 

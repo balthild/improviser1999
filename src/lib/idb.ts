@@ -2,9 +2,10 @@ import { Dexie, type EntityTable } from 'dexie';
 
 import type { QuerySummonRecord } from '$lib/types/summon';
 
-export interface Summon extends QuerySummonRecord {
+export interface Summon {
 	id: number;
 	userId: string;
+	record: QuerySummonRecord;
 }
 
 export const idb = new Dexie('improviser1999') as Dexie & {
@@ -15,10 +16,10 @@ idb.version(1).stores({
 	summons: `
 		++id,
 		userId,
-		poolId,
-		summonType,
-		createTime,
-		*gainIds,
-		[userId+poolId+summonType+createTime]
+		record.poolId,
+		record.summonType,
+		record.createTime,
+		*record.gainIds,
+		[userId+record.poolId+record.summonType+record.createTime]
 	`,
 });
