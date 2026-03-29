@@ -1,5 +1,6 @@
 export interface QuerySummonRecord {
 	poolId: number;
+	poolType: number;
 	poolName: string;
 	summonType: '1' | '10';
 	createTime: string;

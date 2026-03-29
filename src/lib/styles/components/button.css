@@ -7,4 +7,10 @@
 		@apply transition-colors;
 		@apply cursor-pointer;
 	}
+
+	.btn-accent {
+		@apply text-white hover:text-white;
+		@apply bg-blue-700 hover:bg-blue-800;
+		@apply border-blue-700 hover:border-blue-800;
+	}
 }
