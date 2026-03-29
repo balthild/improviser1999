@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+	<pattern
+		id="stripe"
+		width="4"
+		height="4"
+		patternUnits="userSpaceOnUse"
+		patternTransform="rotate(45)"
+	>
+		<path d="M0 0 L0 4" stroke="black" stroke-width="1.5"></path>
+	</pattern>
+	<rect width="100%" height="100%" fill="url(#stripe)" opacity="0.1"></rect>
+</svg>

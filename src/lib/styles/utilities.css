@@ -2,6 +2,10 @@
 	background-image: url('$lib/assets/noise.svg');
 }
 
+@utility bg-stripe {
+	background-image: url('$lib/assets/stripe.svg');
+}
+
 @utility text-ms {
 	font-size: 0.9375rem;
 }

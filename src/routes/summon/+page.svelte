@@ -100,7 +100,7 @@
 
 <section class="flex flex-row gap-4">
 	<aside class="w-50 space-y-3">
-		<select class="input block w-full" bind:value={currentUserId}>
+		<select class="input block w-full px-3 py-1.5" bind:value={currentUserId}>
 			{#each userIds as userId (userId)}
 				<option value={userId}>{userId}</option>
 			{/each}

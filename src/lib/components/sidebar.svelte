@@ -85,7 +85,7 @@
 
 	.nav-group {
 		@apply text-gray-600;
-		@apply border-b border-gray-200;
+		@apply border-b border-gray-300/60;
 
 		&::details-content {
 			@apply grid grid-rows-[0fr];
@@ -160,6 +160,6 @@
 
 	.nav-group.active .nav-title, .nav-group ul li.active {
 		@apply text-gray-700;
-		@apply bg-gray-900/4;
+		@apply bg-stripe;
 	}
 </style>

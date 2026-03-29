@@ -1,6 +1,6 @@
 <svg viewBox="0 0 256 256" width="256" height="256" xmlns="http://www.w3.org/2000/svg">
 	<filter id="noise">
-		<feTurbulence type="turbulence" baseFrequency="0.75" />
+		<feTurbulence type="turbulence" baseFrequency="0.75" seed="195" />
 		<feComponentTransfer>
 			<feFuncR type="table" tableValues="0 0" />
 			<feFuncG type="table" tableValues="0 0" />

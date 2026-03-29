@@ -1,5 +1,5 @@
 .scrap {
 	@apply absolute z-999;
 	@apply size-1.75 rotate-45;
-	@apply bg-white border border-gray-300;
+	@apply bg-white border border-gray-400/50;
 }
