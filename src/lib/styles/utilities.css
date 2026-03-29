@@ -1,0 +1,17 @@
+@utility bg-noise {
+	background-image: url('$lib/assets/noise.svg');
+}
+
+@utility text-ms {
+	font-size: 0.9375rem;
+}
+
+@utility text-ml {
+	font-size: 1.0625rem;
+}
+
+@utility text-link {
+	@apply text-sky-700 hover:text-sky-800 hover:underline;
+	@apply transition-colors;
+	@apply cursor-pointer;
+}

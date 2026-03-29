@@ -82,7 +82,7 @@
 </aside>
 
 <style lang="postcss">
-	@reference '$lib/style.css';
+	@reference '$lib/styles/index.css';
 
 	.nav-group {
 		@apply text-gray-600;

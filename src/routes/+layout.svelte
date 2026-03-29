@@ -3,7 +3,7 @@
 	import Header from '$lib/components/header.svelte';
 	import Sidebar from '$lib/components/sidebar.svelte';
 
-	import '$lib/style.css';
+	import '$lib/styles/index.css';
 
 	let { children } = $props();
 </script>

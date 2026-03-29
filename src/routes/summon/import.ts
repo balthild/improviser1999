@@ -29,10 +29,7 @@ async function doImportPage(userId: string, records: QuerySummonRecord[]) {
 			return [index, true];
 		}
 
-		await idb.summons.add({
-			userId,
-			record,
-		});
+		await idb.summons.add({ userId, record });
 	}
 
 	return [records.length, false];

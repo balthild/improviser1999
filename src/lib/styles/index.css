@@ -1,0 +1,15 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@iconify/tailwind4';
+
+@import './utilities.css';
+@import './components/button.css';
+@import './components/form.css';
+@import './components/tooltip.css';
+
+@layer base {
+	:root {
+		@apply text-gray-700;
+		@apply bg-gray-50 bg-noise;
+	}
+}
