@@ -1,12 +1,12 @@
-<svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 256 256" width="256" height="256" xmlns="http://www.w3.org/2000/svg">
 	<filter id="noise">
-		<feTurbulence type="turbulence" baseFrequency="3" />
+		<feTurbulence type="turbulence" baseFrequency="0.75" />
 		<feComponentTransfer>
 			<feFuncR type="table" tableValues="0 0" />
 			<feFuncG type="table" tableValues="0 0" />
 			<feFuncB type="table" tableValues="0 0" />
-			<feFuncA type="table" tableValues="0 0 0.75 1" />
+			<feFuncA type="table" tableValues="0 1" />
 		</feComponentTransfer>
 	</filter>
-	<rect width="100%" height="100%" filter="url(#noise)" opacity="0.2" />
+	<rect width="100%" height="100%" filter="url(#noise)" opacity="0.12" />
 </svg>

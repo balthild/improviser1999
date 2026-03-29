@@ -32,7 +32,7 @@
 
 <form
 	id={`popover-import-${uniqueId}`}
-	class="mb-3 p-2 border border-gray-300 w-80 rounded-sm mt-2 shadow"
+	class="mb-3 p-2 border border-gray-300 w-80 rounded-sm mt-2 shadow-lg"
 	style:position-area="bottom span-left"
 	onsubmit={handleImport}
 	popover

@@ -8,6 +8,7 @@
 		@apply py-1 px-2 rounded-xs;
 		@apply ring-0 outline-none;
 		@apply border border-gray-300 focus:border-gray-400;
+		@apply bg-white/60 focus:bg-white;
 		@apply transition-colors;
 	}
 }

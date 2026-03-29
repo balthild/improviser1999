@@ -7,6 +7,7 @@
 @import './utilities.css';
 @import './components/button.css';
 @import './components/form.css';
+@import './components/misc.css';
 @import './components/tooltip.css';
 
 @layer base {

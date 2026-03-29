@@ -42,8 +42,7 @@
 </script>
 
 <aside class="w-50 shrink-0 overflow-visible border-r border-gray-300 relative">
-	<div class="size-1.75 rotate-45 absolute -right-1 -top-1 z-999 bg-white border border-gray-300">
-	</div>
+	<div class="scrap -right-1 -top-1"></div>
 
 	<nav class="min-h-full overflow-y-auto">
 		<div class="nav-group" class:active={pathname === '/'}>
