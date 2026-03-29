@@ -1,6 +1,8 @@
 <script lang="ts">
+	import { liveQuery } from 'dexie';
 	import * as v from 'valibot';
 
+	import { idb } from '$lib/idb';
 	import { validate } from '$lib/template/validate.svelte';
 
 	import { doImport } from './import';
@@ -16,6 +18,9 @@
 		const count = await doImport(importUrl, importFull);
 		alert(`导入完成，新增 ${count} 条记录`);
 	};
+
+	let summons = liveQuery(() => idb.summons.toArray());
+	let users = $derived(new Set($summons?.map((s) => s.userId)));
 </script>
 
 <section class="mb-3 flex flex-row justify-between items-center">
@@ -55,3 +60,12 @@
 		<button class="btn">确认</button>
 	</div>
 </form>
+
+<section class="flex flex-row gap-4">
+	<aside class="w-50 border border-gray-300"></aside>
+
+	<main>
+		<pre>{JSON.stringify([...users], null, 2)}</pre>
+		<pre>{JSON.stringify($summons, null, 2)}</pre>
+	</main>
+</section>

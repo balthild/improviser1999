@@ -2,6 +2,8 @@
 @plugin '@tailwindcss/forms';
 @plugin '@iconify/tailwind4';
 
+@import 'overlayscrollbars/overlayscrollbars.css' layer(components);
+
 @import './utilities.css';
 @import './components/button.css';
 @import './components/form.css';
@@ -11,5 +13,15 @@
 	:root {
 		@apply text-gray-700;
 		@apply bg-gray-50 bg-noise;
+	}
+}
+
+@layer components {
+	.os-scrollbar {
+		--os-size: 0.75rem;
+		--os-padding-perpendicular: 0.25rem;
+		--os-padding-axis: 0.25rem;
+		--os-track-border-radius: 0.125rem;
+		--os-handle-border-radius: 0.125rem;
 	}
 }

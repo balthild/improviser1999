@@ -3357,6 +3357,8 @@ __metadata:
     eslint: "npm:^10.1.0"
     eslint-plugin-svelte: "npm:^3.16.0"
     globals: "npm:^17.4.0"
+    overlayscrollbars: "npm:^2.14.0"
+    overlayscrollbars-svelte: "npm:^0.5.5"
     postgres: "npm:^3.4.8"
     svelte: "npm:^5.55.0"
     svelte-check: "npm:^4.4.5"
@@ -3909,6 +3911,23 @@ __metadata:
     type-check: "npm:^0.4.0"
     word-wrap: "npm:^1.2.5"
   checksum: 10c0/4afb687a059ee65b61df74dfe87d8d6815cd6883cb8b3d5883a910df72d0f5d029821f37025e4bccf4048873dbdb09acc6d303d27b8f76b1a80dd5a7d5334675
+  languageName: node
+  linkType: hard
+
+"overlayscrollbars-svelte@npm:^0.5.5":
+  version: 0.5.5
+  resolution: "overlayscrollbars-svelte@npm:0.5.5"
+  peerDependencies:
+    overlayscrollbars: ^2.0.0
+    svelte: ^5.0.0
+  checksum: 10c0/c79b4b6ffe5c129cc1fa028001e083fe8d02aae84dea8a854f3915bae432ec669ff2d2b94019d381ccd852728370d5af299ca3a973efcf329991e59a0064a466
+  languageName: node
+  linkType: hard
+
+"overlayscrollbars@npm:^2.14.0":
+  version: 2.14.0
+  resolution: "overlayscrollbars@npm:2.14.0"
+  checksum: 10c0/e08d188733032aadb258b6ddf56249c6747b7e5ac745dd34ae402320a5f8d4cd832a3a73baff29f8a64a6faf334be719617725972fab8c29fb708a9fd96bc3e8
   languageName: node
   linkType: hard
 

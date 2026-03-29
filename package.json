@@ -38,6 +38,8 @@
 		"eslint": "^10.1.0",
 		"eslint-plugin-svelte": "^3.16.0",
 		"globals": "^17.4.0",
+		"overlayscrollbars": "^2.14.0",
+		"overlayscrollbars-svelte": "^0.5.5",
 		"postgres": "^3.4.8",
 		"svelte": "^5.55.0",
 		"svelte-check": "^4.4.5",

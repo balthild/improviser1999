@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
+
 	import favicon from '$lib/assets/favicon.svg';
 	import Header from '$lib/components/header.svelte';
 	import Sidebar from '$lib/components/sidebar.svelte';
@@ -23,9 +25,9 @@
 			<div class="hidden xl:block size-1.75 rotate-45 absolute -right-1 -top-1 z-999 bg-white border border-gray-300">
 			</div>
 
-			<div class="overflow-y-auto p-4 h-full">
+			<OverlayScrollbarsComponent defer class="p-4 h-full">
 				{@render children()}
-			</div>
+			</OverlayScrollbarsComponent>
 		</main>
 	</div>
 </div>
