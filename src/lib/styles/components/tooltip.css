@@ -1,11 +1,11 @@
 @layer components {
 	.tooltip {
 		@apply absolute left-0 top-0 z-999;
-		@apply text-xs;
+		@apply text-xs text-gray-600;
 		@apply w-max;
 		@apply px-1.25 py-0.75;
 		@apply bg-white;
-		@apply border border-gray-300 rounded;
+		@apply border border-gray-300 rounded-sm;
 		@apply invisible;
 	}
 }
