@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { QUERY_SUMMON_URL_BASE } from '$lib/constants';
+	import * as v from 'valibot';
+
 	import { validate } from '$lib/template/validate.svelte';
 
-	import { doImport, ImportUrlScheme } from './import';
+	import { doImport } from './import';
+	import { ImportUrlScheme, QUERY_SUMMON_URL_BASE } from './validation';
 
 	const uniqueId = $props.id();
 
@@ -38,7 +40,7 @@
 			rows="4"
 			class="input block w-full flex-1 resize-none break-all"
 			placeholder={`${QUERY_SUMMON_URL_BASE}?userId=...`}
-			use:validate={ImportUrlScheme}
+			use:validate={v.message(ImportUrlScheme, '地址无效')}
 			autocomplete="off"
 			// I have no clue why 1password show username suggestions here
 			data-1p-ignore

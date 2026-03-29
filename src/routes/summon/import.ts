@@ -1,18 +1,7 @@
-import * as v from 'valibot';
-
-import { QUERY_SUMMON_URL_BASE } from '$lib/constants';
 import { idb } from '$lib/idb';
 import type { QuerySummonRecord } from '$lib/types/summon';
 
 import { fetchSummons } from './fetch.remote';
-
-export const ImportUrlScheme = v.pipe(
-	v.string(),
-	v.url('地址无效'),
-	v.startsWith(QUERY_SUMMON_URL_BASE, '地址无效'),
-	v.transform((url) => new URL(url)),
-	v.check((url) => url.searchParams.has('userId'), '地址无效'),
-);
 
 export const doImport = async (url: string, full: boolean) => {
 	const userId = new URL(url).searchParams.get('userId')!;
