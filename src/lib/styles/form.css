@@ -1,0 +1,13 @@
+@layer components {
+	.label {
+		@apply text-sm font-medium text-gray-600;
+	}
+
+	.input {
+		@apply text-sm text-gray-700;
+		@apply py-1 px-2 rounded-xs;
+		@apply ring-0 outline-none;
+		@apply border border-gray-300 focus:border-gray-400;
+		@apply transition-colors;
+	}
+}

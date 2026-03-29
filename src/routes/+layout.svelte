@@ -1,8 +1,9 @@
 <script lang="ts">
-	import '$lib/style.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import Header from '$lib/components/header.svelte';
 	import Sidebar from '$lib/components/sidebar.svelte';
+
+	import '$lib/style.css';
 
 	let { children } = $props();
 </script>

@@ -2,6 +2,9 @@
 @plugin '@tailwindcss/forms';
 @plugin '@iconify/tailwind4';
 
+@import './styles/button.css';
+@import './styles/form.css';
+
 @utility bg-noise {
 	background-image: url('$lib/assets/noise.svg');
 }

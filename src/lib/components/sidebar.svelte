@@ -1,8 +1,12 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
-	import { page } from '$app/state';
 	import { computePosition, flip, offset, shift } from '@floating-ui/dom';
 	import type { Action } from 'svelte/action';
+	import { on } from 'svelte/events';
+
+	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
+
+	const pathname = $derived(page.url.pathname);
 
 	const tooltip: Action<HTMLAnchorElement, string> = (el, text) => {
 		const tooltip = document.createElement('div');
@@ -38,75 +42,42 @@
 </script>
 
 <aside class="w-50 shrink-0 overflow-visible border-r border-gray-300 relative">
-	<div class="size-1.75 rotate-45 absolute -right-1 -top-1 z-999 bg-white border border-gray-300"></div>
+	<div class="size-1.75 rotate-45 absolute -right-1 -top-1 z-999 bg-white border border-gray-300">
+	</div>
 
 	<nav class="min-h-full overflow-y-auto">
-		<div class="nav-group" class:active={page.url.pathname === '/'}>
+		<div class="nav-group" class:active={pathname === '/'}>
 			<a href={resolve('/')} class="nav-title">
 				<span class="icon-[ri--home-9-line]"></span>
 				<span class="text-sm ml-1.5">首页</span>
 			</a>
 		</div>
 
-		<details name="nav" class="nav-group" open={page.url.pathname.startsWith('/stage')}>
-			<summary class="nav-title">
-				<span class="icon-[ri--map-2-line]"></span>
-				<span class="text-sm ml-1.5">掉落统计 · 关卡</span>
-				<span class="nav-caret"></span>
-			</summary>
-			<ul>
-				<li class:active={page.url.pathname === '/stage/chapter-1'}>
-					<a href={resolve('/stage/chapter-1')}>第一章</a>
-				</li>
-				<li class:active={page.url.pathname === '/stage/chapter-2'}>
-					<a href={resolve('/stage/chapter-2')}>第二章</a>
-				</li>
-				<li class:active={page.url.pathname === '/stage/chapter-3'}>
-					<a href={resolve('/stage/chapter-3')}>第三章</a>
-				</li>
-				<li class:active={page.url.pathname === '/stage/chapter-4'}>
-					<a href={resolve('/stage/chapter-4')}>第四章</a>
-				</li>
-			</ul>
-		</details>
-
-		<details name="nav" class="nav-group" open={page.url.pathname.startsWith('/material')}>
-			<summary class="nav-title">
-				<span class="icon-[ri--shapes-line]"></span>
-				<span class="text-sm ml-1.5">掉落统计 · 物品</span>
-				<span class="nav-caret"></span>
-			</summary>
-			<ul>
-				<li class:active={page.url.pathname === '/material'}>
-					<a href={resolve('/material')}>全部</a>
-				</li>
-				<li class:active={page.url.pathname === '/material/tooth'}>
-					<a href={resolve('/material/tooth')} use:tooltip={'颤颤之齿 · 液化战栗 · 啮咬盒'}>齿类材料</a>
-				</li>
-				<li class:active={page.url.pathname === '/material/salt'}>
-					<a href={resolve('/material/salt')} use:tooltip={'苦盐簇 · 精磨苦盐 · 盐封曼德拉'}>盐类材料</a>
-				</li>
-				<li class:active={page.url.pathname === '/material/bone'}>
-					<a href={resolve('/material/bone')} use:tooltip={'破碎骨片 · 未知种根骨 · 双头形骨架'}>骨类材料</a>
-				</li>
-				<li class:active={page.url.pathname === '/material/silver'}>
-					<a href={resolve('/material/silver')} use:tooltip={'银矿原石 · 粗糙银锭 · 祝圣秘银'}>银类材料</a>
-				</li>
-				<li class:active={page.url.pathname === '/material/spell'}>
-					<a href={resolve('/material/spell')} use:tooltip={'清扫咒 · 幸运咒语 · 百灵百验鸟'}>咒类材料</a>
-				</li>
-				<li class:active={page.url.pathname === '/material/wilderness'}>
-					<a href={resolve('/material/wilderness')} use:tooltip={'柯恩宝贝 · 柯恩夫人'}>荒原材料</a>
-				</li>
-			</ul>
-		</details>
-
-		<div class="nav-group" class:active={page.url.pathname === '/summon'}>
+		<div class="nav-group" class:active={pathname === '/summon'}>
 			<a href={resolve('/summon')} class="nav-title">
 				<span class="icon-[ri--suitcase-line]"></span>
 				<span class="text-sm ml-1.5">征集记录</span>
 			</a>
 		</div>
+
+		<details name="nav" class="nav-group" open={pathname.startsWith('/stats')}>
+			<summary class="nav-title">
+				<span class="icon-[ri--shapes-line]"></span>
+				<span class="text-sm ml-1.5">掉落统计</span>
+				<span class="nav-caret"></span>
+			</summary>
+			<ul>
+				<li class:active={pathname === '/stats/material'}>
+					<a href={resolve('/stats/material')} use:tooltip={'开发中'}>按物品</a>
+				</li>
+				<li class:active={pathname === '/stats/stage'}>
+					<a href={resolve('/stats/stage')} use:tooltip={'开发中'}>按关卡</a>
+				</li>
+				<li class:active={pathname === '/stats/submit'}>
+					<a href={resolve('/stats/submit')} use:tooltip={'开发中'}>上报</a>
+				</li>
+			</ul>
+		</details>
 	</nav>
 </aside>
 

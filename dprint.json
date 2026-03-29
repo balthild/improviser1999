@@ -14,7 +14,7 @@
 	],
 	"useTabs": true,
 	"indentWidth": 2,
-	"lineWidth": 120,
+	"lineWidth": 100,
 	"oxc": {
 		"quoteStyle": "single",
 		"experimentalSortImports": {
