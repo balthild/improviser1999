@@ -162,7 +162,9 @@
 
 	<main class="flex-1 grid grid-cols-2 gap-4">
 		<section class="panel">
-			<h3 class="truncate text-ml font-semibold mb-2">{poolNames.get(selectedPoolType)}</h3>
+			<h3 class="truncate text-ml font-semibold mb-2">
+				{poolNames.get(selectedPoolType) ?? '暂无数据'}
+			</h3>
 
 			<dl class="space-y-1 text-sm tabular-nums">
 				<div class="flex justify-between">
