@@ -18,6 +18,7 @@
 	"lineWidth": 100,
 	"oxc": {
 		"quoteStyle": "single",
+		"quoteProperties": "consistent",
 		"experimentalSortImports": {
 			"groups": [
 				["builtin"],

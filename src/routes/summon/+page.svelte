@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { liveQuery } from 'dexie';
-	import { SvelteMap } from 'svelte/reactivity';
+	import { SvelteMap, SvelteSet } from 'svelte/reactivity';
 	import * as v from 'valibot';
 
 	import { idb } from '$lib/idb';
@@ -10,6 +10,7 @@
 	import { doImport } from './import';
 	import { ImportUrlScheme, QUERY_SUMMON_URL_BASE } from './validation';
 
+	const { data } = $props();
 	const uniqueId = $props.id();
 
 	let importUrl = $state('');
@@ -25,7 +26,9 @@
 
 	const userIds = $derived(distinct($summons?.map((it) => it.userId)).sort());
 
-	const poolTypes = $derived(distinct($summons?.map((it) => it.record.poolType)).sort());
+	// TODO: sort in predefined order
+	const poolTypes = $derived(distinct($summons?.map((it) => it.record.poolType)));
+
 	const poolNames = $derived.by(() => {
 		const names = new SvelteMap<number, string>();
 
@@ -38,25 +41,63 @@
 		return names;
 	});
 
-	let currentUserId = $state('');
-	let currentPoolType = $state(0);
+	const poolPities = $derived.by(() => {
+		const pities = new SvelteMap<number, number>();
+		const done = new SvelteSet<number>();
+
+		for (const summon of $summons ?? []) {
+			if (done.has(summon.record.poolType)) {
+				continue;
+			}
+
+			let pity = pities.get(summon.record.poolType) ?? 0;
+
+			for (const gainId of summon.record.gainIds.reverse()) {
+				const arcanistId = String(gainId);
+				if (data.arcanists[arcanistId].rarity < 6) {
+					pity++;
+					continue;
+				} else {
+					done.add(summon.record.poolType);
+					break;
+				}
+			}
+
+			pities.set(summon.record.poolType, pity);
+		}
+
+		return pities;
+	});
+
+	let selectedUserId = $state('');
+	let selectedPoolType = $state(0);
 
 	// looks like an anti-pattern but it works as for now ¯\_(ツ)_/¯
 	$effect(() => {
-		if (!currentUserId && userIds.length > 0) {
-			currentUserId = userIds[0];
+		if (!selectedUserId && userIds.length > 0) {
+			selectedUserId = userIds[0];
 		}
 
-		if (!currentPoolType && poolTypes.length > 0) {
-			currentPoolType = poolTypes[0];
+		if (!selectedPoolType && poolTypes.length > 0) {
+			selectedPoolType = poolTypes[0];
 		}
 	});
 
-	const currentPoolRecords = $derived.by(() => {
-		if (!$summons) return [];
-		return $summons
-			.filter((it) => it.userId === currentUserId && it.record.poolType === currentPoolType)
-			.map((it) => it.record);
+	const presenting = $derived.by(() => {
+		return Iterator.from($summons ?? [])
+			.filter((it) => it.userId === selectedUserId)
+			.filter((it) => it.record.poolType === selectedPoolType)
+			.flatMap((it) =>
+				it.record.gainIds.reverse().map((gainId) => {
+					const arcanistId = String(gainId);
+					return {
+						time: it.record.createTime,
+						name: data.arcanists[arcanistId].name,
+						rarity: data.arcanists[arcanistId].rarity,
+					};
+				}),
+			)
+			.toArray();
 	});
 </script>
 
@@ -98,9 +139,9 @@
 	</div>
 </form>
 
-<section class="flex flex-row gap-4">
+<section class="flex flex-row items-start gap-4">
 	<aside class="w-50 space-y-3">
-		<select class="input block w-full px-3 py-1.5" bind:value={currentUserId}>
+		<select class="input block w-full px-3 py-1.5" bind:value={selectedUserId}>
 			{#each userIds as userId (userId)}
 				<option value={userId}>{userId}</option>
 			{/each}
@@ -109,18 +150,58 @@
 		{#each poolTypes as poolType (poolType)}
 			<button
 				class="pool block w-full text-left"
-				class:active={poolType === currentPoolType}
-				onclick={() => (currentPoolType = poolType)}
+				class:active={poolType === selectedPoolType}
+				onclick={() => (selectedPoolType = poolType)}
 			>
-				<p class="text-lg font-semibold">20/70</p>
-				<p class="text-xs font-medium">6✦ 保底</p>
+				<p class="text-lg font-semibold">{poolPities.get(poolType)}&ThinSpace;/&ThinSpace;70</p>
+				<p class="text-xs font-medium"><span class="rarity-6">6✦</span> 保底</p>
 				<p class="text-sm font-medium mt-2 mb-px">{poolNames.get(poolType)}</p>
 			</button>
 		{/each}
 	</aside>
 
-	<main>
-		<pre>{JSON.stringify(currentPoolRecords, null, 2)}</pre>
+	<main class="flex-1 grid grid-cols-2 gap-4">
+		<section class="panel">
+			<h3 class="truncate text-ml font-semibold mb-2">{poolNames.get(selectedPoolType)}</h3>
+
+			<dl class="space-y-1 text-sm tabular-nums">
+				<div class="flex justify-between">
+					<dt>总计征集次数</dt>
+					<dd class="font-medium">{presenting.length}</dd>
+				</div>
+				<div class="flex justify-between">
+					<dt><span class="rarity-6">6✦</span> 获取次数</dt>
+					<dd class="font-medium">{presenting.filter((it) => it.rarity === 6).length}</dd>
+				</div>
+				<div class="flex justify-between">
+					<dt><span class="rarity-5">5✦</span> 获取次数</dt>
+					<dd class="font-medium">{presenting.filter((it) => it.rarity === 5).length}</dd>
+				</div>
+				<div class="flex justify-between">
+					<dt><span class="rarity-4">4✦</span> 获取次数</dt>
+					<dd class="font-medium">{presenting.filter((it) => it.rarity === 4).length}</dd>
+				</div>
+			</dl>
+		</section>
+
+		<section class="panel">
+			<h3 class="truncate text-ml font-semibold mb-2">运气指标</h3>
+
+			<dl class="space-y-1 text-sm tabular-nums">
+				<div class="flex justify-between">
+					<dt><span class="rarity-6">6✦</span> 平均征集次数</dt>
+					<dd class="font-medium">TODO</dd>
+				</div>
+				<div class="flex justify-between">
+					<dt><span class="rarity-5">5✦</span> 平均征集次数</dt>
+					<dd class="font-medium">TODO</dd>
+				</div>
+			</dl>
+		</section>
+
+		<section class="panel col-span-2">
+			<pre class="text-sm">{JSON.stringify(presenting, null, 2)}</pre>
+		</section>
 	</main>
 </section>
 
@@ -129,14 +210,34 @@
 
 	.pool {
 		@apply border border-dashed border-gray-400/60 hover:border-gray-400 rounded-xs;
-		/* @apply bg-white; */
 		@apply px-3 py-2;
 		@apply cursor-pointer;
 		@apply transition-colors;
 
 		&.active {
-			@apply border-solid border-gray-400 bg-white/50;
+			@apply border-solid border-gray-400/80 bg-white/50;
 			@apply cursor-default;
 		}
+	}
+
+	.panel {
+		@apply px-3.5 py-3;
+		@apply border border-gray-300 bg-white/50;
+		@apply rounded-xs;
+	}
+
+	.rarity-6 {
+		@apply text-amber-600;
+		@apply tracking-wider;
+	}
+
+	.rarity-5 {
+		color: color-mix(in oklch, var(--color-yellow-500), var(--color-black) 5%);
+		@apply tracking-wider;
+	}
+
+	.rarity-4 {
+		@apply text-violet-500;
+		@apply tracking-wider;
 	}
 </style>
