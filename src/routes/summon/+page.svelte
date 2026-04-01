@@ -108,14 +108,13 @@
 	const gains = $derived(poolGains.get(selectedPoolType) ?? []);
 
 	const calculatePastGain = (gains: Gain[], rarity: number) => {
-		const indices = [];
+		let last = -1;
 		const past: PastGain[] = [];
 
 		for (const [index, gain] of gains.toReversed().entries()) {
 			if (gain.rarity === rarity) {
-				const last = indices[indices.length - 1] ?? 0;
 				past.push({ ...gain, invested: index - last });
-				indices.push(index);
+				last = index;
 			}
 		}
 
