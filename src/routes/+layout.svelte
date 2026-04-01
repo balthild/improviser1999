@@ -1,11 +1,11 @@
 <script lang="ts">
+	import '$lib/styles/index.css';
+
 	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
 
 	import favicon from '$lib/assets/favicon.svg';
 	import Header from '$lib/components/header.svelte';
 	import Sidebar from '$lib/components/sidebar.svelte';
-
-	import '$lib/styles/index.css';
 
 	let { children } = $props();
 </script>

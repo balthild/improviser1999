@@ -284,7 +284,7 @@
 </section>
 
 <style lang="postcss">
-	@import '$lib/styles/reference.css';
+	@reference '$lib/styles/index.css';
 
 	@layer components {
 		.pool {

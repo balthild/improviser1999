@@ -21,12 +21,12 @@
 		"quoteProperties": "consistent",
 		"experimentalSortImports": {
 			"groups": [
+				["style", "side_effect_style"],
 				["builtin"],
 				["external"],
 				["svelte"],
 				["internal", "subpath"],
 				["parent", "sibling", "index"],
-				["style", "side_effect_style"],
 				["unknown"],
 			],
 			"internalPattern": ["~/", "@/", "$lib/"],
