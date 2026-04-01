@@ -141,13 +141,6 @@
 	});
 </script>
 
-<section class="mb-3 flex flex-row justify-between items-center">
-	<h2 class="text-xl font-medium">征集记录</h2>
-	<button class="btn" popovertarget={`popover-import-${uniqueId}`}>
-		导入
-	</button>
-</section>
-
 <form
 	id={`popover-import-${uniqueId}`}
 	class="mb-3 p-2 border border-gray-300 w-80 rounded-sm mt-2 shadow-lg"
@@ -179,14 +172,26 @@
 	</div>
 </form>
 
-<section class="flex flex-row items-start gap-4">
-	<aside class="w-50 space-y-3">
-		<select class="input block w-full px-3 py-1.5" bind:value={selectedUserId}>
-			{#each userIds as userId (userId)}
-				<option value={userId}>{userId}</option>
-			{/each}
-		</select>
+<section
+	class="grid grid-cols-2 h-full"
+	style:grid-template-columns="max-content 1fr"
+	style:grid-template-rows="max-content 1fr"
+>
+	<select class="px-3 py-0 text-ms ring-0 border-0 bg-transparent" bind:value={selectedUserId}>
+		{#each userIds as userId (userId)}
+			<option value={userId}>{userId}</option>
+		{/each}
+	</select>
+	<div class="flex flex-row items-stretch justify-end border-l border-gray-300">
+		<button
+			class="px-4 py-1.75 btn border-l border-gray-300 hover:bg-gray-300/30 rounded-none"
+			popovertarget={`popover-import-${uniqueId}`}
+		>
+			导入
+		</button>
+	</div>
 
+	<aside class="w-50 border-t border-gray-300">
 		{#each poolTypes as poolType (poolType)}
 			<button
 				class="pool block w-full text-left"
@@ -200,53 +205,56 @@
 		{/each}
 	</aside>
 
-	<main class="flex-1 grid grid-cols-2 gap-4">
-		<section class="panel">
-			<h3 class="truncate text-ml font-semibold mb-2">
-				{poolNames.get(selectedPoolType) ?? '暂无数据'}
-			</h3>
+	<main class="border-l border-t border-gray-300">
+		<section class="flex items-stretch">
+			<div class="flex-1 p-3">
+				<h3 class="truncate text-ml font-semibold mb-2">
+					{poolNames.get(selectedPoolType) ?? '暂无数据'}
+				</h3>
 
-			<dl class="space-y-1 text-sm tabular-nums">
-				<div class="flex justify-between">
-					<dt>总计征集次数</dt>
-					<dd class="font-medium">{gains.length}</dd>
-				</div>
-				<div class="flex justify-between">
-					<dt><Rarity rarity={6} /> 获取次数</dt>
-					<dd class="font-medium">{count6}</dd>
-				</div>
-				<div class="flex justify-between">
-					<dt><Rarity rarity={5} /> 获取次数</dt>
-					<dd class="font-medium">{count5}</dd>
-				</div>
-				<div class="flex justify-between">
-					<dt><Rarity rarity={4} /> 获取次数</dt>
-					<dd class="font-medium">{count4}</dd>
-				</div>
-			</dl>
+				<dl class="space-y-1 text-sm tabular-nums">
+					<div class="flex justify-between">
+						<dt>总计征集次数</dt>
+						<dd class="font-medium">{gains.length}</dd>
+					</div>
+					<div class="flex justify-between">
+						<dt><Rarity rarity={6} /> 获取次数</dt>
+						<dd class="font-medium">{count6}</dd>
+					</div>
+					<div class="flex justify-between">
+						<dt><Rarity rarity={5} /> 获取次数</dt>
+						<dd class="font-medium">{count5}</dd>
+					</div>
+					<div class="flex justify-between">
+						<dt><Rarity rarity={4} /> 获取次数</dt>
+						<dd class="font-medium">{count4}</dd>
+					</div>
+				</dl>
+			</div>
+			<div class="border-r border-gray-300"></div>
+			<div class="flex-1 p-3">
+				<h3 class="truncate text-ml font-semibold mb-2">运气指标</h3>
+
+				<dl class="space-y-1 text-sm tabular-nums">
+					<div class="flex justify-between">
+						<dt><Rarity rarity={6} /> 平均征集次数</dt>
+						<dd class="font-medium">{isNaN(average6) ? '无数据' : average6.toFixed(2)}</dd>
+					</div>
+					<div class="flex justify-between">
+						<dt><Rarity rarity={5} /> 平均征集次数</dt>
+						<dd class="font-medium">{isNaN(average5) ? '无数据' : average5.toFixed(2)}</dd>
+					</div>
+				</dl>
+			</div>
 		</section>
 
-		<section class="panel">
-			<h3 class="truncate text-ml font-semibold mb-2">运气指标</h3>
+		<div class="h-2.5 border-t border-gray-300 bg-stripe"></div>
 
-			<dl class="space-y-1 text-sm tabular-nums">
-				<div class="flex justify-between">
-					<dt><Rarity rarity={6} /> 平均征集次数</dt>
-					<dd class="font-medium">{isNaN(average6) ? '无数据' : average6.toFixed(2)}</dd>
-				</div>
-				<div class="flex justify-between">
-					<dt><Rarity rarity={5} /> 平均征集次数</dt>
-					<dd class="font-medium">{isNaN(average5) ? '无数据' : average5.toFixed(2)}</dd>
-				</div>
-			</dl>
-		</section>
-
-		<section class="border border-gray-300 bg-white/50 col-span-2">
+		<section class="border-t border-b border-gray-300 bg-white/50 col-span-2">
 			<header class="flex flex-row items-stretch text-ms border-b border-gray-300">
 				<button
 					class="py-1.25 flex-1 cursor-pointer"
-					class:bg-stripe={selectedRarity === 6}
-					class:bg-gray-50={selectedRarity === 6}
+					class:bg-gray-100={selectedRarity === 6}
 					onclick={() => (selectedRarity = 6)}
 				>
 					<Rarity rarity={6} class="-mr-px" />
@@ -254,8 +262,7 @@
 				<div class="border-r border-gray-300"></div>
 				<button
 					class="py-1.25 flex-1 cursor-pointer"
-					class:bg-stripe={selectedRarity === 5}
-					class:bg-gray-50={selectedRarity === 5}
+					class:bg-gray-100={selectedRarity === 5}
 					onclick={() => (selectedRarity = 5)}
 				>
 					<Rarity rarity={5} class="-mr-px" />
@@ -287,21 +294,15 @@
 
 	@layer components {
 		.pool {
-			@apply border border-dashed border-gray-400/60 hover:border-gray-400 rounded-xs;
+			@apply border-b border-gray-300;
 			@apply px-3 py-2;
 			@apply cursor-pointer;
 			@apply transition-colors;
 
 			&.active {
-				@apply border-solid border-gray-400/80 bg-white/50;
+				@apply bg-white/50;
 				@apply cursor-default;
 			}
-		}
-
-		.panel {
-			@apply px-3.5 py-3;
-			@apply border border-gray-300 bg-white/50;
-			@apply rounded-xs;
 		}
 
 		.gains {
