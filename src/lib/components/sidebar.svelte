@@ -49,88 +49,90 @@
 <style lang="postcss">
 	@reference '$lib/styles/index.css';
 
-	.nav-group {
-		@apply text-gray-600;
-		@apply border-b border-gray-300/60;
+	@layer components {
+		.nav-group {
+			@apply text-gray-600;
+			@apply border-b border-gray-300/60;
 
-		&::details-content {
-			@apply grid grid-rows-[0fr];
-			@apply opacity-0;
-			@apply overflow-hidden;
-			@apply transition-[content-visibility,grid-template-rows,opacity,padding];
-			@apply transition-discrete duration-300;
-		}
-
-		&[open]::details-content {
-			@apply py-1;
-			@apply grid-rows-[1fr];
-			@apply opacity-100;
-
-			@starting-style {
-				@apply grid-rows-[0fr];
-			}
-		}
-
-		.nav-title {
-			@apply flex items-center;
-			@apply pl-4 pr-3 py-1.75;
-			@apply font-medium;
-			@apply cursor-pointer;
-			@apply border-gray-200;
-			@apply transition-[background-color,border-width];
-			@apply duration-[150ms,250ms];
-			@apply ease-[ease-in-out,step-end];
-
-			&:hover {
-				@apply text-gray-700;
-				@apply bg-gray-900/2;
+			&::details-content {
+				@apply grid grid-rows-[0fr];
+				@apply opacity-0;
+				@apply overflow-hidden;
+				@apply transition-[content-visibility,grid-template-rows,opacity,padding];
+				@apply transition-discrete duration-300;
 			}
 
-			[open] & {
-				@apply bg-gray-900/2;
-				@apply border-b;
-				@apply ease-[ease-in-out,step-start];
-			}
+			&[open]::details-content {
+				@apply py-1;
+				@apply grid-rows-[1fr];
+				@apply opacity-100;
 
-			.nav-caret {
-				@apply text-base;
-				@apply ml-auto;
-				@apply icon-[ri--arrow-right-s-line];
-				@apply transition-transform;
-
-				[open] & {
-					@apply rotate-90;
+				@starting-style {
+					@apply grid-rows-[0fr];
 				}
 			}
-		}
 
-		ul {
-			/* needed for ::details-content transition */
-			@apply min-h-0;
-
-			li {
-				@apply text-sm;
-				@apply transition-colors;
+			.nav-title {
+				@apply flex items-center;
+				@apply pl-4 pr-3 py-1.75;
+				@apply font-medium;
+				@apply cursor-pointer;
+				@apply border-gray-200;
+				@apply transition-[background-color,border-width];
+				@apply duration-[150ms,250ms];
+				@apply ease-[ease-in-out,step-end];
 
 				&:hover {
+					@apply text-gray-700;
 					@apply bg-gray-900/2;
 				}
 
-				a {
-					@apply block;
-					@apply px-4 py-1;
+				[open] & {
+					@apply bg-gray-900/2;
+					@apply border-b;
+					@apply ease-[ease-in-out,step-start];
+				}
+
+				.nav-caret {
+					@apply text-base;
+					@apply ml-auto;
+					@apply icon-[ri--arrow-right-s-line];
+					@apply transition-transform;
+
+					[open] & {
+						@apply rotate-90;
+					}
+				}
+			}
+
+			ul {
+				/* needed for ::details-content transition */
+				@apply min-h-0;
+
+				li {
+					@apply text-sm;
+					@apply transition-colors;
+
+					&:hover {
+						@apply bg-gray-900/2;
+					}
+
+					a {
+						@apply block;
+						@apply px-4 py-1;
+					}
 				}
 			}
 		}
-	}
 
-	.nav-group.active .nav-title {
-		@apply text-gray-700;
-		@apply bg-stripe;
-	}
+		.nav-group.active .nav-title {
+			@apply text-gray-700;
+			@apply bg-stripe;
+		}
 
-	.nav-group ul li.active {
-		@apply text-gray-700;
-		@apply bg-gray-900/4;
+		.nav-group ul li.active {
+			@apply text-gray-700;
+			@apply bg-gray-900/4;
+		}
 	}
 </style>
