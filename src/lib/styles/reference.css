@@ -1,0 +1,3 @@
+/* import this file in style block of svelte components */
+@reference '$lib/styles/index.css';
+@layer properties, theme, base, components, utilities;
