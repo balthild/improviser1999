@@ -66,6 +66,7 @@
 	});
 
 	interface Gain {
+		key: string;
 		id: number;
 		time: string;
 		name: string;
@@ -81,15 +82,13 @@
 
 		for (const summon of userSummons.get(selectedUserId) ?? []) {
 			gains.get(summon.record.poolType)!.push(
-				...summon.record.gainIds.toReversed().map((gainId) => {
-					const arcanistId = String(gainId);
-					return {
-						id: gainId,
-						time: summon.record.createTime,
-						name: data.arcanists[arcanistId].name,
-						rarity: data.arcanists[arcanistId].rarity,
-					};
-				}),
+				...summon.record.gainIds.toReversed().map((gainId, index) => ({
+					key: `${summon.id},${index}`,
+					id: gainId,
+					time: summon.record.createTime,
+					name: data.arcanists[gainId].name,
+					rarity: data.arcanists[gainId].rarity,
+				})),
 			);
 		}
 
@@ -264,7 +263,7 @@
 				</button>
 			</header>
 			<ol class="gains min-h-8">
-				{#each pastGains as gain (`${gain.time},${gain.id}`)}
+				{#each pastGains as gain (gain.key)}
 					<li class="flex flex-col items-center p-2 pb-4">
 						<div class="aspect-4/7 m-[12%] mb-0 border border-gray-200 bg-gray-50 bg-stripe rounded-t-full overflow-hidden">
 							<img
@@ -317,6 +316,7 @@
 				@apply border-r-0;
 			}
 
+			/* https://keithclark.co.uk/articles/targeting-first-and-last-rows-in-css-grid-layouts/ */
 			li:nth-child(5n+1):nth-last-child(-n+5),
 			li:nth-child(5n+1):nth-last-child(-n+5) ~ li {
 				@apply border-b-0;
