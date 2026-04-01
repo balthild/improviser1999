@@ -184,7 +184,7 @@
 	</select>
 	<div class="flex flex-row items-stretch justify-end border-l border-gray-300">
 		<button
-			class="px-4 py-1.75 btn border-l border-gray-300 hover:bg-gray-300/30 rounded-none"
+			class="px-4 py-1.75 btn border-l border-gray-300 hover:bg-white/50 rounded-none"
 			popovertarget={`popover-import-${uniqueId}`}
 		>
 			导入
@@ -260,7 +260,9 @@
 			<header class="flex flex-row items-stretch text-ms border-b border-gray-300">
 				<button
 					class="py-1.25 flex-1 cursor-pointer"
-					class:bg-gray-100={selectedRarity === 6}
+					class:grayscale={selectedRarity !== 6}
+					class:bg-noise={selectedRarity !== 6}
+					class:bg-gray-50={selectedRarity !== 6}
 					onclick={() => (selectedRarity = 6)}
 				>
 					<Rarity rarity={6} class="-mr-px" />
@@ -268,7 +270,9 @@
 				<div class="border-r border-gray-300"></div>
 				<button
 					class="py-1.25 flex-1 cursor-pointer"
-					class:bg-gray-100={selectedRarity === 5}
+					class:grayscale={selectedRarity !== 5}
+					class:bg-noise={selectedRarity !== 5}
+					class:bg-gray-50={selectedRarity !== 5}
 					onclick={() => (selectedRarity = 5)}
 				>
 					<Rarity rarity={5} class="-mr-px" />
