@@ -202,6 +202,12 @@
 				<p class="text-xs font-medium"><Rarity rarity={6} /> 保底</p>
 				<p class="text-sm font-medium mt-2 mb-px">{poolNames.get(poolType)}</p>
 			</button>
+		{:else}
+			<button class="pool block w-full text-left">
+				<p class="text-lg font-semibold">0&ThinSpace;/&ThinSpace;70</p>
+				<p class="text-xs font-medium"><Rarity rarity={6} /> 保底</p>
+				<p class="text-sm font-medium mt-2 mb-px">暂无数据</p>
+			</button>
 		{/each}
 	</aside>
 
