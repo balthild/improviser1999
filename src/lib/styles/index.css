@@ -9,22 +9,20 @@
 @import './components/dialog.css';
 @import './components/form.css';
 @import './components/misc.css';
+@import './components/scrollbar.css';
 @import './components/tooltip.css';
 
-@layer base {
-	:root {
-		@apply text-gray-700;
-		@apply bg-gray-50 bg-noise;
-	}
+@theme {
+	--text-ms: calc((var(--text-base) + var(--text-sm)) / 2);
+	--text-ml: calc((var(--text-base) + var(--text-lg)) / 2);
+
+	--breakpoint-wl: 72rem;
+	--container-wl: 72rem;
 }
 
-@layer components {
-	.os-scrollbar {
-		--os-size: 0.75rem;
-		--os-padding-perpendicular: 0.25rem;
-		--os-padding-axis: 0.25rem;
-		--os-track-border-radius: 0.125rem;
-		--os-handle-border-radius: 0.125rem;
-		--os-handle-bg: color-mix(var(--color-slate-700) 50%, transparent);
+@layer base {
+	body {
+		@apply text-gray-700;
+		@apply bg-gray-50 bg-noise;
 	}
 }

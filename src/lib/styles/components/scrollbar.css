@@ -1,0 +1,14 @@
+@layer components {
+	.os-scrollbar {
+		--os-size: 0.75rem;
+		--os-padding-perpendicular: 0.25rem;
+		--os-padding-axis: 0.25rem;
+		--os-track-border-radius: 0.125rem;
+		--os-handle-border-radius: 0.125rem;
+		--os-handle-bg: color-mix(var(--color-slate-700) 50%, transparent);
+	}
+
+	.os-toplevel[data-overlayscrollbars] > [data-overlayscrollbars-viewport] {
+		overscroll-behavior: contain;
+	}
+}

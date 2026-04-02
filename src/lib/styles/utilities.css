@@ -6,14 +6,6 @@
 	background-image: url('$lib/assets/stripe.svg');
 }
 
-@utility text-ms {
-	font-size: 0.9375rem;
-}
-
-@utility text-ml {
-	font-size: 1.0625rem;
-}
-
 @utility text-link {
 	@apply text-sky-700 hover:text-sky-800;
 	@apply underline decoration-current/35 hover:decoration-current;

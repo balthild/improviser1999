@@ -19,7 +19,7 @@
 
 <OverlayScrollbarsComponent
 	defer
-	class="w-full h-full"
+	class="w-full h-full os-toplevel"
 	options={{ scrollbars: { autoHide: 'scroll' } }}
 >
 	<h3 class="font-medium text-ml text-gray-600 p-3 text-center">导入征集记录</h3>
