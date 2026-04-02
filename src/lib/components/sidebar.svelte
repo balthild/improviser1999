@@ -83,7 +83,7 @@
 				@apply flex items-center;
 				@apply pl-4 pr-3 py-1.75;
 				@apply font-medium;
-				@apply cursor-pointer;
+				@apply cursor-pointer a11y-ring;
 				@apply border-gray-200;
 				@apply transition-[background-color,border-width];
 				@apply duration-[150ms,250ms];
@@ -127,6 +127,7 @@
 					a {
 						@apply block;
 						@apply px-4 py-1;
+						@apply a11y-ring;
 					}
 				}
 			}

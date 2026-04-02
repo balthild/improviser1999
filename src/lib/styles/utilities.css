@@ -20,3 +20,7 @@
 	@apply transition-colors;
 	@apply cursor-pointer;
 }
+
+@utility a11y-ring {
+	@apply outline-0 ring-inset ring-0 focus-visible:ring-1;
+}

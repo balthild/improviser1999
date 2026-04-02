@@ -2,6 +2,7 @@
 	.btn {
 		@apply text-sm text-gray-600 hover:text-gray-700;
 		@apply px-2.5 py-1 rounded-xs;
+		@apply a11y-ring;
 		@apply transition-colors;
 		@apply cursor-pointer;
 	}

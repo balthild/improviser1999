@@ -177,11 +177,12 @@
 	style:grid-template-columns="max-content 1fr"
 	style:grid-template-rows="max-content 1fr"
 >
-	<select class="px-3 py-0 text-ms ring-0 border-0 bg-transparent" bind:value={selectedUserId}>
+	<select class="px-3 py-0 text-sm border-0 bg-transparent a11y-ring" bind:value={selectedUserId}>
 		{#each userIds as userId (userId)}
 			<option value={userId}>{userId}</option>
 		{/each}
 	</select>
+
 	<div class="flex flex-row items-stretch justify-end border-l border-gray-300">
 		<button
 			class="px-4 py-1.75 btn border-l border-gray-300 hover:bg-white/50 rounded-none"
@@ -286,7 +287,6 @@
 							<img
 								src="https://cdn.jsdelivr.net/gh/myssal/Reverse-1999-CN-Asset/singlebg/headicon_middle/{gain.id}01.png"
 								alt={gain.name}
-								class=""
 							/>
 						</div>
 						<p class="text-ml font-medium text-gray-600 mt-3">{gain.name}</p>
@@ -307,6 +307,7 @@
 		.pool {
 			@apply border-b border-gray-300;
 			@apply px-3 py-2;
+			@apply a11y-ring;
 			@apply cursor-pointer;
 			@apply transition-colors;
 
