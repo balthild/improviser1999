@@ -95,14 +95,14 @@
 		return gains;
 	});
 
-	const poolPities6 = $derived.by(() => {
-		const pities = new SvelteMap<number, number>();
+	const poolInvested6 = $derived.by(() => {
+		const invested = new SvelteMap<number, number>();
 		for (const [pool, gain] of poolGains.entries()) {
 			const pity = gain.findIndex((it) => it.rarity === 6);
-			pities.set(pool, pity === -1 ? gain.length : pity);
+			invested.set(pool, pity === -1 ? gain.length : pity);
 		}
 
-		return pities;
+		return invested;
 	});
 
 	const gains = $derived(poolGains.get(selectedPoolType) ?? []);
@@ -198,7 +198,9 @@
 				class:active={poolType === selectedPoolType}
 				onclick={() => (selectedPoolType = poolType)}
 			>
-				<p class="text-lg font-semibold">{poolPities6.get(poolType)}&ThinSpace;/&ThinSpace;70</p>
+				<p class="text-lg font-semibold">
+					{poolInvested6.get(poolType)}&ThinSpace;/&ThinSpace;{poolType === 2 ? 30 : 70}
+				</p>
 				<p class="text-xs font-medium"><Rarity rarity={6} /> 保底</p>
 				<p class="text-sm font-medium mt-2 mb-px">{poolNames.get(poolType)}</p>
 			</button>
