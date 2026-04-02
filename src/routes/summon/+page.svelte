@@ -2,27 +2,16 @@
 	import { liveQuery } from 'dexie';
 	import { untrack } from 'svelte';
 	import { SvelteMap } from 'svelte/reactivity';
-	import * as v from 'valibot';
 
 	import Rarity from '$lib/components/rarity.svelte';
 	import { idb, type Summon } from '$lib/idb';
-	import { validate } from '$lib/template/validate.svelte';
 	import { distinct } from '$lib/utils';
 
-	import { doImport } from './import';
-	import { ImportUrlScheme, QUERY_SUMMON_URL_BASE } from './validation';
+	import Import from './import.svelte';
 
 	const { data } = $props();
-	const uniqueId = $props.id();
 
-	let importUrl = $state('');
-	let importFull = $state(false);
-
-	const handleImport = async (event: Event) => {
-		event.preventDefault();
-		const count = await doImport(importUrl, importFull);
-		alert(`导入完成，新增 ${count} 条记录`);
-	};
+	let importDialog: HTMLDialogElement;
 
 	const rawSummons = liveQuery(() => idb.summons.orderBy('record.createTime').reverse().toArray());
 
@@ -122,55 +111,29 @@
 	};
 
 	let selectedRarity: 6 | 5 = $state(6);
-	const pastGains6 = $derived(calculatePastGain(gains, 6));
-	const pastGains5 = $derived(calculatePastGain(gains, 5));
-	const pastGains = $derived({ 6: pastGains6, 5: pastGains5 }[selectedRarity]);
+	const pastGains = $derived({
+		6: calculatePastGain(gains, 6),
+		5: calculatePastGain(gains, 5),
+	});
 
 	const count6 = $derived(gains.filter((it) => it.rarity === 6).length ?? 0);
 	const count5 = $derived(gains.filter((it) => it.rarity === 5).length ?? 0);
 	const count4 = $derived(gains.filter((it) => it.rarity === 4).length ?? 0);
 
 	const average6 = $derived.by(() => {
-		const total = pastGains6.reduce((sum, it) => sum + it.invested, 0);
+		const total = pastGains[6].reduce((sum, it) => sum + it.invested, 0);
 		return total / count6;
 	});
 
 	const average5 = $derived.by(() => {
-		const total = pastGains5.reduce((sum, it) => sum + it.invested, 0);
+		const total = pastGains[5].reduce((sum, it) => sum + it.invested, 0);
 		return total / count5;
 	});
 </script>
 
-<form
-	id={`popover-import-${uniqueId}`}
-	class="mb-3 p-2 border border-gray-300 w-80 rounded-sm mt-2 shadow-lg"
-	style:position-area="bottom span-left"
-	onsubmit={handleImport}
-	popover
->
-	<label>
-		<p class="mb-1 text-sm font-medium text-gray-600">地址</p>
-		<textarea
-			name="url"
-			bind:value={importUrl}
-			rows="4"
-			class="input block w-full flex-1 resize-none break-all"
-			placeholder={`${QUERY_SUMMON_URL_BASE}?userId=...`}
-			use:validate={v.message(ImportUrlScheme, '地址无效')}
-			autocomplete="off"
-			// I have no clue why 1password show username suggestions here
-			data-1p-ignore
-		></textarea>
-	</label>
-
-	<div class="flex flex-row items-center justify-between gap-2 mt-2">
-		<label class="flex items-center gap-1.25">
-			<input type="checkbox" name="full" bind:checked={importFull} />
-			<span class="text-sm">全量更新</span>
-		</label>
-		<button class="btn btn-accent">确认</button>
-	</div>
-</form>
+<dialog closedby="any" class="dialog w-160 h-120" bind:this={importDialog}>
+	<Import />
+</dialog>
 
 <section
 	class="grid grid-cols-2 h-full"
@@ -184,10 +147,7 @@
 	</select>
 
 	<div class="flex flex-row items-stretch justify-end border-l border-gray-300">
-		<button
-			class="px-4 py-1.75 btn border-l border-gray-300 hover:bg-white/50 rounded-none"
-			popovertarget={`popover-import-${uniqueId}`}
-		>
+		<button class="btn btn-inlay border-l" onclick={() => importDialog.showModal()}>
 			导入
 		</button>
 	</div>
@@ -280,8 +240,9 @@
 					<Rarity rarity={5} class="-mr-px" />
 				</button>
 			</header>
+
 			<ol class="gains min-h-8">
-				{#each pastGains as gain (gain.key)}
+				{#each pastGains[selectedRarity] as gain (gain.key)}
 					<li class="flex flex-col items-center p-2 pb-4">
 						<div class="aspect-4/7 m-[12%] mb-0 border border-gray-200 bg-gray-50 bg-stripe rounded-t-full overflow-hidden">
 							<img

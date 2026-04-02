@@ -11,4 +11,9 @@
 		@apply bg-white/60 focus:bg-white;
 		@apply transition-colors;
 	}
+
+	.checkbox {
+		@apply border-current ring-current;
+		@apply rounded-xs;
+	}
 }
