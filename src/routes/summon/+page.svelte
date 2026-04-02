@@ -257,22 +257,21 @@
 		<div class="h-2.5 border-t border-gray-300 bg-stripe"></div>
 
 		<section class="border-t border-b border-gray-300 bg-white/50 col-span-2">
-			<header class="flex flex-row items-stretch text-ms border-b border-gray-300">
+			<header class="flex flex-row items-stretch text-ms border-b border-gray-300 p-1 gap-1">
 				<button
-					class="py-1.25 flex-1 cursor-pointer"
+					class="py-1 flex-1 cursor-pointer rounded-xs ring-inset ring-gray-200"
 					class:grayscale={selectedRarity !== 6}
-					class:bg-noise={selectedRarity !== 6}
-					class:bg-gray-50={selectedRarity !== 6}
+					class:ring-1={selectedRarity === 6}
+					class:bg-gray-100={selectedRarity === 6}
 					onclick={() => (selectedRarity = 6)}
 				>
 					<Rarity rarity={6} class="-mr-px" />
 				</button>
-				<div class="border-r border-gray-300"></div>
 				<button
-					class="py-1.25 flex-1 cursor-pointer"
+					class="py-1 flex-1 cursor-pointer rounded-xs ring-inset ring-gray-200"
 					class:grayscale={selectedRarity !== 5}
-					class:bg-noise={selectedRarity !== 5}
-					class:bg-gray-50={selectedRarity !== 5}
+					class:ring-1={selectedRarity === 5}
+					class:bg-gray-100={selectedRarity === 5}
 					onclick={() => (selectedRarity = 5)}
 				>
 					<Rarity rarity={5} class="-mr-px" />
