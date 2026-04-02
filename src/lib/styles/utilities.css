@@ -15,7 +15,8 @@
 }
 
 @utility text-link {
-	@apply text-sky-700 hover:text-sky-800 hover:underline;
+	@apply text-sky-700 hover:text-sky-800;
+	@apply underline decoration-current/35 hover:decoration-current;
 	@apply transition-colors;
 	@apply cursor-pointer;
 }

@@ -43,6 +43,13 @@
 				</li>
 			</ul>
 		</details>
+
+		<div class="nav-group" class:active={pathname === '/about'}>
+			<a href={resolve('/about')} class="nav-title">
+				<span class="icon-[ri--information-line]"></span>
+				<span class="text-sm ml-1.5">关于</span>
+			</a>
+		</div>
 	</nav>
 </aside>
 
