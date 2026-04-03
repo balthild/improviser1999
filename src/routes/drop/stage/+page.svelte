@@ -46,15 +46,15 @@
 
 	<div class="w-2.5 border-r border-gray-300 bg-stripe"></div>
 
-	<main class="flex-1">
+	<main class="flex-1 pb-4">
 		{#each selectedEpisodes as episode (episode.num)}
 			<div class="relative border-b border-gray-300 flex">
 				<div class="scrap -left-1 -bottom-1"></div>
 
 				<div class="text-ms mx-6 mt-8 mb-3 flex items-end">
 					<span class="text-4xl font-medium font-garamond leading-[1em]">{episode.num}</span>
-					<span class="inline-block h-6 mb-0.5 mx-2 border-r border-gray-400 -skew-x-20"></span>
-					<div class="ml-1 -mb-px flex gap-4 items-center leading-[1em]">
+					<span class="inline-block h-5 mb-0.5 mx-2 border-r border-gray-400 -skew-x-25"></span>
+					<div class="ml-1 -mb-px flex gap-5 items-center h-6">
 						<span>{episode.title.zh}</span>
 
 						{#if episode.stage.normal}
