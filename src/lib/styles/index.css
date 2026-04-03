@@ -10,6 +10,7 @@
 @import './components/form.css';
 @import './components/misc.css';
 @import './components/scrollbar.css';
+@import './components/table.css';
 @import './components/tooltip.css';
 
 @theme {

@@ -1,1 +1,138 @@
-开发中
+<script lang="ts">
+	import type { Action } from 'svelte/action';
+	import { on } from 'svelte/events';
+
+	import { resolve } from '$app/paths';
+
+	import type { MaterialId } from '$lib/types/primitive';
+
+	let { params, data } = $props();
+
+	const stageIdByName = $derived.by(() => {
+		const stages: Record<string, number> = {};
+		for (const [id, stage] of Object.entries(data.stages)) {
+			const name = `${stage.chapter}-${stage.episode}${stage.difficulty}`;
+			stages[name] = Number(id);
+		}
+
+		return stages;
+	});
+
+	interface StageStat {
+		id: number;
+		name: string;
+		chapter: number;
+		episode: number;
+		difficulty: string;
+		version: number;
+		cost: number;
+		samples: number;
+		drops: number;
+		expectDropRate: number;
+		expectItemCost: number;
+	}
+
+	const stats = $derived.by(() => {
+		const stats: Record<string, StageStat> = {};
+		for (const [key, report] of Object.entries(data.drops.data.levelReport)) {
+			const match = key.match(
+				/^(?<stage>(?<chapter>\d+)-(?<episode>\d+)(?<difficulty>[^\d]+))\(\d+\)Ver(?<version>\d+\.\d+)$/,
+			);
+			if (!match || !match.groups) {
+				console.warn(`Unexpected key: ${key}`);
+				continue;
+			}
+
+			const drops = report.drops[params.id as unknown as MaterialId];
+			if (!drops) continue;
+
+			const expectDropRate = drops / report.count;
+			const expectItemCost = report.cost / expectDropRate;
+
+			if (stats[match.groups.stage]?.version ?? '0' > match.groups.version) {
+				continue;
+			}
+
+			stats[match.groups.stage] = {
+				id: stageIdByName[match.groups.stage],
+				name: match.groups.stage,
+				chapter: Number(match.groups.chapter),
+				episode: Number(match.groups.episode),
+				difficulty: match.groups.difficulty,
+				version: Number(match.groups.version),
+				cost: report.cost,
+				samples: report.count,
+				drops,
+				expectDropRate,
+				expectItemCost,
+			};
+		}
+
+		return Object.values(stats).sort((left, right) => {
+			const leftCmp = left.chapter * 10000 + left.episode;
+			const rightCmp = right.chapter * 10000 + right.episode;
+
+			return leftCmp - rightCmp;
+		});
+	});
+
+	type SortKey = 'expectItemCost' | 'expectDropRate' | 'cost' | 'samples' | 'drops';
+	let sortKey: SortKey = $state('expectItemCost');
+	let sortAsc = $state(true);
+
+	const sorted = $derived.by(() => {
+		return stats.toSorted((left, right) => {
+			const sign = sortAsc ? 1 : -1;
+			return sign * (left[sortKey] - right[sortKey]);
+		});
+	});
+
+	const sorting: Action<HTMLElement, SortKey> = (el, key) => {
+		$effect(() => {
+			return on(el, 'click', () => {
+				if (sortKey === key) {
+					sortAsc = !sortAsc;
+				} else {
+					sortKey = key;
+					sortAsc = true;
+				}
+			});
+		});
+
+		$effect(() => {
+			el.classList.toggle('asc', sortKey === key && sortAsc);
+			el.classList.toggle('desc', sortKey === key && !sortAsc);
+		});
+	};
+</script>
+
+<table class="table w-full">
+	<thead>
+		<tr>
+			<th><span>关卡</span></th>
+			<th class="sortable" use:sorting={'cost'}><span>活性</span></th>
+			<th class="sortable" use:sorting={'samples'}><span>样本数</span></th>
+			<th class="sortable" use:sorting={'drops'}><span>掉落数</span></th>
+			<th class="sortable" use:sorting={'expectDropRate'}><span>掉落率</span></th>
+			<th class="sortable" use:sorting={'expectItemCost'}><span>单件期望活性</span></th>
+		</tr>
+	</thead>
+	<tbody>
+		{#each sorted as stat (stat.name)}
+			<tr>
+				<td>
+					<a href={resolve(`/drop/stage/${stat.id}`)} class="*:align-middle">
+						<span>{stat.chapter}-{stat.episode}</span>
+						<span class:text-red-800={stat.difficulty === '厄险'}>{stat.difficulty}</span>
+						<span class="icon-[ri--link-m] text-gray-400 [:hover>&]:text-gray-600"></span>
+					</a>
+				</td>
+				<td>{stat.cost}</td>
+				<td>{stat.samples}</td>
+				<td>{stat.drops}</td>
+				<td>{(stat.expectDropRate * 100).toFixed(2)}%</td>
+				<td>{stat.expectItemCost.toFixed(2)}</td>
+			</tr>
+		{/each}
+	</tbody>
+</table>

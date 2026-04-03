@@ -1,0 +1,42 @@
+.table {
+	@apply text-left text-sm tabular-nums;
+
+	thead tr {
+		@apply border-b border-gray-300;
+	}
+
+	tbody tr {
+		@apply border-b border-gray-300;
+		@apply hover:bg-gray-400/10;
+		@apply transition-colors;
+	}
+
+	th, td {
+		@apply px-4 py-1.75;
+	}
+
+	th.sortable {
+		@apply hover:bg-gray-400/10;
+		@apply transition-colors;
+		@apply cursor-pointer;
+
+		span {
+			@apply inline-flex items-center;
+
+			&::after {
+				content: '';
+				@apply text-base;
+				@apply inline-block size-4;
+				@apply align-middle;
+			}
+		}
+
+		&.asc span::after {
+			@apply icon-[ri--arrow-up-long-line];
+		}
+
+		&.desc span::after {
+			@apply icon-[ri--arrow-down-long-line];
+		}
+	}
+}
