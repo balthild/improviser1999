@@ -85,25 +85,5 @@
 			@apply bg-white/50;
 			@apply cursor-default;
 		}
-
-		.stages {
-			@apply grid grid-cols-3 auto-rows-min;
-			@apply border-b border-gray-300;
-
-			a {
-				@apply px-3 py-2.5;
-				@apply border-r border-b;
-			}
-
-			a:nth-child(3n) {
-				@apply border-r-0;
-			}
-
-			/* https://keithclark.co.uk/articles/targeting-first-and-last-rows-in-css-grid-layouts/ */
-			a:nth-child(3n+1):nth-last-child(-n+3),
-			a:nth-child(3n+1):nth-last-child(-n+3) ~ a {
-				@apply border-b-0;
-			}
-		}
 	}
 </style>
