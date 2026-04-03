@@ -28,9 +28,6 @@
 			return { ...episode, stage };
 		}),
 	);
-
-	const normalStages = $derived(selectedEpisodes.filter((episode) => episode.stage.normal));
-	const hardStages = $derived(selectedEpisodes.filter((episode) => episode.stage.hard));
 </script>
 
 <section class="flex w-full">
@@ -47,30 +44,36 @@
 		{/each}
 	</aside>
 
+	<div class="w-2.5 border-r border-gray-300 bg-stripe"></div>
+
 	<main class="flex-1">
-		<div class="stages">
-			{#each normalStages as episode (episode.num)}
-				<a href={resolve(`/drop/stage/${episode.stage.normal.id}`)} class="btn btn-inlay">
-					<p class="text-lg font-medium">
-						{selectedChapter}-{episode.num}
-					</p>
-					<p class="text-sm mb-px">{episode.title.zh}</p>
-				</a>
-			{/each}
-		</div>
+		{#each selectedEpisodes as episode (episode.num)}
+			<div class="relative border-b border-gray-300 flex">
+				<div class="scrap -left-1 -bottom-1"></div>
 
-		<div class="h-2.5 border-b border-gray-300 bg-stripe"></div>
+				<div class="text-ms mx-6 mt-8 mb-3 flex items-end">
+					<span class="text-4xl font-medium font-garamond leading-[1em]">{episode.num}</span>
+					<span class="inline-block h-6 mb-0.5 mx-2 border-r border-gray-400 -skew-x-20"></span>
+					<div class="ml-1 -mb-px flex gap-4 items-center leading-[1em]">
+						<span>{episode.title.zh}</span>
 
-		<div class="stages">
-			{#each hardStages as episode (episode.num)}
-				<a href={resolve(`/drop/stage/${episode.stage.hard.id}`)} class="btn btn-inlay">
-					<p class="text-lg font-medium">
-						{selectedChapter}-{episode.num} 厄险
-					</p>
-					<p class="text-sm mb-px">{episode.title.zh}</p>
-				</a>
-			{/each}
-		</div>
+						{#if episode.stage.normal}
+							<a href={resolve(`/drop/stage/${episode.stage.normal.id}`)} class="flex items-center">
+								<span class="text-lg text-amber-600 mr-0.5">✶&#xFE0E;</span>
+								<span class="[a:hover>&]:underline underline-offset-3">普通</span>
+							</a>
+						{/if}
+
+						{#if episode.stage.hard}
+							<a href={resolve(`/drop/stage/${episode.stage.hard.id}`)} class="flex items-center">
+								<span class="text-lg text-orange-700 mr-0.5">✴&#xFE0E;</span>
+								<span class="[a:hover>&]:underline underline-offset-3">厄险</span>
+							</a>
+						{/if}
+					</div>
+				</div>
+			</div>
+		{/each}
 	</main>
 </section>
 

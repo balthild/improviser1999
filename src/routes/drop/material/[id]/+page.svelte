@@ -4,22 +4,22 @@
 
 	import { resolve } from '$app/paths';
 
-	import type { MaterialId } from '$lib/types/primitive';
+	import type { MaterialId, StageId } from '$lib/types/primitive';
 
 	let { params, data } = $props();
 
 	const stageIdByName = $derived.by(() => {
-		const stages: Record<string, number> = {};
+		const stages: Record<string, StageId> = {};
 		for (const [id, stage] of Object.entries(data.stages)) {
 			const name = `${stage.chapter}-${stage.episode}${stage.difficulty}`;
-			stages[name] = Number(id);
+			stages[name] = Number(id) as unknown as StageId;
 		}
 
 		return stages;
 	});
 
 	interface StageStat {
-		id: number;
+		id: StageId;
 		name: string;
 		chapter: number;
 		episode: number;

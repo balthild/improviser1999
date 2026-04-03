@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap');
+
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@iconify/tailwind4';
@@ -14,6 +16,8 @@
 @import './components/tooltip.css';
 
 @theme {
+	--font-garamond: 'EB Garamond', serif;
+
 	--text-ms: calc((var(--text-base) + var(--text-sm)) / 2);
 	--text-ml: calc((var(--text-base) + var(--text-lg)) / 2);
 
