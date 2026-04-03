@@ -1937,6 +1937,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/semver@npm:^7":
+  version: 7.7.1
+  resolution: "@types/semver@npm:7.7.1"
+  checksum: 10c0/c938aef3bf79a73f0f3f6037c16e2e759ff40c54122ddf0b2583703393d8d3127130823facb880e694caa324eb6845628186aac1997ee8b31dc2d18fafe26268
+  languageName: node
+  linkType: hard
+
 "@types/trusted-types@npm:^2.0.7":
   version: 2.0.7
   resolution: "@types/trusted-types@npm:2.0.7"
@@ -3350,6 +3357,7 @@ __metadata:
     "@tailwindcss/forms": "npm:^0.5.11"
     "@tailwindcss/vite": "npm:^4.2.2"
     "@types/node": "npm:^24"
+    "@types/semver": "npm:^7"
     dexie: "npm:^4.4.1"
     dprint: "npm:^0.53.1"
     drizzle-kit: "npm:^0.31.10"
@@ -3360,6 +3368,7 @@ __metadata:
     overlayscrollbars: "npm:^2.14.0"
     overlayscrollbars-svelte: "npm:^0.5.5"
     postgres: "npm:^3.4.8"
+    semver: "npm:^7.7.4"
     svelte: "npm:^5.55.0"
     svelte-check: "npm:^4.4.5"
     tailwindcss: "npm:^4.2.2"
@@ -4227,7 +4236,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.3.5, semver@npm:^7.6.3, semver@npm:^7.7.2, semver@npm:^7.7.3":
+"semver@npm:^7.3.5, semver@npm:^7.6.3, semver@npm:^7.7.2, semver@npm:^7.7.3, semver@npm:^7.7.4":
   version: 7.7.4
   resolution: "semver@npm:7.7.4"
   bin:

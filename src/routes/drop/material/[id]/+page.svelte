@@ -1,4 +1,5 @@
 <script lang="ts">
+	import semver from 'semver';
 	import type { Action } from 'svelte/action';
 	import { on } from 'svelte/events';
 
@@ -24,7 +25,7 @@
 		chapter: number;
 		episode: number;
 		difficulty: string;
-		version: number;
+		version: string;
 		cost: number;
 		samples: number;
 		drops: number;
@@ -49,7 +50,7 @@
 			const expectDropRate = drops / report.count;
 			const expectItemCost = report.cost / expectDropRate;
 
-			if (stats[match.groups.stage]?.version ?? '0' > match.groups.version) {
+			if (semver.gt(stats[match.groups.stage]?.version ?? '0', match.groups.version)) {
 				continue;
 			}
 
@@ -59,7 +60,7 @@
 				chapter: Number(match.groups.chapter),
 				episode: Number(match.groups.episode),
 				difficulty: match.groups.difficulty,
-				version: Number(match.groups.version),
+				version: match.groups.version,
 				cost: report.cost,
 				samples: report.count,
 				drops,
@@ -68,12 +69,7 @@
 			};
 		}
 
-		return Object.values(stats).sort((left, right) => {
-			const leftCmp = left.chapter * 10000 + left.episode;
-			const rightCmp = right.chapter * 10000 + right.episode;
-
-			return leftCmp - rightCmp;
-		});
+		return Object.values(stats);
 	});
 
 	type SortKey = 'expectItemCost' | 'expectDropRate' | 'cost' | 'samples' | 'drops';
@@ -121,7 +117,7 @@
 		{#each sorted as stat (stat.name)}
 			<tr>
 				<td>
-					<a href={resolve(`/drop/stage/${stat.id}`)} class="*:align-middle">
+					<a href={resolve(`/drop/stage/${stat.id}`)} class="inline-flex items-center gap-1">
 						<span>{stat.chapter}-{stat.episode}</span>
 						<span class:text-red-800={stat.difficulty === '厄险'}>{stat.difficulty}</span>
 						<span class="icon-[ri--link-m] text-gray-400 [:hover>&]:text-gray-600"></span>
