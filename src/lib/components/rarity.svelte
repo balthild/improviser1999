@@ -1,6 +1,6 @@
 <script lang="ts">
 	interface Props {
-		rarity: 4 | 5 | 6;
+		rarity: 6 | 5 | 4 | 3 | 2;
 		class?: string;
 	}
 
@@ -24,7 +24,15 @@
 		}
 
 		.rarity-4 {
-			@apply text-violet-500;
+			color: color-mix(in oklch, var(--color-blue-600), var(--color-gray-500) 60%);
+		}
+
+		.rarity-3 {
+			@apply text-lime-600;
+		}
+
+		.rarity-2 {
+			@apply text-gray-500;
 		}
 	}
 </style>

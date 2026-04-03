@@ -5,6 +5,7 @@
 
 	import Rarity from '$lib/components/rarity.svelte';
 	import { idb, type Summon } from '$lib/idb';
+	import type { PoolTypeId } from '$lib/types/primitive.js';
 	import { distinct } from '$lib/utils';
 
 	import Import from './import.svelte';
@@ -41,7 +42,7 @@
 	});
 
 	let selectedUserId = $state('');
-	let selectedPoolType = $state(0);
+	let selectedPoolType = $state(0 as PoolTypeId);
 
 	// looks like an anti-pattern but it works as for now ¯\_(ツ)_/¯
 	$effect(() => {
@@ -85,7 +86,7 @@
 	});
 
 	const poolInvested6 = $derived.by(() => {
-		const invested = new SvelteMap<number, number>();
+		const invested = new SvelteMap<PoolTypeId, number>();
 		for (const [pool, gain] of poolGains.entries()) {
 			const pity = gain.findIndex((it) => it.rarity === 6);
 			invested.set(pool, pity === -1 ? gain.length : pity);

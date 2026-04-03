@@ -53,9 +53,7 @@
 				<span class="text-sm text-gray-700">全量导入</span>
 			</label>
 
-			<button class="btn btn-inlay border-l">
-				确认
-			</button>
+			<button class="btn btn-inlay border-l">确认</button>
 		</div>
 	</form>
 

@@ -25,21 +25,21 @@
 			</a>
 		</div>
 
-		<details name="nav" class="nav-group" open={pathname.startsWith('/stats')}>
+		<details name="nav" class="nav-group" open={pathname.startsWith('/drop')}>
 			<summary class="nav-title">
 				<span class="icon-[ri--shapes-line]"></span>
 				<span class="text-sm ml-1.5">掉落统计</span>
 				<span class="nav-caret"></span>
 			</summary>
 			<ul>
-				<li class:active={pathname === '/stats/material'}>
-					<a href={resolve('/stats/material')} use:tooltip={'开发中'}>按物品</a>
+				<li class:active={pathname.startsWith('/drop/material')}>
+					<a href={resolve('/drop/material')} use:tooltip={'开发中'}>按物品</a>
 				</li>
-				<li class:active={pathname === '/stats/stage'}>
-					<a href={resolve('/stats/stage')} use:tooltip={'开发中'}>按关卡</a>
+				<li class:active={pathname.startsWith('/drop/stage')}>
+					<a href={resolve('/drop/stage')} use:tooltip={'开发中'}>按关卡</a>
 				</li>
-				<li class:active={pathname === '/stats/submit'}>
-					<a href={resolve('/stats/submit')} use:tooltip={'开发中'}>上报</a>
+				<li class:active={pathname === '/drop/submit'}>
+					<a href={resolve('/drop/submit')} use:tooltip={'开发中'}>上报</a>
 				</li>
 			</ul>
 		</details>

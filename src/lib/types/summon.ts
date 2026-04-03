@@ -1,10 +1,12 @@
+import type { ArcanistId, PoolId, PoolTypeId } from './primitive';
+
 export interface QuerySummonRecord {
-	poolId: number;
-	poolType: number;
+	poolId: PoolId;
+	poolType: PoolTypeId;
 	poolName: string;
 	summonType: '1' | '10';
 	createTime: string;
-	gainIds: number[];
+	gainIds: ArcanistId[];
 	luckyBagIds: number[];
 }
 
