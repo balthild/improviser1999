@@ -1,6 +1,18 @@
 import type { ArcanistId, StageId, MaterialId, ChapterNum, EpisodeNum } from './primitive';
 
-export interface ArcanistDataset {
+export type DatasetTypes = {
+	arcanists: ArcanistsDataset;
+	materials: MaterialsDataset;
+	chapters: ChaptersDataset;
+	stages: StagesDataset;
+	drops: DropsDataset;
+	values: DropsDataset;
+};
+
+export type DatasetKeys = keyof DatasetTypes;
+export type DatasetSources = Record<DatasetKeys, string>;
+
+export interface ArcanistsDataset {
 	[id: ArcanistId]: {
 		id: ArcanistId;
 		name: string;
@@ -9,7 +21,7 @@ export interface ArcanistDataset {
 	};
 }
 
-export interface MaterialDataset {
+export interface MaterialsDataset {
 	[id: MaterialId]: {
 		id: MaterialId;
 		name: string;
@@ -17,7 +29,7 @@ export interface MaterialDataset {
 	};
 }
 
-export interface ChapterDataset {
+export interface ChaptersDataset {
 	[num: ChapterNum]: {
 		num: ChapterNum;
 		title: {
@@ -36,7 +48,7 @@ export interface ChapterDataset {
 	};
 }
 
-export interface StageDataset {
+export interface StagesDataset {
 	[id: StageId]: {
 		id: StageId;
 		chapter: ChapterNum;
@@ -45,7 +57,7 @@ export interface StageDataset {
 	};
 }
 
-export interface DropDataset {
+export interface DropsDataset {
 	data: {
 		levelReport: {
 			[stage: string]: {
