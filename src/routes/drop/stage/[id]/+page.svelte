@@ -90,8 +90,8 @@
 	};
 </script>
 
-<section class="px-4 pb-2 pt-7 border-b border-gray-300">
-	<h3 class="pt-px">
+<section class="px-4 pb-2 pt-16 border-b border-gray-300">
+	<h3>
 		<span class="text-2xl font-medium">
 			{renderChapterNum(stage.chapter)}-{stage.episode.toString().padStart(2, '0')}
 			{stage.difficulty}
