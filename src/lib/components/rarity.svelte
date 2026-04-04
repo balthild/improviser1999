@@ -1,7 +1,9 @@
 <script lang="ts">
+	import type { ClassValue } from 'svelte/elements';
+
 	interface Props {
 		rarity: 6 | 5 | 4 | 3 | 2;
-		class?: string;
+		class?: ClassValue;
 	}
 
 	const props: Props = $props();

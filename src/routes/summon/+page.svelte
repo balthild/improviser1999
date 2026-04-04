@@ -235,21 +235,19 @@
 			<header class="flex flex-row items-stretch text-ms border-b border-gray-300 p-1 gap-1">
 				<button
 					class="py-1 flex-1 cursor-pointer rounded-xs ring-inset ring-gray-200"
-					class:grayscale={selectedRarity !== 6}
 					class:ring-1={selectedRarity === 6}
 					class:bg-gray-100={selectedRarity === 6}
 					onclick={() => (selectedRarity = 6)}
 				>
-					<Rarity rarity={6} class="-mr-px" />
+					<Rarity rarity={6} class={['-mr-px', selectedRarity !== 6 && 'text-neutral-400']} />
 				</button>
 				<button
 					class="py-1 flex-1 cursor-pointer rounded-xs ring-inset ring-gray-200"
-					class:grayscale={selectedRarity !== 5}
 					class:ring-1={selectedRarity === 5}
 					class:bg-gray-100={selectedRarity === 5}
 					onclick={() => (selectedRarity = 5)}
 				>
-					<Rarity rarity={5} class="-mr-px" />
+					<Rarity rarity={5} class={['-mr-px', selectedRarity !== 5 && 'text-neutral-400']} />
 				</button>
 			</header>
 
