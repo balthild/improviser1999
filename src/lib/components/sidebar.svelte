@@ -33,10 +33,10 @@
 			</summary>
 			<ul>
 				<li class:active={pathname.startsWith('/drop/material')}>
-					<a href={resolve('/drop/material')} use:tooltip={'开发中'}>按物品</a>
+					<a href={resolve('/drop/material')}>按物品</a>
 				</li>
 				<li class:active={pathname.startsWith('/drop/stage')}>
-					<a href={resolve('/drop/stage')} use:tooltip={'开发中'}>按关卡</a>
+					<a href={resolve('/drop/stage')}>按关卡</a>
 				</li>
 				<li class:active={pathname === '/drop/submit'}>
 					<a href={resolve('/drop/submit')} use:tooltip={'开发中'}>上报</a>

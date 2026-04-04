@@ -7,14 +7,13 @@
 	const { data } = $props();
 </script>
 
-{#snippet item(id: number, right = false, bottom = false)}
+{#snippet item(id: number, right = false)}
 	{@const material = data.materials[id as unknown as MaterialId]}
 
 	<a
 		href={resolve(`/drop/material/${id}`)}
-		class="btn btn-inlay flex items-center gap-1 p-2"
+		class="btn btn-inlay border-b flex items-center gap-1 p-2"
 		class:border-r={!right}
-		class:border-b={!bottom}
 	>
 		<img
 			src={`https://cdn.jsdelivr.net/gh/myssal/Reverse-1999-CN-Asset/singlebg/propitem/prop/${id}.png`}
@@ -28,16 +27,12 @@
 	</a>
 {/snippet}
 
-{#snippet empty(span: number, right = false, bottom = false)}
-	<div
-		class={['bg-stripe border-gray-300', `col-span-${span}`]}
-		class:border-r={!right}
-		class:border-b={!bottom}
-	>
+{#snippet empty(span: number, right = false)}
+	<div class={['bg-stripe border-gray-300 border-b', `col-span-${span}`]} class:border-r={!right}>
 	</div>
 {/snippet}
 
-<section class="grid grid-cols-4">
+<section class="grid grid-cols-4 pb-4">
 	<!-- 颤颤之齿 液化战栗 啮咬盒 床下怪物 -->
 	{@render item(110101)}
 	{@render item(110102)}
@@ -94,8 +89,8 @@
 	{@render item(111012)}
 	{@render empty(1, true)}
 	<!-- 锐利尖针 真心彩蛋 -->
-	{@render empty(1, false, true)}
-	{@render item(111102, false, true)}
-	{@render item(111103, false, true)}
-	{@render empty(1, true, true)}
+	{@render empty(1)}
+	{@render item(111102)}
+	{@render item(111103)}
+	{@render empty(1, true)}
 </section>

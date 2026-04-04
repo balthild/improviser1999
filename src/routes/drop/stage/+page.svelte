@@ -31,10 +31,10 @@
 </script>
 
 <section class="flex w-full">
-	<aside class="w-50 border-r border-gray-300">
+	<aside class="w-50 pb-4 border-r border-gray-300">
 		{#each Object.values(data.chapters) as chapter (chapter.num)}
 			<button
-				class="btn btn-inlay px-3 py-2.5 border-b block w-full text-left"
+				class="btn btn-inlay px-4 py-2.5 border-b block w-full text-left"
 				class:active={chapter.num === selectedChapter}
 				onclick={() => (selectedChapter = chapter.num)}
 			>

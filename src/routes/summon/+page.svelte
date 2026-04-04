@@ -153,7 +153,7 @@
 		</button>
 	</div>
 
-	<aside class="w-50 border-t border-gray-300">
+	<aside class="w-50 pb-4 border-t border-gray-300">
 		{#each poolTypes as poolType (poolType)}
 			<button
 				class="pool block w-full text-left"
@@ -175,7 +175,7 @@
 		{/each}
 	</aside>
 
-	<main class="border-l border-t border-gray-300">
+	<main class="pb-4 border-l border-t border-gray-300">
 		<section class="flex items-stretch">
 			<div class="flex-1 p-3">
 				<h3 class="truncate text-ml font-semibold mb-2">
