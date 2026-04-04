@@ -34,14 +34,14 @@
 	<aside class="w-50 pb-4 border-r border-gray-300">
 		{#each Object.values(data.chapters) as chapter (chapter.num)}
 			<button
-				class="btn btn-inlay px-4 py-2.5 border-b block w-full text-left"
+				class="btn btn-inlay px-3.5 py-1.5 border-b block w-full text-left"
 				class:active={chapter.num === selectedChapter}
 				onclick={() => (selectedChapter = chapter.num)}
 			>
-				<p class="text-2xl leading-7 font-medium font-garamond small-caps">
+				<p class="text-2xl leading-8 font-medium font-garamond small-caps">
 					{renderChapterNum(chapter.num, false)}
 				</p>
-				<p class="text-sm mb-px">{chapter.title.zh}</p>
+				<p class="text-sm mt-px mb-1">{chapter.title.zh}</p>
 			</button>
 		{/each}
 	</aside>
