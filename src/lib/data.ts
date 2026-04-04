@@ -1,16 +1,11 @@
-export function renderChapterNum(chapter: number) {
-	const suffixes = {
-		zero: 'TH',
-		one: 'ST',
-		two: 'ND',
-		few: 'RD',
-		many: 'TH',
-		other: 'TH',
-	};
+export function renderChapterNum(chapter: number, uppercase = true) {
+	const upper = { zero: 'TH', one: 'ST', two: 'ND', few: 'RD', many: 'TH', other: 'TH' };
+	const lower = { zero: 'th', one: 'st', two: 'nd', few: 'rd', many: 'th', other: 'th' };
+	const suffix = uppercase ? upper : lower;
 
 	const rule = new Intl.PluralRules('en-US', { type: 'ordinal' }).select(chapter);
 
-	return `${chapter}${suffixes[rule]}`;
+	return `${chapter}${suffix[rule]}`;
 }
 
 export function parseLevelReportKey(key: string) {

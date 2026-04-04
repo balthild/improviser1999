@@ -38,7 +38,9 @@
 				class:active={chapter.num === selectedChapter}
 				onclick={() => (selectedChapter = chapter.num)}
 			>
-				<p class="text-lg font-medium">{renderChapterNum(chapter.num)}</p>
+				<p class="text-2xl leading-7 font-medium font-garamond small-caps">
+					{renderChapterNum(chapter.num, false)}
+				</p>
 				<p class="text-sm mb-px">{chapter.title.zh}</p>
 			</button>
 		{/each}
