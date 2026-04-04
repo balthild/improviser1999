@@ -6,7 +6,7 @@ export type DatasetTypes = {
 	chapters: ChaptersDataset;
 	stages: StagesDataset;
 	drops: DropsDataset;
-	values: DropsDataset;
+	values: ValuesDataset;
 };
 
 export type DatasetKeys = keyof DatasetTypes;
@@ -60,13 +60,23 @@ export interface StagesDataset {
 export interface DropsDataset {
 	data: {
 		levelReport: {
-			[stage: string]: {
+			[name: string]: {
 				cost: number;
 				count: number;
 				drops: {
 					[id: MaterialId]: number;
 				};
 			};
+		};
+	};
+}
+
+export interface ValuesDataset {
+	data: {
+		sourceUrl: string;
+		updatedAt: string;
+		values: {
+			[id: MaterialId]: string;
 		};
 	};
 }
