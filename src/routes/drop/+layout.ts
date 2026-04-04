@@ -1,22 +1,34 @@
-import type { DropDataset, StageDataset, MaterialDataset } from '$lib/types/dataset';
+import type {
+	DropDataset,
+	StageDataset,
+	MaterialDataset,
+	ChapterDataset,
+} from '$lib/types/dataset';
 
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async ({ fetch }) => {
-	const [materials, stages, drops, values] = await Promise.all([
+	const [materials, chapters, stages, drops, values] = await Promise.all([
 		fetchMaterialDataset(fetch),
+		fetchChapterDataset(fetch),
 		fetchStageDataset(fetch),
 		fetchMaterialDropDataset(fetch),
 		fetchMaterialValueDataset(fetch),
 	]);
 
-	return { materials, stages, drops, values };
+	return { materials, chapters, stages, drops, values };
 };
 
 async function fetchMaterialDataset(fetch: typeof globalThis.fetch) {
 	const response = await fetch('https://r2.balthild.com/improviser1999/materials.json');
 	const dataset = await response.json();
 	return dataset as MaterialDataset;
+}
+
+async function fetchChapterDataset(fetch: typeof globalThis.fetch) {
+	const response = await fetch('https://r2.balthild.com/improviser1999/chapters.json');
+	const dataset = await response.json();
+	return dataset as ChapterDataset;
 }
 
 async function fetchStageDataset(fetch: typeof globalThis.fetch) {

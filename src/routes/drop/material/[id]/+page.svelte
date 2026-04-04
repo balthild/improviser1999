@@ -1,13 +1,17 @@
 <script lang="ts">
-	import semver from 'semver';
+	import { compareVersions } from 'compare-versions';
 	import type { Action } from 'svelte/action';
 	import { on } from 'svelte/events';
 
 	import { resolve } from '$app/paths';
 
+	import Rarity from '$lib/components/rarity.svelte';
+	import { parseLevelReportKey } from '$lib/data.js';
 	import type { MaterialId, StageId } from '$lib/types/primitive';
 
 	let { params, data } = $props();
+
+	const material = $derived(data.materials[params.id as unknown as MaterialId]);
 
 	const stageIdByName = $derived.by(() => {
 		const stages: Record<string, StageId> = {};
@@ -35,11 +39,10 @@
 
 	const stats = $derived.by(() => {
 		const stats: Record<string, StageStat> = {};
+
 		for (const [key, report] of Object.entries(data.drops.data.levelReport)) {
-			const match = key.match(
-				/^(?<stage>(?<chapter>\d+)-(?<episode>\d+)(?<difficulty>[^\d]+))\(\d+\)Ver(?<version>\d+\.\d+)$/,
-			);
-			if (!match || !match.groups) {
+			const parsed = parseLevelReportKey(key);
+			if (!parsed) {
 				console.warn(`Unexpected key: ${key}`);
 				continue;
 			}
@@ -50,17 +53,18 @@
 			const expectDropRate = drops / report.count;
 			const expectItemCost = report.cost / expectDropRate;
 
-			if (semver.gt(stats[match.groups.stage]?.version ?? '0', match.groups.version)) {
+			const version = stats[parsed.stage]?.version ?? '0';
+			if (compareVersions(version, parsed.version) > 0) {
 				continue;
 			}
 
-			stats[match.groups.stage] = {
-				id: stageIdByName[match.groups.stage],
-				name: match.groups.stage,
-				chapter: Number(match.groups.chapter),
-				episode: Number(match.groups.episode),
-				difficulty: match.groups.difficulty,
-				version: match.groups.version,
+			stats[parsed.stage] = {
+				id: stageIdByName[parsed.stage],
+				name: parsed.stage,
+				chapter: parsed.chapter,
+				episode: parsed.episode,
+				difficulty: parsed.difficulty,
+				version: parsed.version,
 				cost: report.cost,
 				samples: report.count,
 				drops,
@@ -101,6 +105,13 @@
 		});
 	};
 </script>
+
+<section class="px-4 pb-2 pt-7 border-b border-gray-300">
+	<h3 class="pt-px">
+		<span class="text-2xl font-medium">{material.name}</span>
+		<Rarity rarity={material.rarity} class="text-ms font-normal ml-2" />
+	</h3>
+</section>
 
 <table class="table w-full">
 	<thead>

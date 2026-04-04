@@ -2,7 +2,7 @@
 	import { resolve } from '$app/paths';
 
 	import Rarity from '$lib/components/rarity.svelte';
-	import type { MaterialId } from '$lib/types/primitive.js';
+	import type { MaterialId } from '$lib/types/primitive';
 
 	const { data } = $props();
 </script>

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 
-	import type { ChapterNum, StageId } from '$lib/types/primitive.js';
-	import { renderChapterNum } from '$lib/utils.js';
+	import { renderChapterNum } from '$lib/data';
+	import type { ChapterNum, StageId } from '$lib/types/primitive';
 
 	const { data } = $props();
 

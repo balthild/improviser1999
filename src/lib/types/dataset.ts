@@ -39,8 +39,8 @@ export interface ChapterDataset {
 export interface StageDataset {
 	[id: StageId]: {
 		id: StageId;
-		chapter: number;
-		episode: number;
+		chapter: ChapterNum;
+		episode: EpisodeNum;
 		difficulty: string;
 	};
 }

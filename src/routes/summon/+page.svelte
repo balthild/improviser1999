@@ -5,7 +5,7 @@
 
 	import Rarity from '$lib/components/rarity.svelte';
 	import { idb, type Summon } from '$lib/idb';
-	import type { PoolTypeId } from '$lib/types/primitive.js';
+	import type { PoolTypeId } from '$lib/types/primitive';
 	import { distinct } from '$lib/utils';
 
 	import Import from './import.svelte';
