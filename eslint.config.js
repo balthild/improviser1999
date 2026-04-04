@@ -48,6 +48,19 @@ export default defineConfig(
 			'svelte/require-event-prefix': 'warn',
 			'svelte/shorthand-attribute': ['error', { prefer: 'never' }],
 			'svelte/shorthand-directive': ['error', { prefer: 'never' }],
+			'no-duplicate-imports': 'warn',
+		},
+	},
+	{
+		files: ['!eslint.config.js'],
+		rules: {
+			'no-restricted-syntax': [
+				'error',
+				{
+					selector: 'ImportDeclaration[source.value=/\\.(js|ts)$/]',
+					message: 'Unexpected file extension in imports',
+				},
+			],
 		},
 	},
 );

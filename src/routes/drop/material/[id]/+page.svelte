@@ -6,7 +6,7 @@
 	import { resolve } from '$app/paths';
 
 	import Rarity from '$lib/components/rarity.svelte';
-	import { parseLevelReportKey } from '$lib/data.js';
+	import { parseLevelReportKey } from '$lib/data';
 	import type { MaterialId, StageId } from '$lib/types/primitive';
 
 	let { params, data } = $props();

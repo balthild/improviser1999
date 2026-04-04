@@ -7,7 +7,7 @@
 }
 
 @utility small-caps {
-	font-variant: small-caps;
+	font-variant-caps: small-caps;
 }
 
 @utility text-link {
