@@ -1,6 +1,6 @@
 import { command } from '$app/server';
 
-import { type QuerySummonResponse } from '$lib/types/summon';
+import type { QuerySummonResponse } from '$lib/types/summon';
 
 import { ImportUrlScheme } from './validation';
 

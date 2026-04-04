@@ -4,7 +4,8 @@
 	import { SvelteMap } from 'svelte/reactivity';
 
 	import Rarity from '$lib/components/rarity.svelte';
-	import { idb, type Summon } from '$lib/idb';
+	import { idb } from '$lib/idb';
+	import type { Summon } from '$lib/idb';
 	import type { PoolTypeId } from '$lib/types/primitive';
 	import { distinct } from '$lib/utils';
 

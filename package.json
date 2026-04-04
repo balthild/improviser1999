@@ -36,6 +36,8 @@
 		"drizzle-kit": "^0.31.10",
 		"drizzle-orm": "^0.45.2",
 		"eslint": "^10.1.0",
+		"eslint-import-resolver-typescript": "^4.4.4",
+		"eslint-plugin-import-x": "^4.16.2",
 		"eslint-plugin-svelte": "^3.16.0",
 		"globals": "^17.4.0",
 		"overlayscrollbars": "^2.14.0",

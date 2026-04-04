@@ -2,6 +2,8 @@ import path from 'node:path';
 
 import { includeIgnoreFile } from '@eslint/compat';
 import js from '@eslint/js';
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
+import { importX } from 'eslint-plugin-import-x';
 import svelte from 'eslint-plugin-svelte';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
@@ -16,6 +18,7 @@ export default defineConfig(
 	js.configs.recommended,
 	ts.configs.recommended,
 	svelte.configs.recommended,
+	importX.configs['flat/typescript'],
 	{
 		languageOptions: {
 			globals: {
@@ -41,6 +44,9 @@ export default defineConfig(
 		},
 	},
 	{
+		settings: {
+			'import-x/resolver-next': [createTypeScriptImportResolver()],
+		},
 		rules: {
 			'svelte/no-add-event-listener': 'error',
 			'svelte/prefer-class-directive': 'warn',
@@ -48,7 +54,11 @@ export default defineConfig(
 			'svelte/require-event-prefix': 'warn',
 			'svelte/shorthand-attribute': ['error', { prefer: 'never' }],
 			'svelte/shorthand-directive': ['error', { prefer: 'never' }],
-			'no-duplicate-imports': 'warn',
+			'import-x/no-cycle': 'error',
+			// 'import-x/consistent-type-specifier-style': ['warn', 'prefer-inline'],
+			// 'no-duplicate-imports': 'warn',
+			'import-x/consistent-type-specifier-style': ['warn', 'prefer-top-level'],
+			'no-duplicate-imports': ['warn', { allowSeparateTypeImports: true }],
 		},
 	},
 	{
