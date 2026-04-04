@@ -6,7 +6,22 @@
 	import favicon from '$lib/assets/favicon.svg';
 	import Sidebar from '$lib/components/sidebar.svelte';
 
+	import type { Snapshot } from './$types';
+
 	let { children } = $props();
+
+	let container: OverlayScrollbarsComponent | null;
+
+	export const snapshot: Snapshot<number> = {
+		capture: () => {
+			const elements = container?.osInstance()?.elements();
+			return elements?.viewport.scrollTop ?? 0;
+		},
+		restore: (value) => {
+			const elements = container?.osInstance()?.elements();
+			elements?.viewport.scrollTo({ top: value });
+		},
+	};
 </script>
 
 <svelte:head>
@@ -31,6 +46,7 @@
 			defer
 			class="h-full flex-1 os-toplevel"
 			options={{ scrollbars: { autoHide: 'scroll' } }}
+			bind:this={container}
 		>
 			{@render children()}
 		</OverlayScrollbarsComponent>

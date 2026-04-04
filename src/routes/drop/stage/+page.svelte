@@ -4,6 +4,8 @@
 	import { renderChapterNum } from '$lib/data';
 	import type { ChapterNum, StageId } from '$lib/types/primitive';
 
+	import type { Snapshot } from './$types';
+
 	const { data } = $props();
 
 	const stageIdByName = $derived.by(() => {
@@ -28,6 +30,15 @@
 			return { ...episode, stage };
 		}),
 	);
+
+	export const snapshot: Snapshot<ChapterNum> = {
+		capture: () => {
+			return selectedChapter;
+		},
+		restore: (value) => {
+			selectedChapter = value;
+		},
+	};
 </script>
 
 <section class="flex w-full">

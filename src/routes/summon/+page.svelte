@@ -9,6 +9,7 @@
 	import type { PoolTypeId } from '$lib/types/primitive';
 	import { distinct } from '$lib/utils';
 
+	import type { Snapshot } from './$types';
 	import Import from './import.svelte';
 
 	const { data } = $props();
@@ -131,6 +132,15 @@
 		const total = pastGains[5].reduce((sum, it) => sum + it.invested, 0);
 		return total / count5;
 	});
+
+	export const snapshot: Snapshot<[string, PoolTypeId]> = {
+		capture: () => {
+			return [selectedUserId, selectedPoolType];
+		},
+		restore: (value) => {
+			[selectedUserId, selectedPoolType] = value;
+		},
+	};
 </script>
 
 <dialog closedby="any" class="dialog w-160 h-120" bind:this={importDialog}>
