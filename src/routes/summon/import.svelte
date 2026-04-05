@@ -97,14 +97,25 @@
 				>https://www.timekeeper.top/auto_import.html</a>
 			</p>
 		{:else}
-			<p>
-				参见：<a
-					href="https://mp.weixin.qq.com/s/bKMB42_hl8uLgWxUvLVQtQ"
-					target="_blank"
-					rel="external noopener noreferrer"
-					class="text-link"
-				>https://mp.weixin.qq.com/s/bKMB42_hl8uLgWxUvLVQtQ</a>
-			</p>
+			<p class="mb-0.5">参见：</p>
+			<ul class="list-disc ml-3.75 space-y-0.5">
+				<li>
+					<a
+						href="https://mp.weixin.qq.com/s/bKMB42_hl8uLgWxUvLVQtQ"
+						target="_blank"
+						rel="external noopener noreferrer"
+						class="text-link"
+					>https://mp.weixin.qq.com/s/bKMB42_hl8uLgWxUvLVQtQ</a>
+				</li>
+				<li>
+					<a
+						href="https://mp.weixin.qq.com/s/LcH2a2FYdq_yX379haodPA"
+						target="_blank"
+						rel="external noopener noreferrer"
+						class="text-link"
+					>https://mp.weixin.qq.com/s/LcH2a2FYdq_yX379haodPA</a>
+				</li>
+			</ul>
 		{/if}
 
 		<p>
