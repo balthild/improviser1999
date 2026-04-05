@@ -16,4 +16,10 @@ declare global {
 	}
 }
 
+declare global {
+	interface WindowEventMap {
+		'message-dialog': CustomEvent<string>;
+	}
+}
+
 export {};

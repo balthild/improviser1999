@@ -10,13 +10,27 @@
 	import { doImport } from './import';
 	import { ImportUrlScheme, QUERY_SUMMON_URL_BASE } from './validation';
 
-	let importUrl = $state('');
-	let importFull = $state(false);
+	interface Props {
+		onclose: () => void;
+	}
+
+	const props: Props = $props();
+
+	let url = $state('');
 
 	const handleImport = async (event: Event) => {
 		event.preventDefault();
-		const count = await doImport(importUrl, importFull);
-		alert(`导入完成，新增 ${count} 条记录`);
+		const result = await doImport(url);
+
+		props.onclose();
+
+		window.dispatchEvent(
+			new CustomEvent('message-dialog', {
+				detail: result.error
+					? `导入失败：${result.error}`
+					: `导入完成，新增 ${result.imported} 条记录`,
+			}),
+		);
 	};
 
 	let selectedPlatform = $state('macOS');
@@ -39,7 +53,7 @@
 				rows="3"
 				class="block w-full text-sm border-0 ring-0 bg-transparent resize-none break-all"
 				placeholder={`${QUERY_SUMMON_URL_BASE}?userId=...`}
-				bind:value={importUrl}
+				bind:value={url}
 				use:validate={v.message(ImportUrlScheme, '地址无效')}
 				autocomplete="off"
 				// I have no clue why 1password show username suggestions here
@@ -47,18 +61,8 @@
 			></textarea>
 		</label>
 
-		<div class="flex flex-row items-center justify-between gap-2 pl-2">
-			<label class="flex items-center gap-1.25">
-				<input
-					type="checkbox"
-					name="full"
-					class="checkbox text-slate-500 not-checked:bg-transparent"
-					bind:checked={importFull}
-				/>
-				<span class="text-sm text-gray-700">全量导入</span>
-			</label>
-
-			<button class="btn btn-inlay border-l">确认</button>
+		<div class="flex flex-row items-center justify-end gap-2 pl-2">
+			<button class="btn btn-inlay border-l">导入</button>
 		</div>
 	</form>
 

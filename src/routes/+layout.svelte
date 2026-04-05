@@ -2,6 +2,7 @@
 	import '$lib/styles/index.css';
 
 	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
+	import { on } from 'svelte/events';
 
 	import favicon from '$lib/assets/favicon.svg';
 	import Sidebar from '$lib/components/sidebar.svelte';
@@ -9,6 +10,19 @@
 	import type { Snapshot } from './$types';
 
 	let { children } = $props();
+
+	let messageDialog: HTMLDialogElement;
+	let messageText = $state('');
+
+	$effect(() => {
+		messageText = 'test1';
+		messageDialog.showModal();
+
+		return on(window, 'message-dialog', (event) => {
+			messageText = event.detail;
+			messageDialog.showModal();
+		});
+	});
 
 	let container: OverlayScrollbarsComponent | null;
 
@@ -28,6 +42,15 @@
 	<link rel="icon" href={favicon} />
 	<title>流浪即兴曲</title>
 </svelte:head>
+
+<dialog closedby="none" class="dialog w-120 h-fit" bind:this={messageDialog}>
+	<section class="px-5 py-4">
+		<p class="text-ms text-gray-600">{messageText}</p>
+	</section>
+	<footer class="border-t border-gray-300 flex justify-end">
+		<button class="btn btn-inlay border-l" onclick={() => messageDialog.close()}>确认</button>
+	</footer>
+</dialog>
 
 <div class="flex h-screen flex-col overflow-hidden">
 	<header class="shrink-0 border-b border-gray-300 bg-gray-900/6">

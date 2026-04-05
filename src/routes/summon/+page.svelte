@@ -144,7 +144,7 @@
 </script>
 
 <dialog closedby="any" class="dialog w-160 h-120" bind:this={importDialog}>
-	<Import />
+	<Import onclose={() => importDialog.close()} />
 </dialog>
 
 <section

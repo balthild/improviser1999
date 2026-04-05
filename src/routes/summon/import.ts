@@ -3,21 +3,25 @@ import type { QuerySummonRecord } from '$lib/types/summon';
 
 import { fetchSummons } from './fetch.remote';
 
-export const doImport = async (url: string, full: boolean) => {
+export const doImport = async (url: string) => {
 	const userId = new URL(url).searchParams.get('userId')!;
 
 	const result = await fetchSummons(url);
-	// TODO: check result.code
+	if (result.code !== 200) {
+		return { error: result.msg };
+	}
 
-	const [count, stop] = await doImportPage(userId, result.data.pageData);
-	console.log(full, count, stop);
+	const imported = await doImportPage(userId, result.data.pageData);
+	console.log({ count: imported });
 	// TODO: loop through pages
 
-	return count;
+	return { imported };
 };
 
 async function doImportPage(userId: string, records: QuerySummonRecord[]) {
-	for (const [index, record] of records.entries()) {
+	let imported = 0;
+
+	for (const record of records) {
 		const summon = await idb.summons.get({
 			userId,
 			'record.poolId': record.poolId,
@@ -25,12 +29,12 @@ async function doImportPage(userId: string, records: QuerySummonRecord[]) {
 			'record.createTime': record.createTime,
 		});
 
-		if (summon) {
-			return [index, true];
+		if (!summon) {
+			imported++;
 		}
 
 		await idb.summons.add({ userId, record });
 	}
 
-	return [records.length, false];
+	return imported;
 }
