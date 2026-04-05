@@ -138,7 +138,7 @@
 			return [selectedUserId, selectedPoolType];
 		},
 		restore: (value) => {
-			[selectedUserId, selectedPoolType] = value;
+			[selectedUserId, selectedPoolType] = value ?? [];
 		},
 	};
 </script>
