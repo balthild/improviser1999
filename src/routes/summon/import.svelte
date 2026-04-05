@@ -2,7 +2,9 @@
 	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
 	import * as v from 'valibot';
 
-	import importSummonMacOs from '$lib/assets/summon/macos.sh?url';
+	import { asset } from '$app/paths';
+	import { page } from '$app/state';
+
 	import { validate } from '$lib/template/validate.svelte';
 
 	import { doImport } from './import';
@@ -80,7 +82,7 @@
 			<p class="font-medium">适用于从 App Store 或用 PlayCover 安装的游戏</p>
 			<p>在终端内运行以下命令：</p>
 			<div class="bg-gray-400/10 rounded py-2 px-3 text-sm">
-				<pre class="whitespace-normal break-all">curl --sSL {location.protocol}//{location.host}{importSummonMacOs} | bash</pre>
+				<pre class="whitespace-normal break-all">curl --sSL {page.url.origin}{asset('/summon/macos.sh')} | bash</pre>
 			</div>
 		</div>
 
