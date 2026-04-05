@@ -233,22 +233,17 @@
 
 		<section class="border-t border-b border-gray-300 bg-white/50 col-span-2">
 			<header class="flex flex-row items-stretch text-ms border-b border-gray-300 p-1 gap-1">
-				<button
-					class="py-1 flex-1 cursor-pointer rounded-xs ring-inset ring-gray-200"
-					class:ring-1={selectedRarity === 6}
-					class:bg-gray-100={selectedRarity === 6}
-					onclick={() => (selectedRarity = 6)}
-				>
-					<Rarity rarity={6} class={['-mr-px', selectedRarity !== 6 && 'text-neutral-400']} />
-				</button>
-				<button
-					class="py-1 flex-1 cursor-pointer rounded-xs ring-inset ring-gray-200"
-					class:ring-1={selectedRarity === 5}
-					class:bg-gray-100={selectedRarity === 5}
-					onclick={() => (selectedRarity = 5)}
-				>
-					<Rarity rarity={5} class={['-mr-px', selectedRarity !== 5 && 'text-neutral-400']} />
-				</button>
+				{#each [6, 5] as const as rarity (rarity)}
+					{@const selected = selectedRarity === rarity}
+					<button
+						class="py-1 flex-1 cursor-pointer rounded-xs ring-inset ring-gray-200"
+						class:ring-1={selected}
+						class:bg-gray-100={selected}
+						onclick={() => (selectedRarity = rarity)}
+					>
+						<Rarity rarity={rarity} class={['-mr-px', !selected && 'text-neutral-400']} />
+					</button>
+				{/each}
 			</header>
 
 			<ol class="gains min-h-8">
