@@ -82,7 +82,7 @@
 			<p class="font-medium">该方式适用于从 App Store 或用 PlayCover 安装的游戏。</p>
 			<p>在终端内运行以下命令：</p>
 			<div class="bg-gray-400/10 rounded py-2 px-3 text-sm">
-				<pre class="whitespace-normal break-all">curl --sSL {page.url.origin}{asset('/summon/macos.sh')} | bash</pre>
+				<pre class="whitespace-normal break-all">curl -fsSL {page.url.origin}{asset('/summon/macos.sh')} | bash</pre>
 			</div>
 		{:else}
 			<p>
@@ -96,7 +96,7 @@
 		{/if}
 
 		<p>
-			游戏生成的征集回顾地址很快就会过期失效。如果在导入时提示地址无效，请退出征集界面或重启游戏，然后重新打开征集回顾并立刻尝试导入。
+			游戏生成的征集回顾地址很快就会过期失效。如果在导入时提示地址无效，请退出征集界面或重启游戏，然后重新打开征集回顾，并立刻尝试获取地址与导入。
 		</p>
 	</section>
 </OverlayScrollbarsComponent>
