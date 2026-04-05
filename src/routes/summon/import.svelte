@@ -65,7 +65,7 @@
 	<div class="h-2.5 border-y border-gray-300 bg-stripe"></div>
 
 	<section class="flex flex-row items-stretch text-ms p-1 gap-1 text-gray-500">
-		{#each ['macOS', 'Windows', 'iOS'] as platform (platform)}
+		{#each ['macOS', 'Windows', 'iOS', 'Android'] as platform (platform)}
 			<button
 				class="py-1 flex-1 cursor-pointer rounded-xs ring-inset ring-gray-200"
 				class:ring-1={selectedPlatform === platform}
@@ -79,12 +79,15 @@
 
 	<section class="p-3 text-ms text-gray-600 border-t border-gray-300 space-y-2">
 		{#if selectedPlatform === 'macOS'}
-			<p class="font-medium">该方式适用于从 App Store 或用 PlayCover 安装的游戏。</p>
+			<p class="font-medium">
+				该方式适用于从 App Store 或用 PlayCover 安装的游戏。Android 模拟器请使用适用于 Android
+				平台的方式。
+			</p>
 			<p>在终端内运行以下命令：</p>
 			<div class="bg-gray-400/10 rounded py-2 px-3 text-sm">
 				<pre class="whitespace-normal break-all">curl -fsSL {page.url.origin}{asset('/summon/macos.sh')} | bash</pre>
 			</div>
-		{:else}
+		{:else if selectedPlatform === 'Windows'}
 			<p>
 				参见：<a
 					href="https://www.timekeeper.top/auto_import.html"
@@ -92,6 +95,15 @@
 					rel="external noopener noreferrer"
 					class="text-link"
 				>https://www.timekeeper.top/auto_import.html</a>
+			</p>
+		{:else}
+			<p>
+				参见：<a
+					href="https://mp.weixin.qq.com/s/bKMB42_hl8uLgWxUvLVQtQ"
+					target="_blank"
+					rel="external noopener noreferrer"
+					class="text-link"
+				>https://mp.weixin.qq.com/s/bKMB42_hl8uLgWxUvLVQtQ</a>
 			</p>
 		{/if}
 
