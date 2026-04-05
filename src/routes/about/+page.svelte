@@ -34,6 +34,11 @@
 			{@render external('https://www.kdocs.cn/l/cd5MWeCl5bKw')}
 		</li>
 		<li>
+			Closure[REVERSE1999][""]++
+			<br />
+			{@render external('https://cpp.orz.tools/reverse1999/')}
+		</li>
+		<li>
 			重返未来 1999 中文维基
 			<br />
 			{@render external('https://res1999.huijiwiki.com')}
