@@ -15,9 +15,6 @@
 	let messageText = $state('');
 
 	$effect(() => {
-		messageText = 'test1';
-		messageDialog.showModal();
-
 		return on(window, 'message-dialog', (event) => {
 			messageText = event.detail;
 			messageDialog.showModal();
