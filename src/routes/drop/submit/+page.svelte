@@ -1,3 +1,10 @@
 <section class="p-4">
-	不知道怎么才能不花钱把数据上传到金山文档
+	<p>
+		<a
+			href="https://www.kdocs.cn/l/cd5MWeCl5bKw"
+			target="_blank"
+			rel="external noopener noreferrer"
+			class="text-link underline-offset-3"
+		>前往「必要的记录」表格上报数据</a>
+	</p>
 </section>

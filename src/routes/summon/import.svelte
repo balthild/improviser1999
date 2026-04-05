@@ -2,6 +2,7 @@
 	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
 	import * as v from 'valibot';
 
+	import importSummonMacOs from '$lib/assets/summon/macos.sh?url';
 	import { validate } from '$lib/template/validate.svelte';
 
 	import { doImport } from './import';
@@ -15,6 +16,8 @@
 		const count = await doImport(importUrl, importFull);
 		alert(`导入完成，新增 ${count} 条记录`);
 	};
+
+	let selectedPlatform = $state('macOS');
 </script>
 
 <OverlayScrollbarsComponent
@@ -59,8 +62,44 @@
 
 	<div class="h-2.5 border-y border-gray-300 bg-stripe"></div>
 
-	<section class="p-4 text-ms text-gray-600">
-		<h4 class="font-medium mb-3">地址获取方式</h4>
-		<p>TODO</p>
+	<section class="flex flex-row items-stretch text-ms p-1 gap-1 text-gray-500">
+		{#each ['macOS', 'Windows', 'iOS'] as platform (platform)}
+			<button
+				class="py-1 flex-1 cursor-pointer rounded-xs ring-inset ring-gray-200"
+				class:ring-1={selectedPlatform === platform}
+				class:bg-white={selectedPlatform === platform}
+				onclick={() => (selectedPlatform = platform)}
+			>
+				{platform}
+			</button>
+		{/each}
+	</section>
+
+	<section class="p-3 text-ms text-gray-600 border-t border-gray-300 *:space-y-2">
+		<div class:hidden={selectedPlatform !== 'macOS'}>
+			<p class="font-medium">适用于从 App Store 或用 PlayCover 安装的游戏</p>
+			<p>在终端内运行以下命令：</p>
+			<div class="bg-gray-400/10 rounded py-2 px-3 text-sm">
+				<pre class="whitespace-normal break-all">curl --sSL {location.protocol}//{location.host}{importSummonMacOs} | bash</pre>
+			</div>
+		</div>
+
+		<div class:hidden={selectedPlatform !== 'Windows'}>
+			参见：<a
+				href="https://www.timekeeper.top/auto_import.html"
+				target="_blank"
+				rel="external noopener noreferrer"
+				class="text-link"
+			>https://www.timekeeper.top/auto_import.html</a>
+		</div>
+
+		<div class:hidden={selectedPlatform !== 'iOS'}>
+			参见：<a
+				href="https://www.timekeeper.top/auto_import.html"
+				target="_blank"
+				rel="external noopener noreferrer"
+				class="text-link"
+			>https://www.timekeeper.top/auto_import.html</a>
+		</div>
 	</section>
 </OverlayScrollbarsComponent>
