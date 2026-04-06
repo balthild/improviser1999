@@ -30,7 +30,7 @@
 		},
 		restore: (value) => {
 			const elements = container?.osInstance()?.elements();
-			elements?.viewport.scrollTo({ top: value });
+			requestAnimationFrame(() => elements?.viewport.scrollTo({ top: value }));
 		},
 	};
 </script>
