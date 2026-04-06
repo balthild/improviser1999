@@ -1,6 +1,7 @@
 import type { DatasetKeys, DatasetSources, DatasetTypes } from './types/dataset';
 
 const sources: DatasetSources = {
+	pools: 'https://r2.balthild.com/improviser1999/pools.json',
 	arcanists: 'https://r2.balthild.com/improviser1999/arcanists.json',
 	materials: 'https://r2.balthild.com/improviser1999/materials.json',
 	chapters: 'https://r2.balthild.com/improviser1999/chapters.json',

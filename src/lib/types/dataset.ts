@@ -1,6 +1,15 @@
-import type { ArcanistId, StageId, MaterialId, ChapterNum, EpisodeNum } from './primitive';
+import type {
+	ArcanistId,
+	StageId,
+	MaterialId,
+	ChapterNum,
+	EpisodeNum,
+	PoolId,
+	PoolTypeId,
+} from './primitive';
 
 export type DatasetTypes = {
+	pools: PoolsDataset;
 	arcanists: ArcanistsDataset;
 	materials: MaterialsDataset;
 	chapters: ChaptersDataset;
@@ -11,6 +20,20 @@ export type DatasetTypes = {
 
 export type DatasetKeys = keyof DatasetTypes;
 export type DatasetSources = Record<DatasetKeys, string>;
+
+export interface PoolsDataset {
+	[id: PoolId]: {
+		id: PoolId;
+		type: PoolTypeId;
+		name: string;
+		pity: number;
+		arcanists?: {
+			options?: ArcanistId[];
+			up6?: ArcanistId[];
+			up5?: ArcanistId[];
+		};
+	};
+}
 
 export interface ArcanistsDataset {
 	[id: ArcanistId]: {

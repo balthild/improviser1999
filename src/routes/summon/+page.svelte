@@ -6,7 +6,8 @@
 	import Rarity from '$lib/components/rarity.svelte';
 	import { idb } from '$lib/idb';
 	import type { Summon } from '$lib/idb';
-	import type { PoolTypeId } from '$lib/types/primitive';
+	import type { ArcanistId, PoolTypeId } from '$lib/types/primitive';
+	import type { QuerySummonRecord } from '$lib/types/summon';
 	import { distinct } from '$lib/utils';
 
 	import type { Snapshot } from './$types';
@@ -59,10 +60,11 @@
 
 	interface Gain {
 		key: string;
-		id: number;
+		id: ArcanistId;
 		time: string;
 		name: string;
 		rarity: number;
+		summon: QuerySummonRecord;
 	}
 
 	interface PastGain extends Gain {
@@ -80,6 +82,7 @@
 					time: summon.record.createTime,
 					name: data.arcanists[gainId].name,
 					rarity: data.arcanists[gainId].rarity,
+					summon: summon.record,
 				})),
 			);
 		}
@@ -248,15 +251,20 @@
 
 			<ol class="gains min-h-8">
 				{#each pastGains[selectedRarity] as gain (gain.key)}
-					<li class="flex flex-col items-center p-2 pb-4">
+					{@const up = data.pools[gain.summon.poolId]?.arcanists?.[`up${selectedRarity}`]}
+
+					<li class="flex flex-col items-center p-2 pb-4 relative">
 						<div class="aspect-4/7 m-[12%] mb-0 border border-gray-200 bg-gray-50 bg-stripe rounded-t-full overflow-hidden">
 							<img
 								src="https://cdn.jsdelivr.net/gh/myssal/Reverse-1999-CN-Asset/singlebg/headicon_middle/{gain.id}01.png"
 								alt={gain.name}
 							/>
 						</div>
-						<p class="text-ml font-medium text-gray-600 mt-3">{gain.name}</p>
-						<p class="text-sm font-normal">({gain.invested})</p>
+
+						<p class="font-medium text-gray-600 mt-3">{gain.name}</p>
+						<p class="count text-sm text-gray-600" class:up={up?.includes(gain.id)}>
+							{gain.invested}
+						</p>
 					</li>
 				{:else}
 					<li class="text-gray-500 text-center border-0 col-span-full p-4">无数据</li>
@@ -298,6 +306,28 @@
 			li:nth-child(5n+1):nth-last-child(-n+5),
 			li:nth-child(5n+1):nth-last-child(-n+5) ~ li {
 				@apply border-b-0;
+			}
+
+			.count {
+				@apply flex items-center gap-0.5;
+
+				&::before {
+					@apply border-l;
+				}
+
+				&::after {
+					@apply border-r;
+				}
+
+				&::before, &::after {
+					content: '';
+					@apply w-1 h-4;
+					@apply border-gray-300 border-y;
+				}
+
+				&.up::before, &.up::after {
+					@apply border-amber-500;
+				}
 			}
 		}
 	}
