@@ -37,7 +37,7 @@
 			if (parsed.episode !== stage.episode) continue;
 			if (parsed.difficulty !== stage.difficulty) continue;
 
-			if (compareVersions(version, parsed.version) > 0) {
+			if (compareVersions(parsed.version, version) < 0) {
 				continue;
 			}
 

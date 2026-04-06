@@ -54,7 +54,7 @@
 			const expectItemCost = report.cost / expectDropRate;
 
 			const version = stats[parsed.stage]?.version ?? '0';
-			if (compareVersions(version, parsed.version) > 0) {
+			if (compareVersions(parsed.version, version) < 0) {
 				continue;
 			}
 
