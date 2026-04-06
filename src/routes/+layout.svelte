@@ -64,7 +64,7 @@
 
 		<OverlayScrollbarsComponent
 			defer
-			class="h-full flex-1 os-toplevel"
+			class="h-full flex-1 os-toplevel-y"
 			options={{ scrollbars: { autoHide: 'scroll' } }}
 			bind:this={container}
 		>

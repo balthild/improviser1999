@@ -8,6 +8,14 @@
 		--os-handle-bg: color-mix(var(--color-slate-700) 50%, transparent);
 	}
 
+	.os-toplevel-x[data-overlayscrollbars] > [data-overlayscrollbars-viewport] {
+		overscroll-behavior-x: contain;
+	}
+
+	.os-toplevel-y[data-overlayscrollbars] > [data-overlayscrollbars-viewport] {
+		overscroll-behavior-y: contain;
+	}
+
 	.os-toplevel[data-overlayscrollbars] > [data-overlayscrollbars-viewport] {
 		overscroll-behavior: contain;
 	}
