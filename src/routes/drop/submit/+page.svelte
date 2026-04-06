@@ -1,4 +1,4 @@
-<section class="p-4">
+<section class="p-6">
 	<p>
 		<a
 			href="https://www.kdocs.cn/l/cd5MWeCl5bKw"
