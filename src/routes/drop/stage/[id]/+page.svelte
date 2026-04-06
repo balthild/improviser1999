@@ -42,23 +42,31 @@
 			}
 
 			version = parsed.version;
-			stats = Object.entries(report.drops).map(([id, drops]) => {
-				const materialId = Number(id) as unknown as MaterialId;
-				if (!data.materials[materialId]) {
-					console.warn(`Unknown material id: ${materialId}`);
-				}
-
-				const expectDropRate = drops / report.count;
-				const expectItemCost = report.cost / expectDropRate;
-				return {
-					id: materialId,
-					name: data.materials[materialId]?.name ?? materialId,
-					samples: report.count,
-					drops,
-					expectDropRate,
-					expectItemCost,
-				};
-			});
+			stats = Object.entries(report.drops)
+				.values()
+				.map(([id, drops]) => {
+					const materialId = Number(id) as unknown as MaterialId;
+					return [materialId, drops] as const;
+				})
+				.filter(([id, drops]) => {
+					if (!data.materials[id]) {
+						console.warn(`Unknown material id: ${id}`);
+					}
+					return drops || stage.drops.includes(id);
+				})
+				.map(([id, drops]) => {
+					const expectDropRate = drops / report.count;
+					const expectItemCost = report.cost / expectDropRate;
+					return {
+						id,
+						name: data.materials[id]?.name ?? id,
+						samples: report.count,
+						drops,
+						expectDropRate,
+						expectItemCost,
+					};
+				})
+				.toArray();
 		}
 
 		return stats!;

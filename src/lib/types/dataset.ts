@@ -58,6 +58,7 @@ export interface StagesDataset {
 		chapter: ChapterNum;
 		episode: EpisodeNum;
 		difficulty: string;
+		drops: MaterialId[];
 	};
 }
 
