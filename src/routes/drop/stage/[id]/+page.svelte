@@ -141,6 +141,12 @@
 				<td>{(stat.expectDropRate * 100).toFixed(2)}%</td>
 				<td>{stat.expectItemCost.toFixed(2)}</td>
 			</tr>
+		{:else}
+			<tr>
+				<td colspan="5" class="text-center text-gray-500 py-4">
+					无数据
+				</td>
+			</tr>
 		{/each}
 	</tbody>
 </table>
