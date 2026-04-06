@@ -11,7 +11,7 @@
 	let { params, data } = $props();
 
 	const stage = $derived(data.stages[params.id as unknown as StageId]);
-	const title = $derived(data.chapters[stage.chapter].episodes[stage.episode].title);
+	const episode = $derived(data.chapters[stage.chapter].episodes[stage.episode]);
 
 	interface MaterialStat {
 		id: MaterialId;
@@ -91,12 +91,17 @@
 </script>
 
 <section class="px-4 pb-2 pt-16 border-b border-gray-300">
-	<h3>
+	<h3 class="flex items-end gap-4">
 		<span class="text-2xl font-medium">
 			{renderChapterNum(stage.chapter)}-{stage.episode.toString().padStart(2, '0')}
 			{stage.difficulty}
 		</span>
-		<span class="text-ms font-normal ml-4">{title.zh}</span>
+		<span class="text-ms font-normal">{episode.title.zh}</span>
+
+		<span class="text-ms font-light text-gray-500 ml-auto">
+			<span>{episode.year}/{episode.date.replace('.', '/')}</span>
+			<span class="ml-2">{episode.time}</span>
+		</span>
 	</h3>
 </section>
 

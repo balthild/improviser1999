@@ -36,6 +36,7 @@ export interface ChaptersDataset {
 			zh: string;
 			en: string;
 		};
+		year: number;
 		episodes: {
 			[num: EpisodeNum]: {
 				num: EpisodeNum;
@@ -43,6 +44,9 @@ export interface ChaptersDataset {
 					zh: string;
 					en: string;
 				};
+				year: number;
+				date: string;
+				time: string;
 			};
 		};
 	};
