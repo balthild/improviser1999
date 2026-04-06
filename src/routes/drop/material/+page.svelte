@@ -104,20 +104,22 @@
 <style lang="postcss">
 	@reference '$lib/styles/index.css';
 
-	.materials {
-		@apply grid grid-cols-4;
-		@apply bg-stripe;
+	@layer components {
+		.materials {
+			@apply grid grid-cols-4;
+			@apply bg-stripe;
 
-		> .btn-inlay {
-			@apply bg-noise bg-gray-50;
-			@apply hover:bg-white;
-		}
+			> .btn-inlay {
+				@apply bg-noise bg-gray-50;
+				@apply hover:bg-white;
+			}
 
-		> * {
-			@apply border-r border-b border-gray-300;
+			> * {
+				@apply border-r border-b border-gray-300;
 
-			&:nth-child(4n) {
-				@apply border-r-0;
+				&:nth-child(4n) {
+					@apply border-r-0;
+				}
 			}
 		}
 	}

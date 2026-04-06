@@ -6,8 +6,8 @@
 	import Rarity from '$lib/components/rarity.svelte';
 	import { idb } from '$lib/idb';
 	import type { Summon } from '$lib/idb';
-	import type { ArcanistId, PoolTypeId } from '$lib/types/primitive';
-	import type { QuerySummonRecord } from '$lib/types/summon';
+	import type { PoolsDataset } from '$lib/types/dataset';
+	import type { ArcanistId, PoolId, PoolTypeId } from '$lib/types/primitive';
 	import { distinct } from '$lib/utils';
 
 	import type { Snapshot } from './$types';
@@ -64,7 +64,7 @@
 		time: string;
 		name: string;
 		rarity: number;
-		summon: QuerySummonRecord;
+		pool?: PoolsDataset[PoolId];
 	}
 
 	interface PastGain extends Gain {
@@ -82,7 +82,7 @@
 					time: summon.record.createTime,
 					name: data.arcanists[gainId].name,
 					rarity: data.arcanists[gainId].rarity,
-					summon: summon.record,
+					pool: data.pools[summon.record.poolId],
 				})),
 			);
 		}
@@ -251,7 +251,7 @@
 
 			<ol class="gains min-h-8">
 				{#each pastGains[selectedRarity] as gain (gain.key)}
-					{@const up = data.pools[gain.summon.poolId]?.arcanists?.[`up${selectedRarity}`]}
+					{@const up = new Set(gain.pool?.arcanists?.[`up${selectedRarity}`])}
 
 					<li class="flex flex-col items-center p-2 pb-4 relative">
 						<div class="aspect-4/7 m-[12%] mb-0 border border-gray-200 bg-gray-50 bg-stripe rounded-t-full overflow-hidden">
@@ -262,7 +262,7 @@
 						</div>
 
 						<p class="font-medium text-gray-600 mt-3">{gain.name}</p>
-						<p class="count text-sm text-gray-600" class:up={up?.includes(gain.id)}>
+						<p class="count text-sm text-gray-600" class:up={up.has(gain.id)}>
 							{gain.invested}
 						</p>
 					</li>
