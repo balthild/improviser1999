@@ -5,6 +5,13 @@
 	import type { MaterialId } from '$lib/types/primitive';
 
 	const { data } = $props();
+
+	const shifts: Record<number, string> = {
+		110501: '0 -0.05rem', // 清扫咒
+		110702: '0.15rem 0', // 不休轮
+		111002: '-0.1rem -0.1rem', // 金爪灵摆
+		111012: '0.1rem 0.2rem', // 砂金甲虫
+	};
 </script>
 
 {#snippet item(id: number)}
@@ -18,6 +25,7 @@
 			src={`https://cdn.jsdelivr.net/gh/myssal/Reverse-1999-CN-Asset/singlebg/propitem/prop/${id}.png`}
 			alt={material.name}
 			class="w-16 -ml-0.5 -mb-1.5"
+			style:translate={shifts[id] ?? '0'}
 		/>
 		<div class="text-left">
 			<p class="font-medium mt-1">{material.name}</p>
@@ -27,10 +35,10 @@
 {/snippet}
 
 {#snippet empty()}
-	<div class="bg-stripe"></div>
+	<div></div>
 {/snippet}
 
-<section class="materials pb-4">
+<section class="materials mb-4">
 	<!-- 颤颤之齿 液化战栗 啮咬盒 床下怪物 -->
 	{@render item(110101)}
 	{@render item(110102)}
@@ -98,6 +106,12 @@
 
 	.materials {
 		@apply grid grid-cols-4;
+		@apply bg-stripe;
+
+		> .btn-inlay {
+			@apply bg-noise bg-gray-50;
+			@apply hover:bg-white;
+		}
 
 		> * {
 			@apply border-r border-b border-gray-300;
