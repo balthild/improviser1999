@@ -44,11 +44,15 @@
 			version = parsed.version;
 			stats = Object.entries(report.drops).map(([id, drops]) => {
 				const materialId = Number(id) as unknown as MaterialId;
+				if (!data.materials[materialId]) {
+					console.warn(`Unknown material id: ${materialId}`);
+				}
+
 				const expectDropRate = drops / report.count;
 				const expectItemCost = report.cost / expectDropRate;
 				return {
 					id: materialId,
-					name: data.materials[materialId].name,
+					name: data.materials[materialId]?.name ?? materialId,
 					samples: report.count,
 					drops,
 					expectDropRate,
