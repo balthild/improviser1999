@@ -5,6 +5,7 @@
 		"dprint.json",
 		"wrangler.jsonc",
 		"*.config.{js,ts}",
+		"scripts/*.ts",
 		"src/**/*.{svelte,js,ts,css,html,svg}",
 		".vscode/*.json",
 	],

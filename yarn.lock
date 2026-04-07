@@ -1080,6 +1080,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource/work-sans@npm:^5.2.8":
+  version: 5.2.8
+  resolution: "@fontsource/work-sans@npm:5.2.8"
+  checksum: 10c0/75b3bfaed9f5bd658fec251b3cfdc07cb8bc243ea9667aff8928a2d561dda2fa4e0a41b14d0543a9b0804e6bb366baa789cf8655e6127ae34761cc4c94f966eb
+  languageName: node
+  linkType: hard
+
 "@gar/promise-retry@npm:^1.0.0":
   version: 1.0.2
   resolution: "@gar/promise-retry@npm:1.0.2"
@@ -2264,6 +2271,13 @@ __metadata:
   version: 1.11.1
   resolution: "@unrs/resolver-binding-win32-x64-msvc@npm:1.11.1"
   conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@xmldom/xmldom@npm:^0.8.3":
+  version: 0.8.12
+  resolution: "@xmldom/xmldom@npm:0.8.12"
+  checksum: 10c0/b733c84292d1bee32ef21a05aba8f9063456b51a54068d0b4a1abf5545156ee0b9894b7ae23775b5881b11c35a8a03871d1b514fb7e1b11654cdbee57e1c2707
   languageName: node
   linkType: hard
 
@@ -3475,6 +3489,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fonteditor-core@npm:^2.6.3":
+  version: 2.6.3
+  resolution: "fonteditor-core@npm:2.6.3"
+  dependencies:
+    "@xmldom/xmldom": "npm:^0.8.3"
+  checksum: 10c0/52b97347e88e0c3bae98ca7865d0e4747638611c0d17ee72a1f446f7aad10c5ad93be469077bf91ef7fb121098d6ad78e05f9028513dddeee4f8b351ee268057
+  languageName: node
+  linkType: hard
+
 "fs-minipass@npm:^3.0.0":
   version: 3.0.3
   resolution: "fs-minipass@npm:3.0.3"
@@ -3619,6 +3642,7 @@ __metadata:
     "@eslint/compat": "npm:^2.0.3"
     "@eslint/js": "npm:^10.0.1"
     "@floating-ui/dom": "npm:^1.7.6"
+    "@fontsource/work-sans": "npm:^5.2.8"
     "@iconify-json/ri": "npm:^1.2.10"
     "@iconify/tailwind4": "npm:1.2.3"
     "@sveltejs/adapter-cloudflare": "npm:^7.2.6"
@@ -3636,6 +3660,7 @@ __metadata:
     eslint-import-resolver-typescript: "npm:^4.4.4"
     eslint-plugin-import-x: "npm:^4.16.2"
     eslint-plugin-svelte: "npm:^3.16.0"
+    fonteditor-core: "npm:^2.6.3"
     globals: "npm:^17.4.0"
     overlayscrollbars: "npm:^2.14.0"
     overlayscrollbars-svelte: "npm:^0.5.5"

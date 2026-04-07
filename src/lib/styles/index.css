@@ -16,6 +16,7 @@
 @import './components/tooltip.css';
 
 @theme {
+	--default-font-family: 'Work Sans Punctuations', var(--font-sans);
 	--font-garamond: 'EB Garamond', serif;
 
 	--text-ms: calc((var(--text-base) + var(--text-sm)) / 2);
@@ -30,4 +31,12 @@
 		@apply text-gray-700;
 		@apply bg-gray-50 bg-noise;
 	}
+}
+
+@font-face {
+	font-family: 'Work Sans Punctuations';
+	src: url('$lib/assets/fonts/work-sans-punct.woff2') format('woff2');
+	font-weight: normal;
+	font-style: normal;
+	unicode-range: U+00B7, U+201C-201D;
 }
