@@ -5,6 +5,7 @@
 
 	import { resolve } from '$app/paths';
 
+	import Translation from '$lib/components/translation.svelte';
 	import { parseLevelReportKey, renderChapterNum } from '$lib/data';
 	import { tr } from '$lib/i18n.svelte';
 	import type { MaterialId, StageId } from '$lib/types/primitive';
@@ -107,9 +108,12 @@
 	<h3 class="flex items-end gap-4">
 		<span class="text-2xl font-medium">
 			{renderChapterNum(stage.chapter)}-{stage.episode.toString().padStart(2, '0')}
-			{stage.difficulty}
+			<Translation
+				zh={stage.difficulty}
+				en={{ 普通: 'Normal', 厄险: 'Hard' }[stage.difficulty] ?? stage.difficulty}
+			/>
 		</span>
-		<span class="text-ms font-normal">{episode.title.zh}</span>
+		<span class="text-ms font-normal">{tr(episode.title)}</span>
 
 		<span class="text-ms font-light text-gray-500 ml-auto">
 			<span>{episode.year}/{episode.date.replace('.', '/')}</span>
@@ -132,7 +136,7 @@
 				<span>{tr({ zh: '掉落率', en: 'Drop Rate' })}</span>
 			</th>
 			<th class="sortable" use:sorting={'expectItemCost'}>
-				<span>{tr({ zh: '单件期望活性', en: 'Expected Cell Activity per Item' })}</span>
+				<span>{tr({ zh: '单件期望活性', en: 'Cost per Item' })}</span>
 			</th>
 		</tr>
 	</thead>

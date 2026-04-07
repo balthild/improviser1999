@@ -9,6 +9,6 @@
 			target="_blank"
 			rel="external noopener noreferrer"
 			class="text-link underline-offset-3"
-		>{tr({ zh: '前往「必要的记录」表格上报数据', en: 'Submit data to “His Bounden Duty”' })}</a>
+		>{tr({ zh: '前往「必要的记录」表格上报数据', en: 'Submit to “His Bounden Duty”' })}</a>
 	</p>
 </section>

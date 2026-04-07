@@ -53,7 +53,7 @@
 				<p class="text-2xl leading-8 font-medium font-garamond small-caps">
 					{renderChapterNum(chapter.num, false)}
 				</p>
-				<p class="text-sm mt-px mb-1">{chapter.title.zh}</p>
+				<p class="text-sm mt-px mb-1">{tr(chapter.title)}</p>
 			</button>
 		{/each}
 	</aside>
@@ -65,11 +65,13 @@
 			<div class="relative border-b border-gray-300 flex">
 				<div class="scrap -left-1 -bottom-1"></div>
 
-				<div class="text-ms mx-6 mt-8 mb-3 flex items-end">
-					<span class="text-4xl font-medium font-garamond leading-[1em]">{episode.num}</span>
-					<span class="inline-block h-5 mb-0.5 mx-2 border-r border-gray-400 -skew-x-25"></span>
+				<div class="text-ms mx-6 mt-8 mb-3 flex items-baseline">
+					<span class="text-4xl font-medium font-garamond leading-[1em]">
+						{episode.num.toString().padStart(2, '0')}
+					</span>
+					<span class="h-5 mx-2 border-r border-gray-400 translate-y-0.5 -skew-x-25"></span>
 					<div class="ml-1 -mb-px flex gap-5 items-center h-6">
-						<span>{episode.title.zh}</span>
+						<span>{tr(episode.title)}</span>
 
 						{#if episode.stage.normal}
 							<a href={resolve(`/drop/stage/${episode.stage.normal.id}`)} class="flex items-center">

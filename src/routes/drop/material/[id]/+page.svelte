@@ -6,6 +6,7 @@
 	import { resolve } from '$app/paths';
 
 	import Rarity from '$lib/components/rarity.svelte';
+	import Translation from '$lib/components/translation.svelte';
 	import { parseLevelReportKey } from '$lib/data';
 	import { tr } from '$lib/i18n.svelte';
 	import type { MaterialId, StageId } from '$lib/types/primitive';
@@ -119,7 +120,7 @@
 		<tr>
 			<th>{tr({ zh: '关卡', en: 'Stage' })}</th>
 			<th class="sortable" use:sorting={'cost'}>
-				<span>{tr({ zh: '活性', en: 'Cell Activity' })}</span>
+				<span>{tr({ zh: '活性', en: 'Cost' })}</span>
 			</th>
 			<th class="sortable" use:sorting={'samples'}>
 				<span>{tr({ zh: '样本数', en: 'Samples' })}</span>
@@ -131,7 +132,7 @@
 				<span>{tr({ zh: '掉落率', en: 'Drop Rate' })}</span>
 			</th>
 			<th class="sortable" use:sorting={'expectItemCost'}>
-				<span>{tr({ zh: '单件期望活性', en: 'Expected Cell Activity per Item' })}</span>
+				<span>{tr({ zh: '单件期望活性', en: 'Cost per Item' })}</span>
 			</th>
 		</tr>
 	</thead>
@@ -141,7 +142,12 @@
 				<td>
 					<a href={resolve(`/drop/stage/${stat.id}`)} class="inline-flex items-center gap-1">
 						<span>{stat.chapter}-{stat.episode}</span>
-						<span class:text-red-800={stat.difficulty === '厄险'}>{stat.difficulty}</span>
+						<span class:text-red-800={stat.difficulty === '厄险'}>
+							<Translation
+								zh={stat.difficulty}
+								en={{ 普通: 'Normal', 厄险: 'Hard' }[stat.difficulty] ?? stat.difficulty}
+							/>
+						</span>
 						<span class="icon-[ri--link-m] text-gray-400 [:hover>&]:text-gray-600"></span>
 					</a>
 				</td>
@@ -153,7 +159,7 @@
 			</tr>
 		{:else}
 			<tr>
-				<td colspan="5" class="text-center text-gray-500 py-4">
+				<td colspan="6" class="text-center text-gray-500 py-4">
 					{tr({ zh: '无数据', en: 'No Data' })}
 				</td>
 			</tr>
