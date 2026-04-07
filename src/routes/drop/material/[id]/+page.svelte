@@ -7,6 +7,7 @@
 
 	import Rarity from '$lib/components/rarity.svelte';
 	import { parseLevelReportKey } from '$lib/data';
+	import { tr } from '$lib/i18n.svelte';
 	import type { MaterialId, StageId } from '$lib/types/primitive';
 
 	let { params, data } = $props();
@@ -116,12 +117,22 @@
 <table class="table w-full">
 	<thead>
 		<tr>
-			<th><span>关卡</span></th>
-			<th class="sortable" use:sorting={'cost'}><span>活性</span></th>
-			<th class="sortable" use:sorting={'samples'}><span>样本数</span></th>
-			<th class="sortable" use:sorting={'drops'}><span>掉落数</span></th>
-			<th class="sortable" use:sorting={'expectDropRate'}><span>掉落率</span></th>
-			<th class="sortable" use:sorting={'expectItemCost'}><span>单件期望活性</span></th>
+			<th>{tr({ zh: '关卡', en: 'Stage' })}</th>
+			<th class="sortable" use:sorting={'cost'}>
+				<span>{tr({ zh: '活性', en: 'Cell Activity' })}</span>
+			</th>
+			<th class="sortable" use:sorting={'samples'}>
+				<span>{tr({ zh: '样本数', en: 'Samples' })}</span>
+			</th>
+			<th class="sortable" use:sorting={'drops'}>
+				<span>{tr({ zh: '掉落数', en: 'Drops' })}</span>
+			</th>
+			<th class="sortable" use:sorting={'expectDropRate'}>
+				<span>{tr({ zh: '掉落率', en: 'Drop Rate' })}</span>
+			</th>
+			<th class="sortable" use:sorting={'expectItemCost'}>
+				<span>{tr({ zh: '单件期望活性', en: 'Expected Cell Activity per Item' })}</span>
+			</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -143,7 +154,7 @@
 		{:else}
 			<tr>
 				<td colspan="5" class="text-center text-gray-500 py-4">
-					无数据
+					{tr({ zh: '无数据', en: 'No Data' })}
 				</td>
 			</tr>
 		{/each}

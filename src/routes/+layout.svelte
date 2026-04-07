@@ -1,15 +1,33 @@
 <script lang="ts">
 	import '$lib/styles/index.css';
 
+	import { computePosition, offset, shift } from '@floating-ui/dom';
 	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
 	import { on } from 'svelte/events';
 
 	import favicon from '$lib/assets/favicon.svg';
 	import Sidebar from '$lib/components/sidebar.svelte';
+	import { languages, setLanguage, tr } from '$lib/i18n.svelte';
+	import type { Language } from '$lib/i18n.svelte';
 
 	import type { Snapshot } from './$types';
 
 	let { children } = $props();
+
+	let languagePicker: HTMLDialogElement;
+
+	const showLanguagePicker = async (event: MouseEvent) => {
+		languagePicker.showModal();
+
+		const button = event.currentTarget as HTMLElement;
+		const { x, y } = await computePosition(button, languagePicker, {
+			placement: 'bottom-end',
+			middleware: [offset(2), shift({ padding: 4 })],
+		});
+
+		languagePicker.style.left = `${x}px`;
+		languagePicker.style.top = `${y}px`;
+	};
 
 	let messageDialog: HTMLDialogElement;
 	let messageText = $state('');
@@ -45,7 +63,9 @@
 		<p class="text-ms text-gray-600">{messageText}</p>
 	</section>
 	<footer class="border-t border-gray-300 flex justify-end">
-		<button class="btn btn-inlay border-l" onclick={() => messageDialog.close()}>确认</button>
+		<button class="btn btn-inlay border-l" onclick={() => messageDialog.close()}>
+			{tr({ zh: '确认', en: 'OK' })}
+		</button>
 	</footer>
 </dialog>
 
@@ -53,7 +73,25 @@
 	<header class="shrink-0 border-b border-gray-300 bg-gray-900/6">
 		<div class="h-12 w-full max-w-wl flex items-center gap-2 px-4 text-gray-600">
 			<span class="text-xl text-blue-700 icon-[ri--instance-line]"></span>
-			<h1 class="font-bold text-ml">流浪即兴曲</h1>
+			<h1 class="font-bold text-ml">
+				{tr({ zh: '流浪即兴曲', en: 'The Wandering Improviser' })}
+			</h1>
+
+			<span class="flex-1"></span>
+
+			<button
+				class="btn p-1.5 size-8 rounded hover:bg-gray-400/20"
+				onclick={showLanguagePicker}
+				aria-label={tr({ zh: '选择语言', en: 'Select Language' })}
+			>
+				<span class="text-xl icon-[ri--earth-line]"></span>
+			</button>
+
+			<dialog closedby="any" class="dropdown-lang" bind:this={languagePicker}>
+				{#each Object.entries(languages) as [lang, name] (lang)}
+					<button class="btn" onclick={() => setLanguage(lang as Language)}>{name}</button>
+				{/each}
+			</dialog>
 		</div>
 	</header>
 
@@ -72,3 +110,28 @@
 		</OverlayScrollbarsComponent>
 	</main>
 </div>
+
+<style lang="postcss">
+	@reference '$lib/styles/index.css';
+
+	@layer components {
+		.dropdown-lang {
+			@apply absolute left-0 top-0 z-999;
+			@apply border border-gray-300 rounded;
+			@apply p-1 bg-white shadow-lg;
+
+			&[open] {
+				@apply flex flex-col;
+			}
+
+			&::backdrop {
+				@apply bg-transparent;
+			}
+
+			.btn {
+				@apply py-1.25 text-left;
+				@apply hover:bg-gray-400/20;
+			}
+		}
+	}
+</style>

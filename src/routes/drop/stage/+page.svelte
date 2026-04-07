@@ -2,6 +2,7 @@
 	import { resolve } from '$app/paths';
 
 	import { renderChapterNum } from '$lib/data';
+	import { tr } from '$lib/i18n.svelte';
 	import type { ChapterNum, StageId } from '$lib/types/primitive';
 
 	import type { Snapshot } from './$types';
@@ -73,14 +74,18 @@
 						{#if episode.stage.normal}
 							<a href={resolve(`/drop/stage/${episode.stage.normal.id}`)} class="flex items-center">
 								<span class="text-lg text-amber-600 mr-0.5">✶&#xFE0E;</span>
-								<span class="[a:hover>&]:underline underline-offset-3">普通</span>
+								<span class="[a:hover>&]:underline underline-offset-3">
+									{tr({ zh: '普通', en: 'Normal' })}
+								</span>
 							</a>
 						{/if}
 
 						{#if episode.stage.hard}
 							<a href={resolve(`/drop/stage/${episode.stage.hard.id}`)} class="flex items-center">
 								<span class="text-lg text-orange-700 mr-0.5">✴&#xFE0E;</span>
-								<span class="[a:hover>&]:underline underline-offset-3">厄险</span>
+								<span class="[a:hover>&]:underline underline-offset-3">
+									{tr({ zh: '厄险', en: 'Hard' })}
+								</span>
 							</a>
 						{/if}
 					</div>

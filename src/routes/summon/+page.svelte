@@ -4,6 +4,7 @@
 	import { SvelteMap } from 'svelte/reactivity';
 
 	import Rarity from '$lib/components/rarity.svelte';
+	import { tr } from '$lib/i18n.svelte';
 	import { idb } from '$lib/idb';
 	import type { Summon } from '$lib/idb';
 	import type { PoolsDataset } from '$lib/types/dataset';
@@ -163,7 +164,7 @@
 
 	<div class="flex flex-row items-stretch justify-end border-l border-gray-300">
 		<button class="btn btn-inlay border-l" onclick={() => importDialog.showModal()}>
-			导入
+			{tr({ zh: '导入', en: 'Import' })}
 		</button>
 	</div>
 
@@ -177,14 +178,14 @@
 				<p class="text-lg font-semibold">
 					{poolInvested6.get(poolType)}&ThinSpace;/&ThinSpace;{poolType === 2 ? 30 : 70}
 				</p>
-				<p class="text-xs font-medium"><Rarity rarity={6} /> 保底</p>
+				<p class="text-xs font-medium"><Rarity rarity={6} /> {tr({ zh: '保底', en: 'Pity' })}</p>
 				<p class="text-sm font-medium mt-2 mb-px">{poolNames.get(poolType)}</p>
 			</button>
 		{:else}
 			<button class="pool block w-full text-left">
 				<p class="text-lg font-semibold">0&ThinSpace;/&ThinSpace;70</p>
-				<p class="text-xs font-medium"><Rarity rarity={6} /> 保底</p>
-				<p class="text-sm font-medium mt-2 mb-px">暂无数据</p>
+				<p class="text-xs font-medium"><Rarity rarity={6} /> {tr({ zh: '保底', en: 'Pity' })}</p>
+				<p class="text-sm font-medium mt-2 mb-px">{tr({ zh: '暂无数据', en: 'No Data' })}</p>
 			</button>
 		{/each}
 	</aside>
@@ -193,40 +194,46 @@
 		<section class="flex items-stretch">
 			<div class="flex-1 p-3">
 				<h3 class="truncate text-ml font-semibold mb-2">
-					{poolNames.get(selectedPoolType) ?? '暂无数据'}
+					{poolNames.get(selectedPoolType) ?? tr({ zh: '暂无数据', en: 'No Data' })}
 				</h3>
 
 				<dl class="space-y-1 text-sm tabular-nums">
 					<div class="flex justify-between">
-						<dt>总计征集次数</dt>
+						<dt>{tr({ zh: '总计征集次数', en: 'Total Summons' })}</dt>
 						<dd class="font-medium">{gains.length}</dd>
 					</div>
 					<div class="flex justify-between">
-						<dt><Rarity rarity={6} /> 获取次数</dt>
+						<dt><Rarity rarity={6} /> {tr({ zh: '获取次数', en: 'Gains' })}</dt>
 						<dd class="font-medium">{count6}</dd>
 					</div>
 					<div class="flex justify-between">
-						<dt><Rarity rarity={5} /> 获取次数</dt>
+						<dt><Rarity rarity={5} /> {tr({ zh: '获取次数', en: 'Gains' })}</dt>
 						<dd class="font-medium">{count5}</dd>
 					</div>
 					<div class="flex justify-between">
-						<dt><Rarity rarity={4} /> 获取次数</dt>
+						<dt><Rarity rarity={4} /> {tr({ zh: '获取次数', en: 'Gains' })}</dt>
 						<dd class="font-medium">{count4}</dd>
 					</div>
 				</dl>
 			</div>
 			<div class="border-r border-gray-300"></div>
 			<div class="flex-1 p-3">
-				<h3 class="truncate text-ml font-semibold mb-2">运气指标</h3>
+				<h3 class="truncate text-ml font-semibold mb-2">
+					{tr({ zh: '运气指标', en: 'Luck Metrics' })}
+				</h3>
 
 				<dl class="space-y-1 text-sm tabular-nums">
 					<div class="flex justify-between">
-						<dt><Rarity rarity={6} /> 平均征集次数</dt>
-						<dd class="font-medium">{isNaN(average6) ? '无数据' : average6.toFixed(2)}</dd>
+						<dt><Rarity rarity={6} /> {tr({ zh: '平均征集次数', en: 'Average Summons' })}</dt>
+						<dd class="font-medium">
+							{isNaN(average6) ? tr({ zh: '无数据', en: 'No Data' }) : average6.toFixed(2)}
+						</dd>
 					</div>
 					<div class="flex justify-between">
-						<dt><Rarity rarity={5} /> 平均征集次数</dt>
-						<dd class="font-medium">{isNaN(average5) ? '无数据' : average5.toFixed(2)}</dd>
+						<dt><Rarity rarity={5} /> {tr({ zh: '平均征集次数', en: 'Average Summons' })}</dt>
+						<dd class="font-medium">
+							{isNaN(average5) ? tr({ zh: '无数据', en: 'No Data' }) : average5.toFixed(2)}
+						</dd>
 					</div>
 				</dl>
 			</div>
@@ -267,7 +274,9 @@
 						</p>
 					</li>
 				{:else}
-					<li class="text-gray-500 text-center border-0 col-span-full p-4">无数据</li>
+					<li class="text-gray-500 text-center border-0 col-span-full p-4">
+						{tr({ zh: '无数据', en: 'No Data' })}
+					</li>
 				{/each}
 			</ol>
 		</section>

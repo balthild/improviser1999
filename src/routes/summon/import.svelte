@@ -5,6 +5,7 @@
 	import { asset } from '$app/paths';
 	import { page } from '$app/state';
 
+	import { tr } from '$lib/i18n.svelte';
 	import { validate } from '$lib/template/validate.svelte';
 
 	import { doImport } from './import';
@@ -27,8 +28,14 @@
 		window.dispatchEvent(
 			new CustomEvent('message-dialog', {
 				detail: result.error
-					? `导入失败：${result.error}`
-					: `导入完成，新增 ${result.imported} 条记录`,
+					? tr({
+							zh: `导入失败：${result.error}`,
+							en: `Import failed: ${result.error}`,
+						})
+					: tr({
+							zh: `导入完成，新增 ${result.imported} 条记录`,
+							en: `Import completed. Added ${result.imported} new records`,
+						}),
 			}),
 		);
 	};
@@ -41,20 +48,22 @@
 	class="w-full h-full os-toplevel-y"
 	options={{ scrollbars: { autoHide: 'scroll' } }}
 >
-	<h3 class="font-medium text-ml text-gray-600 p-3 text-center">导入征集记录</h3>
+	<h3 class="font-medium text-ml text-gray-600 p-3 text-center">
+		{tr({ zh: '导入征集记录', en: 'Import Summon History' })}
+	</h3>
 
 	<!-- <div class="h-2.5 border-y border-gray-300 bg-stripe"></div> -->
 
 	<form onsubmit={handleImport}>
 		<label class="block border-y border-gray-300">
-			<p class="sr-only">导入地址</p>
+			<p class="sr-only">{tr({ zh: '导入地址', en: 'Import URL' })}</p>
 			<textarea
 				name="url"
 				rows="3"
 				class="block w-full text-sm border-0 ring-0 bg-transparent resize-none break-all"
 				placeholder={`${QUERY_SUMMON_URL_BASE}?userId=...`}
 				bind:value={url}
-				use:validate={v.message(ImportUrlScheme, '地址无效')}
+				use:validate={v.message(ImportUrlScheme, tr({ zh: '地址无效', en: 'Invalid URL' }))}
 				autocomplete="off"
 				// I have no clue why 1password show username suggestions here
 				data-1p-ignore
@@ -62,7 +71,7 @@
 		</label>
 
 		<div class="flex flex-row items-center justify-end gap-2 pl-2">
-			<button class="btn btn-inlay border-l">导入</button>
+			<button class="btn btn-inlay border-l">{tr({ zh: '导入', en: 'Import' })}</button>
 		</div>
 	</form>
 

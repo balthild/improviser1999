@@ -1981,6 +1981,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/negotiator@npm:^0.6.4":
+  version: 0.6.4
+  resolution: "@types/negotiator@npm:0.6.4"
+  checksum: 10c0/b3b65c30be158d9ae65f4048153a13fd9a9ad2dce4df8d36d4e3aaa6f047ac0eab58286837bb3afbb617f95273f29b45f804d772485f5717c651e56f449e1ddd
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^24":
   version: 24.11.0
   resolution: "@types/node@npm:24.11.0"
@@ -3650,6 +3657,7 @@ __metadata:
     "@sveltejs/vite-plugin-svelte": "npm:^7.0.0"
     "@tailwindcss/forms": "npm:^0.5.11"
     "@tailwindcss/vite": "npm:^4.2.2"
+    "@types/negotiator": "npm:^0.6.4"
     "@types/node": "npm:^24"
     compare-versions: "npm:^6.1.1"
     dexie: "npm:^4.4.1"
@@ -3662,6 +3670,7 @@ __metadata:
     eslint-plugin-svelte: "npm:^3.16.0"
     fonteditor-core: "npm:^2.6.3"
     globals: "npm:^17.4.0"
+    negotiator: "npm:^1.0.0"
     overlayscrollbars: "npm:^2.14.0"
     overlayscrollbars-svelte: "npm:^0.5.5"
     postgres: "npm:^3.4.8"
