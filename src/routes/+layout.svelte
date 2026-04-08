@@ -7,7 +7,7 @@
 
 	import favicon from '$lib/assets/favicon.svg';
 	import Sidebar from '$lib/components/sidebar.svelte';
-	import { languages, setLanguage, tr } from '$lib/i18n.svelte';
+	import { getLanguage, languages, setLanguage, tr } from '$lib/i18n.svelte';
 	import type { Language } from '$lib/i18n.svelte';
 
 	import type { Snapshot } from './$types';
@@ -28,6 +28,10 @@
 		languagePicker.style.left = `${x}px`;
 		languagePicker.style.top = `${y}px`;
 	};
+
+	$effect(() => {
+		document.documentElement.lang = getLanguage();
+	});
 
 	let messageDialog: HTMLDialogElement;
 	let messageText = $state('');
