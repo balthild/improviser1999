@@ -106,7 +106,7 @@
 
 <section class="px-4 pb-2 pt-16 border-b border-gray-300">
 	<h3 class="flex items-baseline gap-4">
-		<span class="text-2xl leading-7 font-medium">
+		<span class="text-2xl font-medium">
 			{renderChapterNum(stage.chapter)}-{stage.episode.toString().padStart(2, '0')}
 			<Translation
 				zh={stage.difficulty}
