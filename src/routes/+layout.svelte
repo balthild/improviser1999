@@ -65,7 +65,7 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
-	<title>流浪即兴曲</title>
+	<title>{tr({ zh: '流浪即兴曲', en: 'The Wandering Improviser' })}</title>
 </svelte:head>
 
 <dialog closedby="none" class="dialog w-120 h-fit" bind:this={messageDialog}>
