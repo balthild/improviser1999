@@ -35,10 +35,16 @@
 	const poolTypes = $derived(distinct($rawSummons?.map((it) => it.record.poolType)));
 
 	const poolNames = $derived.by(() => {
-		const names = new SvelteMap<number, string>();
+		const names = new SvelteMap<PoolTypeId, { zh: string; en: string }>();
+
 		for (const summon of $rawSummons ?? []) {
 			if (!names.has(summon.record.poolType)) {
-				names.set(summon.record.poolType, summon.record.poolName);
+				const name = data.pools[summon.record.poolId]?.name ?? {
+					zh: summon.record.poolName,
+					en: summon.record.poolName,
+				};
+
+				names.set(summon.record.poolType, name);
 			}
 		}
 
@@ -63,7 +69,7 @@
 		key: string;
 		id: ArcanistId;
 		time: string;
-		name: string;
+		name: { zh: string; en: string };
 		rarity: number;
 		pool?: PoolsDataset[PoolId];
 	}
@@ -81,7 +87,7 @@
 					key: `${summon.id},${index}`,
 					id: gainId,
 					time: summon.record.createTime,
-					name: tr(data.arcanists[gainId].name),
+					name: data.arcanists[gainId].name,
 					rarity: data.arcanists[gainId].rarity,
 					pool: data.pools[summon.record.poolId],
 				})),
@@ -179,7 +185,7 @@
 					{poolInvested6.get(poolType)}&ThinSpace;/&ThinSpace;{poolType === 2 ? 30 : 70}
 				</p>
 				<p class="text-xs font-medium"><Rarity rarity={6} /> {tr({ zh: '保底', en: 'Pity' })}</p>
-				<p class="text-sm font-medium mt-2 mb-px">{poolNames.get(poolType)}</p>
+				<p class="text-sm font-medium mt-2 mb-px">{tr(poolNames.get(poolType)!)}</p>
 			</button>
 		{:else}
 			<button class="pool block w-full text-left">
@@ -194,7 +200,7 @@
 		<section class="flex items-stretch">
 			<div class="flex-1 p-3">
 				<h3 class="truncate text-ml font-semibold mb-2">
-					{poolNames.get(selectedPoolType) ?? tr({ zh: '暂无数据', en: 'No Data' })}
+					{tr(poolNames.get(selectedPoolType) ?? { zh: '暂无数据', en: 'No Data' })}
 				</h3>
 
 				<dl class="space-y-1 text-sm tabular-nums">
@@ -264,11 +270,11 @@
 						<div class="aspect-4/7 m-[12%] mb-0 border border-gray-200 bg-gray-50 bg-stripe rounded-t-full overflow-hidden">
 							<img
 								src="https://cdn.jsdelivr.net/gh/myssal/Reverse-1999-CN-Asset/singlebg/headicon_middle/{gain.id}01.png"
-								alt={gain.name}
+								alt={tr(gain.name)}
 							/>
 						</div>
 
-						<p class="font-medium text-gray-600 mt-3">{gain.name}</p>
+						<p class="font-medium text-gray-600 mt-3">{tr(gain.name)}</p>
 						<p class="count text-sm text-gray-600" class:up={up.has(gain.id)}>
 							{gain.invested}
 						</p>

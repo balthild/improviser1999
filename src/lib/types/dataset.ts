@@ -25,7 +25,10 @@ export interface PoolsDataset {
 	[id: PoolId]: {
 		id: PoolId;
 		type: PoolTypeId;
-		name: string;
+		name: {
+			zh: string;
+			en: string;
+		};
 		pity: number;
 		arcanists?: {
 			options?: ArcanistId[];
