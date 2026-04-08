@@ -7,7 +7,9 @@
 
 	import Translation from '$lib/components/translation.svelte';
 	import { parseLevelReportKey, renderChapterNum } from '$lib/data';
+	import { dummyMaterial } from '$lib/dummy';
 	import { tr } from '$lib/i18n.svelte';
+	import type { Material } from '$lib/types/dataset';
 	import type { MaterialId, StageId } from '$lib/types/primitive';
 
 	let { params, data } = $props();
@@ -16,7 +18,7 @@
 	const episode = $derived(data.chapters[stage.chapter].episodes[stage.episode]);
 
 	interface MaterialStat {
-		id: MaterialId;
+		material: Material;
 		samples: number;
 		drops: number;
 		expectDropRate: number;
@@ -59,7 +61,7 @@
 					const expectDropRate = drops / report.count;
 					const expectItemCost = report.cost / expectDropRate;
 					return {
-						id,
+						material: data.materials[id] ?? dummyMaterial({ id }),
 						samples: report.count,
 						drops,
 						expectDropRate,
@@ -139,11 +141,11 @@
 		</tr>
 	</thead>
 	<tbody>
-		{#each sorted as stat (stat.id)}
+		{#each sorted as stat (stat.material.id)}
 			<tr>
 				<td>
-					<a href={resolve(`/drop/material/${stat.id}`)} class="inline-flex items-center gap-1">
-						{tr(data.materials[stat.id].name)}
+					<a href={resolve(`/drop/material/${stat.material.id}`)} class="flex items-center gap-1">
+						{tr(stat.material.name)}
 						<span class="icon-[ri--link-m] text-gray-400 [:hover>&]:text-gray-600"></span>
 					</a>
 				</td>

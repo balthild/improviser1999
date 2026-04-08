@@ -9,27 +9,24 @@
 	import Translation from '$lib/components/translation.svelte';
 	import { parseLevelReportKey } from '$lib/data';
 	import { tr } from '$lib/i18n.svelte';
+	import type { Stage } from '$lib/types/dataset';
 	import type { MaterialId, StageId } from '$lib/types/primitive';
+	import { keyBy } from '$lib/utils';
 
 	let { params, data } = $props();
 
 	const material = $derived(data.materials[params.id as unknown as MaterialId]);
 
-	const stageIdByName = $derived.by(() => {
-		const stages: Record<string, StageId> = {};
-		for (const [id, stage] of Object.entries(data.stages)) {
-			const name = `${stage.chapter}-${stage.episode}${stage.difficulty}`;
-			stages[name] = Number(id) as unknown as StageId;
-		}
-
-		return stages;
-	});
+	const stagesByName = $derived(
+		keyBy(
+			Object.values(data.stages),
+			(stage) => `${stage.chapter}-${stage.episode}${stage.difficulty}`,
+		),
+	);
 
 	interface StageStat {
 		id: StageId;
-		chapter: number;
-		episode: number;
-		difficulty: string;
+		stage: Stage;
 		version: string;
 		cost: number;
 		samples: number;
@@ -48,22 +45,26 @@
 				continue;
 			}
 
+			const version = stats[parsed.stage]?.version ?? '0';
+			if (compareVersions(parsed.version, version) < 0) {
+				continue;
+			}
+
+			const stage = stagesByName[parsed.stage];
+			if (!stage) {
+				console.warn(`Unknown stage: ${parsed.stage}`);
+				continue;
+			}
+
 			const drops = report.drops[params.id as unknown as MaterialId];
 			if (!drops) continue;
 
 			const expectDropRate = drops / report.count;
 			const expectItemCost = report.cost / expectDropRate;
 
-			const version = stats[parsed.stage]?.version ?? '0';
-			if (compareVersions(parsed.version, version) < 0) {
-				continue;
-			}
-
 			stats[parsed.stage] = {
-				id: stageIdByName[parsed.stage],
-				chapter: parsed.chapter,
-				episode: parsed.episode,
-				difficulty: parsed.difficulty,
+				id: stage.id,
+				stage,
 				version: parsed.version,
 				cost: report.cost,
 				samples: report.count,
@@ -138,12 +139,12 @@
 		{#each sorted as stat (stat.id)}
 			<tr>
 				<td>
-					<a href={resolve(`/drop/stage/${stat.id}`)} class="inline-flex items-center gap-1">
-						<span>{stat.chapter}-{stat.episode}</span>
-						<span class:text-red-800={stat.difficulty === '厄险'}>
+					<a href={resolve(`/drop/stage/${stat.id}`)} class="flex items-center gap-1">
+						<span>{stat.stage.chapter}-{stat.stage.episode}</span>
+						<span class:text-red-800={stat.stage.difficulty === '厄险'}>
 							<Translation
-								zh={stat.difficulty}
-								en={{ 普通: 'Normal', 厄险: 'Hard' }[stat.difficulty] ?? stat.difficulty}
+								zh={stat.stage.difficulty}
+								en={{ 普通: 'Normal', 厄险: 'Hard' }[stat.stage.difficulty] ?? stat.stage.difficulty}
 							/>
 						</span>
 						<span class="icon-[ri--link-m] text-gray-400 [:hover>&]:text-gray-600"></span>

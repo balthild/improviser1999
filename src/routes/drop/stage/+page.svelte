@@ -3,29 +3,37 @@
 
 	import { renderChapterNum } from '$lib/data';
 	import { tr } from '$lib/i18n.svelte';
-	import type { ChapterNum, StageId } from '$lib/types/primitive';
+	import type { ChapterNum } from '$lib/types/primitive';
+	import { keyBy } from '$lib/utils';
 
 	import type { Snapshot } from './$types';
 
 	const { data } = $props();
 
-	const stageIdByName = $derived.by(() => {
-		const stages: Record<string, StageId> = {};
-		for (const [id, stage] of Object.entries(data.stages)) {
-			const name = `${stage.chapter}-${stage.episode}${stage.difficulty}`;
-			stages[name] = Number(id) as unknown as StageId;
-		}
+	// const stageIdByName = $derived.by(() => {
+	// 	const stages: Record<string, StageId> = {};
+	// 	for (const [id, stage] of Object.entries(data.stages)) {
+	// 		const name = `${stage.chapter}-${stage.episode}${stage.difficulty}`;
+	// 		stages[name] = Number(id) as unknown as StageId;
+	// 	}
 
-		return stages;
-	});
+	// 	return stages;
+	// });
+
+	const stagesByName = $derived(
+		keyBy(
+			Object.values(data.stages),
+			(stage) => `${stage.chapter}-${stage.episode}${stage.difficulty}`,
+		),
+	);
 
 	let selectedChapter = $state(1 as unknown as ChapterNum);
 
 	const selectedEpisodes = $derived(
 		Object.values(data.chapters[selectedChapter].episodes).map((episode) => {
 			const stage = {
-				normal: data.stages[stageIdByName[`${selectedChapter}-${episode.num}普通`]],
-				hard: data.stages[stageIdByName[`${selectedChapter}-${episode.num}厄险`]],
+				normal: stagesByName[`${selectedChapter}-${episode.num}普通`],
+				hard: stagesByName[`${selectedChapter}-${episode.num}厄险`],
 			};
 
 			return { ...episode, stage };

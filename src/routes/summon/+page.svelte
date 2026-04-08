@@ -4,11 +4,12 @@
 	import { SvelteMap } from 'svelte/reactivity';
 
 	import Rarity from '$lib/components/rarity.svelte';
+	import { dummyArcanist, dummyPool } from '$lib/dummy';
 	import { tr } from '$lib/i18n.svelte';
 	import { idb } from '$lib/idb';
 	import type { Summon } from '$lib/idb';
-	import type { PoolsDataset } from '$lib/types/dataset';
-	import type { ArcanistId, PoolId, PoolTypeId } from '$lib/types/primitive';
+	import type { Arcanist, Pool } from '$lib/types/dataset';
+	import type { ArcanistId, PoolTypeId } from '$lib/types/primitive';
 	import { distinct } from '$lib/utils';
 
 	import type { Snapshot } from './$types';
@@ -69,9 +70,8 @@
 		key: string;
 		id: ArcanistId;
 		time: string;
-		name: { zh: string; en: string };
-		rarity: number;
-		pool?: PoolsDataset[PoolId];
+		arcanist: Arcanist;
+		pool: Pool;
 	}
 
 	interface PastGain extends Gain {
@@ -82,14 +82,14 @@
 		const gains = new SvelteMap(poolTypes.map((type) => [type, [] as Gain[]]));
 
 		for (const summon of userSummons.get(selectedUserId) ?? []) {
-			gains.get(summon.record.poolType)!.push(
+			const { poolId, poolType } = summon.record;
+			gains.get(poolType)!.push(
 				...summon.record.gainIds.toReversed().map((gainId, index) => ({
 					key: `${summon.id},${index}`,
 					id: gainId,
 					time: summon.record.createTime,
-					name: data.arcanists[gainId].name,
-					rarity: data.arcanists[gainId].rarity,
-					pool: data.pools[summon.record.poolId],
+					arcanist: data.arcanists[gainId] ?? dummyArcanist({ id: gainId }),
+					pool: data.pools[poolId] ?? dummyPool({ id: poolId, type: poolType }),
 				})),
 			);
 		}
@@ -100,7 +100,7 @@
 	const poolInvested6 = $derived.by(() => {
 		const invested = new SvelteMap<PoolTypeId, number>();
 		for (const [pool, gain] of poolGains.entries()) {
-			const pity = gain.findIndex((it) => it.rarity === 6);
+			const pity = gain.findIndex((it) => it.arcanist.rarity === 6);
 			invested.set(pool, pity === -1 ? gain.length : pity);
 		}
 
@@ -114,7 +114,7 @@
 		const past: PastGain[] = [];
 
 		for (const [index, gain] of gains.toReversed().entries()) {
-			if (gain.rarity === rarity) {
+			if (gain.arcanist.rarity === rarity) {
 				past.push({ ...gain, invested: index - last });
 				last = index;
 			}
@@ -129,9 +129,9 @@
 		5: calculatePastGain(gains, 5),
 	});
 
-	const count6 = $derived(gains.filter((it) => it.rarity === 6).length ?? 0);
-	const count5 = $derived(gains.filter((it) => it.rarity === 5).length ?? 0);
-	const count4 = $derived(gains.filter((it) => it.rarity === 4).length ?? 0);
+	const count6 = $derived(gains.filter((it) => it.arcanist.rarity === 6).length ?? 0);
+	const count5 = $derived(gains.filter((it) => it.arcanist.rarity === 5).length ?? 0);
+	const count4 = $derived(gains.filter((it) => it.arcanist.rarity === 4).length ?? 0);
 
 	const average6 = $derived.by(() => {
 		const total = pastGains[6].reduce((sum, it) => sum + it.invested, 0);
@@ -264,18 +264,18 @@
 
 			<ol class="gains min-h-8">
 				{#each pastGains[selectedRarity] as gain (gain.key)}
-					{@const up = new Set(gain.pool?.arcanists?.[`up${selectedRarity}`])}
+					{@const up = new Set(gain.pool.arcanists?.[`up${selectedRarity}`])}
 
 					<li class="flex flex-col items-center p-2 pb-4 relative">
 						<div class="aspect-4/7 m-[12%] mb-0 border border-gray-200 bg-gray-50 bg-stripe rounded-t-full overflow-hidden">
 							<img
-								src="https://cdn.jsdelivr.net/gh/myssal/Reverse-1999-CN-Asset/singlebg/headicon_middle/{gain.id}01.png"
-								alt={tr(gain.name)}
+								src="https://cdn.jsdelivr.net/gh/myssal/Reverse-1999-CN-Asset/singlebg/headicon_middle/{gain.arcanist.id}01.png"
+								alt={tr(gain.arcanist.name)}
 							/>
 						</div>
 
-						<p class="font-medium text-gray-600 mt-3">{tr(gain.name)}</p>
-						<p class="count text-sm text-gray-600" class:up={up.has(gain.id)}>
+						<p class="font-medium text-gray-600 mt-3">{tr(gain.arcanist.name)}</p>
+						<p class="count text-sm text-gray-600" class:up={up.has(gain.arcanist.id)}>
 							{gain.invested}
 						</p>
 					</li>
