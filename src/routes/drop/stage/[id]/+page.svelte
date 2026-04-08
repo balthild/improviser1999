@@ -17,7 +17,6 @@
 
 	interface MaterialStat {
 		id: MaterialId;
-		name: string;
 		samples: number;
 		drops: number;
 		expectDropRate: number;
@@ -61,7 +60,6 @@
 					const expectItemCost = report.cost / expectDropRate;
 					return {
 						id,
-						name: data.materials[id]?.name ?? id,
 						samples: report.count,
 						drops,
 						expectDropRate,
@@ -141,11 +139,11 @@
 		</tr>
 	</thead>
 	<tbody>
-		{#each sorted as stat (stat.name)}
+		{#each sorted as stat (stat.id)}
 			<tr>
 				<td>
 					<a href={resolve(`/drop/material/${stat.id}`)} class="inline-flex items-center gap-1">
-						{stat.name}
+						{tr(data.materials[stat.id].name)}
 						<span class="icon-[ri--link-m] text-gray-400 [:hover>&]:text-gray-600"></span>
 					</a>
 				</td>

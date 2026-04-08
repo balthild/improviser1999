@@ -27,7 +27,6 @@
 
 	interface StageStat {
 		id: StageId;
-		name: string;
 		chapter: number;
 		episode: number;
 		difficulty: string;
@@ -62,7 +61,6 @@
 
 			stats[parsed.stage] = {
 				id: stageIdByName[parsed.stage],
-				name: parsed.stage,
 				chapter: parsed.chapter,
 				episode: parsed.episode,
 				difficulty: parsed.difficulty,
@@ -137,7 +135,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		{#each sorted as stat (stat.name)}
+		{#each sorted as stat (stat.id)}
 			<tr>
 				<td>
 					<a href={resolve(`/drop/stage/${stat.id}`)} class="inline-flex items-center gap-1">
