@@ -29,6 +29,12 @@
 		languagePicker.style.top = `${y}px`;
 	};
 
+	const pickLanguage = (event: MouseEvent) => {
+		const button = event.currentTarget as HTMLElement;
+		setLanguage(button.dataset.lang as Language);
+		languagePicker.close();
+	};
+
 	$effect(() => {
 		document.documentElement.lang = getLanguage();
 	});
@@ -88,12 +94,12 @@
 				onclick={showLanguagePicker}
 				aria-label={tr({ zh: '选择语言', en: 'Select Language' })}
 			>
-				<span class="text-xl icon-[ri--earth-line]"></span>
+				<span class="text-xl icon-[ri--translate]"></span>
 			</button>
 
 			<dialog closedby="any" class="dropdown-lang" bind:this={languagePicker}>
 				{#each Object.entries(languages) as [lang, name] (lang)}
-					<button class="btn" onclick={() => setLanguage(lang as Language)}>{name}</button>
+					<button class="btn" onclick={pickLanguage} data-lang={lang}>{name}</button>
 				{/each}
 			</dialog>
 		</div>
