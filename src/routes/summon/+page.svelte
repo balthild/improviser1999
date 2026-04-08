@@ -81,7 +81,7 @@
 					key: `${summon.id},${index}`,
 					id: gainId,
 					time: summon.record.createTime,
-					name: data.arcanists[gainId].name,
+					name: tr(data.arcanists[gainId].name),
 					rarity: data.arcanists[gainId].rarity,
 					pool: data.pools[summon.record.poolId],
 				})),

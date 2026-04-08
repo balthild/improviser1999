@@ -110,7 +110,7 @@
 
 <section class="px-4 pb-2 pt-16 border-b border-gray-300">
 	<h3>
-		<span class="text-2xl font-medium">{material.name}</span>
+		<span class="text-2xl font-medium">{tr(material.name)}</span>
 		<Rarity rarity={material.rarity} class="text-ms font-normal ml-2" />
 	</h3>
 </section>

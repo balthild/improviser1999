@@ -38,7 +38,10 @@ export interface PoolsDataset {
 export interface ArcanistsDataset {
 	[id: ArcanistId]: {
 		id: ArcanistId;
-		name: string;
+		name: {
+			zh: string;
+			en: string;
+		};
 		rarity: 6 | 5 | 4 | 3 | 2;
 		career: number;
 	};
@@ -47,7 +50,10 @@ export interface ArcanistsDataset {
 export interface MaterialsDataset {
 	[id: MaterialId]: {
 		id: MaterialId;
-		name: string;
+		name: {
+			zh: string;
+			en: string;
+		};
 		rarity: 6 | 5 | 4 | 3 | 2;
 	};
 }

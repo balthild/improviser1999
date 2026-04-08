@@ -2,6 +2,7 @@
 	import { resolve } from '$app/paths';
 
 	import Rarity from '$lib/components/rarity.svelte';
+	import { tr } from '$lib/i18n.svelte';
 	import type { MaterialId } from '$lib/types/primitive';
 
 	const { data } = $props();
@@ -23,12 +24,12 @@
 	>
 		<img
 			src={`https://cdn.jsdelivr.net/gh/myssal/Reverse-1999-CN-Asset/singlebg/propitem/prop/${id}.png`}
-			alt={material.name}
+			alt={tr(material.name)}
 			class="w-16 -ml-0.5 -mb-1.5"
 			style:translate={shifts[id] ?? '0'}
 		/>
 		<div class="text-left">
-			<p class="font-medium mt-1">{material.name}</p>
+			<p class="font-medium mt-1">{tr(material.name)}</p>
 			<p><Rarity rarity={material.rarity} /></p>
 		</div>
 	</a>
