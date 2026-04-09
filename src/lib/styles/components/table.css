@@ -11,17 +11,19 @@
 		@apply transition-colors;
 	}
 
-	th, td {
+	th:not(.sortable), td {
 		@apply px-4 py-1.75;
 	}
 
 	th.sortable {
 		@apply hover:bg-gray-400/10;
 		@apply transition-colors;
-		@apply cursor-pointer;
 
-		span {
+		button {
+			@apply w-full h-full;
+			@apply px-4 py-1.75;
 			@apply inline-flex items-center;
+			@apply cursor-pointer;
 
 			&::after {
 				content: '';
@@ -31,11 +33,11 @@
 			}
 		}
 
-		&.asc span::after {
+		&[aria-sort='ascending'] button::after {
 			@apply icon-[ri--arrow-up-long-line];
 		}
 
-		&.desc span::after {
+		&[aria-sort='descending'] button::after {
 			@apply icon-[ri--arrow-down-long-line];
 		}
 	}

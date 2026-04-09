@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { compareVersions } from 'compare-versions';
-	import type { Action } from 'svelte/action';
-	import { on } from 'svelte/events';
 
 	import { resolve } from '$app/paths';
 
@@ -9,6 +7,7 @@
 	import Translation from '$lib/components/translation.svelte';
 	import { parseLevelReportKey } from '$lib/data';
 	import { tr } from '$lib/i18n.svelte';
+	import { createSorter } from '$lib/template/sorting.svelte';
 	import type { Stage } from '$lib/types/dataset';
 	import type { MaterialId, StageId } from '$lib/types/primitive';
 	import { keyBy } from '$lib/utils';
@@ -78,33 +77,8 @@
 	});
 
 	type SortKey = 'expectItemCost' | 'expectDropRate' | 'cost' | 'samples' | 'drops';
-	let sortKey: SortKey = $state('expectItemCost');
-	let sortAsc = $state(true);
-
-	const sorted = $derived.by(() => {
-		return stats.toSorted((left, right) => {
-			const sign = sortAsc ? 1 : -1;
-			return sign * (left[sortKey] - right[sortKey]);
-		});
-	});
-
-	const sorting: Action<HTMLElement, SortKey> = (el, key) => {
-		$effect(() => {
-			return on(el, 'click', () => {
-				if (sortKey === key) {
-					sortAsc = !sortAsc;
-				} else {
-					sortKey = key;
-					sortAsc = true;
-				}
-			});
-		});
-
-		$effect(() => {
-			el.classList.toggle('asc', sortKey === key && sortAsc);
-			el.classList.toggle('desc', sortKey === key && !sortAsc);
-		});
-	};
+	const sorter = createSorter<SortKey>('expectItemCost');
+	const sorted = $derived(sorter.sort(stats));
 </script>
 
 <section class="px-4 pb-2 pt-16 border-b border-gray-300">
@@ -118,20 +92,20 @@
 	<thead>
 		<tr>
 			<th>{tr({ zh: '关卡', en: 'Stage' })}</th>
-			<th class="sortable" use:sorting={'cost'}>
-				<span>{tr({ zh: '活性', en: 'Cost' })}</span>
+			<th class="sortable" use:sorter.th={'cost'}>
+				<button>{tr({ zh: '活性', en: 'Cost' })}</button>
 			</th>
-			<th class="sortable" use:sorting={'samples'}>
-				<span>{tr({ zh: '样本数', en: 'Samples' })}</span>
+			<th class="sortable" use:sorter.th={'samples'}>
+				<button>{tr({ zh: '样本数', en: 'Samples' })}</button>
 			</th>
-			<th class="sortable" use:sorting={'drops'}>
-				<span>{tr({ zh: '掉落数', en: 'Drops' })}</span>
+			<th class="sortable" use:sorter.th={'drops'}>
+				<button>{tr({ zh: '掉落数', en: 'Drops' })}</button>
 			</th>
-			<th class="sortable" use:sorting={'expectDropRate'}>
-				<span>{tr({ zh: '掉落率', en: 'Drop Rate' })}</span>
+			<th class="sortable" use:sorter.th={'expectDropRate'}>
+				<button>{tr({ zh: '掉落率', en: 'Drop Rate' })}</button>
 			</th>
-			<th class="sortable" use:sorting={'expectItemCost'}>
-				<span>{tr({ zh: '单件期望活性', en: 'Cost per Item' })}</span>
+			<th class="sortable" use:sorter.th={'expectItemCost'}>
+				<button>{tr({ zh: '单件期望活性', en: 'Cost per Item' })}</button>
 			</th>
 		</tr>
 	</thead>
