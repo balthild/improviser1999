@@ -8,6 +8,7 @@
 	import { tr } from '$lib/i18n.svelte';
 	import { idb } from '$lib/idb';
 	import type { Summon } from '$lib/idb';
+	import { expand } from '$lib/template/expand.svelte';
 	import type { Arcanist, Pool } from '$lib/types/dataset';
 	import type { ArcanistId, PoolTypeId } from '$lib/types/primitive';
 	import { distinct } from '$lib/utils';
@@ -17,6 +18,7 @@
 
 	const { data } = $props();
 
+	let importButton: HTMLButtonElement;
 	let importDialog: HTMLDialogElement;
 
 	const rawSummons = liveQuery(() => idb.summons.orderBy('record.createTime').reverse().toArray());
@@ -153,7 +155,12 @@
 	};
 </script>
 
-<dialog closedby="any" class="dialog w-160 h-120" bind:this={importDialog}>
+<dialog
+	closedby="any"
+	class="dialog w-160 h-120"
+	bind:this={importDialog}
+	use:expand={() => importButton}
+>
 	<Import onclose={() => importDialog.close()} />
 </dialog>
 
@@ -162,14 +169,26 @@
 	style:grid-template-columns="max-content 1fr"
 	style:grid-template-rows="max-content 1fr"
 >
-	<select class="px-3 py-0 text-sm border-0 bg-transparent a11y-ring" bind:value={selectedUserId}>
-		{#each userIds as userId (userId)}
-			<option value={userId}>{userId}</option>
-		{/each}
-	</select>
+	<label class="flex justify-stretch">
+		<span class="sr-only">{tr({ zh: '选择用户', en: 'Select User' })}</span>
+		<select
+			class="w-full px-3 py-0 text-sm border-0 bg-transparent a11y-ring"
+			bind:value={selectedUserId}
+		>
+			{#each userIds as userId (userId)}
+				<option value={userId}>{userId}</option>
+			{/each}
+		</select>
+	</label>
 
 	<div class="flex flex-row items-stretch justify-end border-l border-gray-300">
-		<button class="btn btn-inlay border-l" onclick={() => importDialog.showModal()}>
+		<button
+			class="btn btn-inlay border-l"
+			onclick={() => importDialog.showModal()}
+			aria-haspopup="dialog"
+			aria-expanded="false"
+			bind:this={importButton}
+		>
 			{tr({ zh: '导入', en: 'Import' })}
 		</button>
 	</div>
@@ -198,7 +217,7 @@
 
 	<main class="pb-4 border-l border-t border-gray-300">
 		<section class="flex items-stretch">
-			<div class="flex-1 p-3">
+			<div class="flex-1 p-3" aria-live="polite">
 				<h3 class="truncate text-ml font-semibold mb-2">
 					{tr(poolNames.get(selectedPoolType) ?? { zh: '暂无数据', en: 'No Data' })}
 				</h3>
@@ -223,7 +242,7 @@
 				</dl>
 			</div>
 			<div class="border-r border-gray-300"></div>
-			<div class="flex-1 p-3">
+			<div class="flex-1 p-3" aria-live="polite">
 				<h3 class="truncate text-ml font-semibold mb-2">
 					{tr({ zh: '运气指标', en: 'Luck Metrics' })}
 				</h3>
@@ -248,21 +267,29 @@
 		<div class="h-2.5 border-t border-gray-300 bg-stripe"></div>
 
 		<section class="border-t border-b border-gray-300 bg-white/50 col-span-2">
-			<header class="flex flex-row items-stretch text-ms border-b border-gray-300 p-1 gap-1">
+			<header
+				class="flex flex-row items-stretch text-ms border-b border-gray-300 p-1 gap-1"
+				role="radiogroup"
+				aria-label={tr({ zh: '选择星级', en: 'Select Rarity' })}
+			>
 				{#each [6, 5] as const as rarity (rarity)}
 					{@const selected = selectedRarity === rarity}
 					<button
-						class="py-1 flex-1 cursor-pointer rounded-xs ring-inset ring-gray-200"
-						class:ring-1={selected}
-						class:bg-gray-100={selected}
+						class="py-1 flex-1 cursor-pointer rounded-xs ring-0 ring-inset ring-gray-200 aria-checked:ring-1 aria-checked:bg-gray-100"
 						onclick={() => (selectedRarity = rarity)}
+						role="radio"
+						aria-checked={selected}
 					>
 						<Rarity rarity={rarity} class={['-mr-px', !selected && 'text-neutral-400']} />
 					</button>
 				{/each}
 			</header>
 
-			<ol class="gains min-h-8">
+			<ol
+				class="gains min-h-8"
+				aria-live="polite"
+				aria-label={tr({ zh: '获取的角色', en: 'Arcanist Gains' })}
+			>
 				{#each pastGains[selectedRarity] as gain (gain.key)}
 					{@const up = new Set(gain.pool.arcanists?.[`up${selectedRarity}`])}
 
@@ -276,7 +303,9 @@
 
 						<p class="font-medium text-gray-600 mt-3">{tr(gain.arcanist.name)}</p>
 						<p class="count text-sm text-gray-600" class:up={up.has(gain.arcanist.id)}>
+							<span class="sr-only">{tr({ zh: '征集次数：', en: 'Summons:' })}</span>
 							{gain.invested}
+							<span class="sr-only">{up.has(gain.arcanist.id) ? '(UP)' : ''}</span>
 						</p>
 					</li>
 				{:else}

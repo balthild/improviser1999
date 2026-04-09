@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { ClassValue } from 'svelte/elements';
 
+	import { tr } from '$lib/i18n.svelte';
+
 	interface Props {
 		rarity: 6 | 5 | 4 | 3 | 2;
 		class?: ClassValue;
@@ -9,7 +11,11 @@
 	const props: Props = $props();
 </script>
 
-<span class={[`tracking-wider rarity-${props.rarity}`, props.class]}>
+<span class="sr-only">
+	{tr({ zh: `${props.rarity}星`, en: `${props.rarity}-star` })}
+</span>
+
+<span class={[`tracking-wider rarity-${props.rarity}`, props.class]} aria-hidden="true">
 	{props.rarity}✦
 </span>
 

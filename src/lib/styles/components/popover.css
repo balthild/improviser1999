@@ -1,4 +1,12 @@
 @layer components {
+	.dropdown {
+		@apply absolute left-0 top-0 z-999;
+		@apply border border-gray-300 rounded;
+		@apply shadow-lg;
+		@apply bg-white;
+		@apply invisible;
+	}
+
 	.tooltip {
 		@apply absolute left-0 top-0 z-999;
 		@apply text-xs text-gray-600;

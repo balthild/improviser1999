@@ -16,6 +16,7 @@ export function createSorter<Key extends string>(initial: Key) {
 		});
 	};
 
+	// typescript doesn't resolve `Action<..., Key>` here
 	const th = (el: HTMLTableCellElement, key: Key) => {
 		$effect(() => {
 			return on(el, 'click', () => {

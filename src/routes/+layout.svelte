@@ -9,30 +9,31 @@
 	import Sidebar from '$lib/components/sidebar.svelte';
 	import { getLanguage, languages, setLanguage, tr } from '$lib/i18n.svelte';
 	import type { Language } from '$lib/i18n.svelte';
+	import { expand } from '$lib/template/expand.svelte';
 
 	import type { Snapshot } from './$types';
 
 	let { children } = $props();
 
-	let languagePicker: HTMLDialogElement;
+	let languageButton: HTMLButtonElement;
+	let languageDropdown: HTMLDialogElement;
 
-	const showLanguagePicker = async (event: MouseEvent) => {
-		languagePicker.showModal();
+	const toggleLanguagePicker = async (event: MouseEvent) => {
+		languageDropdown.showModal();
 
-		const button = event.currentTarget as HTMLElement;
-		const { x, y } = await computePosition(button, languagePicker, {
+		const button = event.currentTarget as HTMLButtonElement;
+		const { x, y } = await computePosition(button, languageDropdown, {
 			placement: 'bottom-end',
 			middleware: [offset(2), shift({ padding: 4 })],
 		});
 
-		languagePicker.style.left = `${x}px`;
-		languagePicker.style.top = `${y}px`;
+		languageDropdown.style.left = `${x}px`;
+		languageDropdown.style.top = `${y}px`;
 	};
 
-	const pickLanguage = (event: MouseEvent) => {
-		const button = event.currentTarget as HTMLElement;
-		setLanguage(button.dataset.lang as Language);
-		languagePicker.close();
+	const pickLanguage = (language: Language) => {
+		setLanguage(language);
+		languageDropdown.close();
 	};
 
 	$effect(() => {
@@ -91,15 +92,29 @@
 
 			<button
 				class="btn p-1.5 size-8 rounded hover:bg-gray-400/20"
-				onclick={showLanguagePicker}
+				onclick={toggleLanguagePicker}
 				aria-label={tr({ zh: '选择语言', en: 'Select Language' })}
+				aria-haspopup="listbox"
+				aria-expanded="false"
+				bind:this={languageButton}
 			>
 				<span class="text-xl icon-[ri--translate]"></span>
 			</button>
 
-			<dialog closedby="any" class="dropdown-lang" bind:this={languagePicker}>
+			<dialog
+				closedby="any"
+				class="dropdown p-1 flex flex-col open:visible backdrop:bg-transparent"
+				role="listbox"
+				bind:this={languageDropdown}
+				use:expand={() => languageButton}
+			>
 				{#each Object.entries(languages) as [lang, name] (lang)}
-					<button class="btn" onclick={pickLanguage} data-lang={lang}>{name}</button>
+					<button
+						class="btn py-1.25 text-left hover:bg-gray-400/20"
+						onclick={() => pickLanguage(lang as Language)}
+					>
+						{name}
+					</button>
 				{/each}
 			</dialog>
 		</div>
@@ -120,28 +135,3 @@
 		</OverlayScrollbarsComponent>
 	</main>
 </div>
-
-<style lang="postcss">
-	@reference '$lib/styles/index.css';
-
-	@layer components {
-		.dropdown-lang {
-			@apply absolute left-0 top-0 z-999;
-			@apply border border-gray-300 rounded;
-			@apply p-1 bg-white shadow-lg;
-
-			&[open] {
-				@apply flex flex-col;
-			}
-
-			&::backdrop {
-				@apply bg-transparent;
-			}
-
-			.btn {
-				@apply py-1.25 text-left;
-				@apply hover:bg-gray-400/20;
-			}
-		}
-	}
-</style>

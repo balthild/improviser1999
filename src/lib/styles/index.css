@@ -11,9 +11,9 @@
 @import './components/dialog.css';
 @import './components/form.css';
 @import './components/misc.css';
+@import './components/popover.css';
 @import './components/scrollbar.css';
 @import './components/table.css';
-@import './components/tooltip.css';
 
 @theme {
 	--default-font-family: 'Work Sans Punctuations', var(--font-sans);
