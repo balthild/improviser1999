@@ -5,9 +5,9 @@
 	import { asset } from '$app/paths';
 	import { page } from '$app/state';
 
+	import { validate } from '$lib/components/parts/validate.svelte';
 	import Translation from '$lib/components/translation.svelte';
 	import { tr } from '$lib/i18n.svelte';
-	import { validate } from '$lib/template/validate.svelte';
 
 	import { doImport } from './import';
 	import { ImportUrlScheme, QUERY_SUMMON_URL_BASE } from './validation';

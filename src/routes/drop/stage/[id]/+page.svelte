@@ -3,11 +3,11 @@
 
 	import { resolve } from '$app/paths';
 
+	import { createSorter } from '$lib/components/parts/sorting.svelte';
 	import Translation from '$lib/components/translation.svelte';
 	import { parseLevelReportKey, renderChapterNum } from '$lib/data';
 	import { dummyMaterial } from '$lib/dummy';
 	import { tr } from '$lib/i18n.svelte';
-	import { createSorter } from '$lib/template/sorting.svelte';
 	import type { Material } from '$lib/types/dataset';
 	import type { MaterialId, StageId } from '$lib/types/primitive';
 

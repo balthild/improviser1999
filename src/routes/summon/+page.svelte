@@ -3,12 +3,12 @@
 	import { untrack } from 'svelte';
 	import { SvelteMap } from 'svelte/reactivity';
 
+	import { expand } from '$lib/components/parts/expand.svelte';
 	import Rarity from '$lib/components/rarity.svelte';
 	import { dummyArcanist, dummyPool } from '$lib/dummy';
 	import { tr } from '$lib/i18n.svelte';
 	import { idb } from '$lib/idb';
 	import type { Summon } from '$lib/idb';
-	import { expand } from '$lib/template/expand.svelte';
 	import type { Arcanist, Pool } from '$lib/types/dataset';
 	import type { ArcanistId, PoolTypeId } from '$lib/types/primitive';
 	import { distinct } from '$lib/utils';

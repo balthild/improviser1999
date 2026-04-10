@@ -2,8 +2,8 @@
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 
+	import { tooltip } from '$lib/components/parts/tooltip.svelte';
 	import { tr } from '$lib/i18n.svelte';
-	import { tooltip } from '$lib/template/tooltip.svelte';
 
 	const pathname = $derived(page.url.pathname);
 </script>

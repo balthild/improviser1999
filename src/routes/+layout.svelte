@@ -6,10 +6,10 @@
 	import { on } from 'svelte/events';
 
 	import favicon from '$lib/assets/favicon.svg';
+	import { expand } from '$lib/components/parts/expand.svelte';
 	import Sidebar from '$lib/components/sidebar.svelte';
 	import { getLanguage, languages, setLanguage, tr } from '$lib/i18n.svelte';
 	import type { Language } from '$lib/i18n.svelte';
-	import { expand } from '$lib/template/expand.svelte';
 
 	import type { Snapshot } from './$types';
 
