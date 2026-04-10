@@ -3,9 +3,9 @@
 
 	import { computePosition, offset, shift } from '@floating-ui/dom';
 	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
-	import { on } from 'svelte/events';
 
 	import favicon from '$lib/assets/favicon.svg';
+	import Alert from '$lib/components/alert.svelte';
 	import { expand } from '$lib/components/parts/expand.svelte';
 	import Sidebar from '$lib/components/sidebar.svelte';
 	import { getLanguage, languages, setLanguage, tr } from '$lib/i18n.svelte';
@@ -40,16 +40,6 @@
 		document.documentElement.lang = getLanguage();
 	});
 
-	let messageDialog: HTMLDialogElement;
-	let messageText = $state('');
-
-	$effect(() => {
-		return on(window, 'message-dialog', (event) => {
-			messageText = event.detail;
-			messageDialog.showModal();
-		});
-	});
-
 	let container: OverlayScrollbarsComponent | null;
 
 	export const snapshot: Snapshot<number> = {
@@ -69,16 +59,7 @@
 	<title>{tr({ zh: '流浪即兴曲', en: 'The Wandering Improviser' })}</title>
 </svelte:head>
 
-<dialog closedby="none" class="dialog w-120 h-fit" bind:this={messageDialog}>
-	<section class="px-5 py-4">
-		<p class="text-ms text-gray-600">{messageText}</p>
-	</section>
-	<footer class="border-t border-gray-300 flex justify-end">
-		<button class="btn btn-inlay border-l" onclick={() => messageDialog.close()}>
-			{tr({ zh: '确认', en: 'OK' })}
-		</button>
-	</footer>
-</dialog>
+<Alert />
 
 <div class="flex h-screen flex-col overflow-hidden">
 	<header class="shrink-0 border-b border-gray-300 bg-gray-900/6">

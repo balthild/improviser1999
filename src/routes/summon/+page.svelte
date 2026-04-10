@@ -161,7 +161,10 @@
 	bind:this={importDialog}
 	use:expand={() => importButton}
 >
-	<Import onclose={() => importDialog.close()} />
+	<Import
+		onopen={() => importDialog.showModal()}
+		onclose={() => importDialog.close()}
+	/>
 </dialog>
 
 <section

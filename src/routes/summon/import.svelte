@@ -5,6 +5,7 @@
 	import { asset } from '$app/paths';
 	import { page } from '$app/state';
 
+	import { alert } from '$lib/components/alert.svelte';
 	import { validate } from '$lib/components/parts/validate.svelte';
 	import Translation from '$lib/components/translation.svelte';
 	import { tr } from '$lib/i18n.svelte';
@@ -13,6 +14,7 @@
 	import { ImportUrlScheme, QUERY_SUMMON_URL_BASE } from './validation';
 
 	interface Props {
+		onopen: () => void;
 		onclose: () => void;
 	}
 
@@ -22,23 +24,27 @@
 
 	const handleImport = async (event: Event) => {
 		event.preventDefault();
+
+		// TODO: show loading status
 		const result = await doImport(url);
 
 		props.onclose();
 
-		window.dispatchEvent(
-			new CustomEvent('message-dialog', {
-				detail: result.error
-					? tr({
-							zh: `导入失败：${result.error}`,
-							en: `Import failed: ${result.error}`,
-						})
-					: tr({
-							zh: `导入完成，新增 ${result.imported} 条记录`,
-							en: `Import completed. Added ${result.imported} new records`,
-						}),
-			}),
+		alert(
+			result.error
+				? tr({
+						zh: `导入失败：${result.error}`,
+						en: `Import failed: ${result.error}`,
+					})
+				: tr({
+						zh: `导入完成，新增 ${result.imported} 条记录`,
+						en: `Import completed. Added ${result.imported} new records`,
+					}),
 		);
+
+		if (!result.error) {
+			props.onopen();
+		}
 	};
 
 	let selectedPlatform = $state('macOS');
