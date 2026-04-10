@@ -31,7 +31,7 @@ async function doImportPage(userId: string, records: QuerySummonRecord[]) {
 
 		if (!summon) {
 			await idb.summons.add({ userId, record });
-			imported++;
+			imported += record.gainIds.length;
 		}
 	}
 
