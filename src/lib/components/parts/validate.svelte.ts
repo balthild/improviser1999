@@ -7,8 +7,8 @@ type Schema = v.BaseSchema<string, unknown, v.BaseIssue<unknown>>;
 
 export const validate: Action<Field, Schema> = (el, schema) => {
 	$effect(() => {
-		run(el, schema, false);
-		return on(el, 'input', () => run(el, schema, true));
+		void run(el, schema, false);
+		return on(el, 'input', () => void run(el, schema, true));
 	});
 };
 

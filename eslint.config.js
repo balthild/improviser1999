@@ -33,7 +33,7 @@ export default defineConfig(
 		},
 	},
 	{
-		files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
+		files: ['src/**/*.svelte', 'src/**/*.ts', 'src/**/*.js'],
 		languageOptions: {
 			parserOptions: {
 				projectService: true,
@@ -54,16 +54,18 @@ export default defineConfig(
 			'svelte/require-event-prefix': 'warn',
 			'svelte/shorthand-attribute': ['error', { prefer: 'never' }],
 			'svelte/shorthand-directive': ['error', { prefer: 'never' }],
+
 			'import-x/no-cycle': 'error',
-			// 'import-x/consistent-type-specifier-style': ['warn', 'prefer-inline'],
-			// 'no-duplicate-imports': 'warn',
 			'import-x/consistent-type-specifier-style': ['warn', 'prefer-top-level'],
 			'no-duplicate-imports': ['warn', { allowSeparateTypeImports: true }],
 		},
 	},
 	{
-		files: ['!eslint.config.js'],
+		files: ['src/**/*.svelte', 'src/**/*.ts', 'src/**/*.js'],
 		rules: {
+			'@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: false }],
+			'@typescript-eslint/no-floating-promises': 'error',
+
 			'no-restricted-syntax': [
 				'error',
 				{
