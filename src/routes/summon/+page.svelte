@@ -298,10 +298,12 @@
 
 					<li class="flex flex-col items-center p-2 pb-4 relative">
 						<div class="aspect-4/7 m-[12%] mb-0 border border-gray-200 bg-gray-50 bg-stripe rounded-t-full overflow-hidden">
-							<img
-								src="https://cdn.jsdelivr.net/gh/myssal/Reverse-1999-CN-Asset/singlebg/headicon_middle/{gain.arcanist.id}01.png"
-								alt={tr(gain.arcanist.name)}
-							/>
+							<div class="-mx-px">
+								<img
+									src="https://cdn.jsdelivr.net/gh/myssal/Reverse-1999-CN-Asset/singlebg/headicon_middle/{gain.arcanist.id}01.png"
+									alt={tr(gain.arcanist.name)}
+								/>
+							</div>
 						</div>
 
 						<p class="font-medium text-gray-600 mt-3">{tr(gain.arcanist.name)}</p>
