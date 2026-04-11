@@ -26,28 +26,14 @@ export default defineConfig(
 				...globals.node,
 			},
 		},
-		rules: {
-			// typescript-eslint strongly recommend that you do not use the no-undef lint rule on TypeScript projects.
-			// see: https://typescript-eslint.io/troubleshooting/faqs/eslint/#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
-			'no-undef': 'off',
-		},
-	},
-	{
-		files: ['src/**/*.svelte', 'src/**/*.ts', 'src/**/*.js'],
-		languageOptions: {
-			parserOptions: {
-				projectService: true,
-				extraFileExtensions: ['.svelte'],
-				parser: ts.parser,
-				svelteConfig,
-			},
-		},
-	},
-	{
 		settings: {
 			'import-x/resolver-next': [createTypeScriptImportResolver()],
 		},
 		rules: {
+			// typescript-eslint strongly recommend that you do not use the no-undef lint rule on TypeScript projects.
+			// see: https://typescript-eslint.io/troubleshooting/faqs/eslint/#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
+			'no-undef': 'off',
+
 			'svelte/no-add-event-listener': 'error',
 			'svelte/prefer-class-directive': 'warn',
 			'svelte/prefer-style-directive': 'warn',
@@ -62,6 +48,15 @@ export default defineConfig(
 	},
 	{
 		files: ['src/**/*.svelte', 'src/**/*.ts', 'src/**/*.js'],
+		ignores: ['src/service-worker.ts', 'src/service-worker/**'],
+		languageOptions: {
+			parserOptions: {
+				projectService: true,
+				extraFileExtensions: ['.svelte'],
+				parser: ts.parser,
+				svelteConfig,
+			},
+		},
 		rules: {
 			'@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: false }],
 			'@typescript-eslint/no-floating-promises': 'error',
