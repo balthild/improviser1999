@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
+
 	import { resolve } from '$app/paths';
 
 	import { renderChapterNum } from '$lib/data';
@@ -9,16 +11,6 @@
 	import type { Snapshot } from './$types';
 
 	const { data } = $props();
-
-	// const stageIdByName = $derived.by(() => {
-	// 	const stages: Record<string, StageId> = {};
-	// 	for (const [id, stage] of Object.entries(data.stages)) {
-	// 		const name = `${stage.chapter}-${stage.episode}${stage.difficulty}`;
-	// 		stages[name] = Number(id) as unknown as StageId;
-	// 	}
-
-	// 	return stages;
-	// });
 
 	const stagesByName = $derived(
 		keyBy(
@@ -83,7 +75,7 @@
 
 						{#if episode.stage.normal}
 							<a href={resolve(`/drop/stage/${episode.stage.normal.id}`)} class="flex items-center">
-								<span class="text-lg text-amber-600 mr-0.5">✶&#xFE0E;</span>
+								{@render StarSvg(StarNormalPath, 'text-amber-600')}
 								<span class="[a:hover>&]:underline underline-offset-3">
 									{tr({ zh: '普通', en: 'Normal' })}
 								</span>
@@ -92,7 +84,7 @@
 
 						{#if episode.stage.hard}
 							<a href={resolve(`/drop/stage/${episode.stage.hard.id}`)} class="flex items-center">
-								<span class="text-lg text-orange-700 mr-0.5">✴&#xFE0E;</span>
+								{@render StarSvg(StarHardPath, 'text-orange-700')}
 								<span class="[a:hover>&]:underline underline-offset-3">
 									{tr({ zh: '厄险', en: 'Hard' })}
 								</span>
@@ -115,3 +107,46 @@
 		}
 	}
 </style>
+
+{#snippet StarSvg(content: Snippet<[number, number]>, classes: string)}
+	{@const [w, h] = [320, 400]}
+
+	<svg viewBox={`-${w} -${h} ${2 * w} ${2 * h}`} class={['mr-0.5 h-4.5', classes]}>
+		{@render content(w, h)}
+	</svg>
+{/snippet}
+
+{#snippet StarNormalPath(w: number, h: number)}
+	{@const [lx, ly] = [50, 60]}
+	{@const [sx, sy] = [20, 30]}
+
+	<path
+		d={`
+			M 0,${-h}
+			C ${-lx},${-ly} ${-sx},${-sy} ${-w},0
+			C ${-sx},${+sy} ${-lx},${+ly} 0,${+h}
+			C ${+lx},${+ly} ${+sx},${+sy} ${+w},0
+			C ${+sx},${-sy} ${+lx},${-ly} 0,${-h}
+			Z
+		`}
+		fill="currentColor"
+	/>
+{/snippet}
+
+{#snippet StarHardPath(w: number, h: number)}
+	{@const [c, s, l] = [60, 210, 240]}
+
+	<path
+		d={`
+			M 0,${-c}
+			L ${-l},${-l} L ${-c},0
+			L ${-s},${+s} L 0,${+c}
+			L ${+l},${+l} L ${+c},0
+			L ${+s},${-s} L 0,${-c}
+			Z
+		`}
+		fill="currentColor"
+	/>
+
+	{@render StarNormalPath(w, h)}
+{/snippet}
