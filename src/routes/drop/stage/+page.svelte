@@ -109,7 +109,7 @@
 </style>
 
 {#snippet StarSvg(content: Snippet<[number, number]>, classes: string)}
-	{@const [w, h] = [320, 400]}
+	{@const [w, h] = [340, 400]}
 
 	<svg viewBox={`-${w} -${h} ${2 * w} ${2 * h}`} class={['mr-0.5 h-4.5', classes]}>
 		{@render content(w, h)}
@@ -117,36 +117,43 @@
 {/snippet}
 
 {#snippet StarNormalPath(w: number, h: number)}
-	{@const [lx, ly] = [50, 60]}
-	{@const [sx, sy] = [20, 30]}
+	{@const [cx, cy] = [70, 60]}
+	{@const [lx, ly] = [30, 100]}
+	{@const [sx, sy] = [100, 30]}
 
-	<path
-		d={`
-			M 0,${-h}
-			C ${-lx},${-ly} ${-sx},${-sy} ${-w},0
-			C ${-sx},${+sy} ${-lx},${+ly} 0,${+h}
-			C ${+lx},${+ly} ${+sx},${+sy} ${+w},0
-			C ${+sx},${-sy} ${+lx},${-ly} 0,${-h}
-			Z
-		`}
-		fill="currentColor"
-	/>
+	{@const path = `
+		M ${0},${-h}
+
+		C ${0},${-h} ${-lx},${-ly} ${-cx},${-cy}
+		C ${-sx},${-sy} ${-w},${0} ${-w},${0}
+
+		C ${-w},${0} ${-sx},${+sy} ${-cx},${+cy}
+		C ${-lx},${+ly} ${0},${+h} ${0},${+h}
+
+		C ${0},${+h} ${+lx},${+ly} ${+cx},${+cy}
+		C ${+sx},${+sy} ${+w},${0} ${+w},${0}
+
+		C ${+w},${0} ${+sx},${-sy} ${+cx},${-cy}
+		C ${+lx},${-ly} ${0},${-h} ${0},${-h}
+
+		Z
+	`}
+
+	<path d={path} fill="currentColor" />
 {/snippet}
 
 {#snippet StarHardPath(w: number, h: number)}
 	{@const [c, s, l] = [60, 210, 240]}
 
-	<path
-		d={`
-			M 0,${-c}
-			L ${-l},${-l} L ${-c},0
-			L ${-s},${+s} L 0,${+c}
-			L ${+l},${+l} L ${+c},0
-			L ${+s},${-s} L 0,${-c}
-			Z
-		`}
-		fill="currentColor"
-	/>
+	{@const path = `
+		M ${0},${-c}
+		L ${-l},${-l} L ${-c},${0}
+		L ${-s},${+s} L ${0},${+c}
+		L ${+l},${+l} L ${+c},${0}
+		L ${+s},${-s} L ${0},${-c}
+	`}
+
+	<path d={path} fill="currentColor" />
 
 	{@render StarNormalPath(w, h)}
 {/snippet}
