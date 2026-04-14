@@ -89,9 +89,13 @@
 				@apply grid-rows-[1fr];
 				@apply opacity-100;
 
+				/*
+				Not sure why I added this. Removing it seems to have no adverse effects to the transition. It causes a layout shift when the page is loaded.
+
 				@starting-style {
 					@apply grid-rows-[0fr];
 				}
+				*/
 			}
 
 			.nav-title {
