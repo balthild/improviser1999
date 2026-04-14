@@ -66,7 +66,7 @@
 				name="url"
 				rows="3"
 				class="block w-full text-sm border-0 ring-0 bg-transparent resize-none break-all"
-				placeholder={`${QUERY_SUMMON_URL_BASE}?userId=...`}
+				placeholder="{QUERY_SUMMON_URL_BASE}?userId=..."
 				bind:value={url}
 				use:validate={v.message(ImportUrlScheme, tr({ zh: '地址无效', en: 'Invalid URL' }))}
 				autocomplete="off"

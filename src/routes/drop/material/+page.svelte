@@ -23,7 +23,7 @@
 		class="btn btn-inlay flex items-center gap-1 p-2"
 	>
 		<img
-			src={`https://cdn.jsdelivr.net/gh/myssal/Reverse-1999-CN-Asset/singlebg/propitem/prop/${id}.png`}
+			src="https://cdn.jsdelivr.net/gh/myssal/Reverse-1999-CN-Asset/singlebg/propitem/prop/{id}.png"
 			alt={tr(material.name)}
 			class="w-16 -ml-0.5 -mb-1.5"
 			style:translate={shifts[id] ?? '0'}

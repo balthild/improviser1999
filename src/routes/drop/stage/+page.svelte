@@ -76,7 +76,7 @@
 						{#if episode.stage.normal}
 							<a href={resolve(`/drop/stage/${episode.stage.normal.id}`)} class="flex items-center">
 								<svg class="mr-0.5 size-4.5 text-amber-600">
-									<use href={`#star-normal-${uniqueId}`} />
+									<use href="#star-normal-{uniqueId}" />
 								</svg>
 								<span class="[a:hover>&]:underline underline-offset-3">
 									{tr({ zh: '普通', en: 'Normal' })}
@@ -87,7 +87,7 @@
 						{#if episode.stage.hard}
 							<a href={resolve(`/drop/stage/${episode.stage.hard.id}`)} class="flex items-center">
 								<svg class="mr-0.5 size-4.5 text-orange-700">
-									<use href={`#star-hard-${uniqueId}`} />
+									<use href="#star-hard-{uniqueId}" />
 								</svg>
 								<span class="[a:hover>&]:underline underline-offset-3">
 									{tr({ zh: '厄险', en: 'Hard' })}
@@ -158,10 +158,10 @@
 	`}
 
 	<svg class="hidden">
-		<symbol id={`star-normal-${uniqueId}`} viewBox={bounds}>
+		<symbol id="star-normal-{uniqueId}" viewBox={bounds}>
 			<path d={large} fill="currentColor" />
 		</symbol>
-		<symbol id={`star-hard-${uniqueId}`} viewBox={bounds}>
+		<symbol id="star-hard-{uniqueId}" viewBox={bounds}>
 			<path d={large} fill="currentColor" />
 			<path d={small} fill="currentColor" />
 		</symbol>
