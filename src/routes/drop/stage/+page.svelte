@@ -1,6 +1,4 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-
 	import { resolve } from '$app/paths';
 
 	import { renderChapterNum } from '$lib/data';
@@ -9,6 +7,8 @@
 	import { keyBy } from '$lib/utils';
 
 	import type { Snapshot } from './$types';
+
+	const uniqueId = $props.id();
 
 	const { data } = $props();
 
@@ -75,7 +75,9 @@
 
 						{#if episode.stage.normal}
 							<a href={resolve(`/drop/stage/${episode.stage.normal.id}`)} class="flex items-center">
-								{@render StarSvg(StarNormalPath, 'text-amber-600')}
+								<svg class="mr-0.5 size-4.5 text-amber-600">
+									<use href={`#star-normal-${uniqueId}`} />
+								</svg>
 								<span class="[a:hover>&]:underline underline-offset-3">
 									{tr({ zh: '普通', en: 'Normal' })}
 								</span>
@@ -84,7 +86,9 @@
 
 						{#if episode.stage.hard}
 							<a href={resolve(`/drop/stage/${episode.stage.hard.id}`)} class="flex items-center">
-								{@render StarSvg(StarHardPath, 'text-orange-700')}
+								<svg class="mr-0.5 size-4.5 text-orange-700">
+									<use href={`#star-hard-${uniqueId}`} />
+								</svg>
 								<span class="[a:hover>&]:underline underline-offset-3">
 									{tr({ zh: '厄险', en: 'Hard' })}
 								</span>
@@ -108,52 +112,58 @@
 	}
 </style>
 
-{#snippet StarSvg(content: Snippet<[number, number]>, classes: string)}
-	{@const [w, h] = [340, 400]}
+<svelte:boundary>
+	<!-- half of width, half of height -->
+	{@const [hw, hh] = [360, 400]}
 
-	<svg viewBox={`-${w} -${h} ${2 * w} ${2 * h}`} class={['mr-0.5 h-4.5', classes]}>
-		{@render content(w, h)}
-	</svg>
-{/snippet}
+	<!-- zero coordinate is at the center -->
+	{@const bounds = `${-hw} ${-hh} ${2 * hw} ${2 * hh}`}
 
-{#snippet StarNormalPath(w: number, h: number)}
+	<!-- large star: core point -->
 	{@const [cx, cy] = [70, 60]}
+	<!-- large star: handle from core point to long point -->
 	{@const [lx, ly] = [30, 100]}
+	<!-- large star: handle from core point to short point -->
 	{@const [sx, sy] = [100, 30]}
 
-	{@const path = `
-		M ${0},${-h}
+	<!-- large star -->
+	{@const large = `
+		M ${0x0},${-hh}
 
-		C ${0},${-h} ${-lx},${-ly} ${-cx},${-cy}
-		C ${-sx},${-sy} ${-w},${0} ${-w},${0}
+		C ${0x0},${-hh} ${-lx},${-ly} ${-cx},${-cy}
+		C ${-sx},${-sy} ${-hw},${0x0} ${-hw},${0x0}
 
-		C ${-w},${0} ${-sx},${+sy} ${-cx},${+cy}
-		C ${-lx},${+ly} ${0},${+h} ${0},${+h}
+		C ${-hw},${0x0} ${-sx},${+sy} ${-cx},${+cy}
+		C ${-lx},${+ly} ${0x0},${+hh} ${0x0},${+hh}
 
-		C ${0},${+h} ${+lx},${+ly} ${+cx},${+cy}
-		C ${+sx},${+sy} ${+w},${0} ${+w},${0}
+		C ${0x0},${+hh} ${+lx},${+ly} ${+cx},${+cy}
+		C ${+sx},${+sy} ${+hw},${0x0} ${+hw},${0x0}
 
-		C ${+w},${0} ${+sx},${-sy} ${+cx},${-cy}
-		C ${+lx},${-ly} ${0},${-h} ${0},${-h}
+		C ${+hw},${0x0} ${+sx},${-sy} ${+cx},${-cy}
+		C ${+lx},${-ly} ${0x0},${-hh} ${0x0},${-hh}
 
 		Z
 	`}
 
-	<path d={path} fill="currentColor" />
-{/snippet}
-
-{#snippet StarHardPath(w: number, h: number)}
+	<!-- small star: core point, short point, long point -->
 	{@const [c, s, l] = [60, 210, 240]}
 
-	{@const path = `
-		M ${0},${-c}
-		L ${-l},${-l} L ${-c},${0}
-		L ${-s},${+s} L ${0},${+c}
-		L ${+l},${+l} L ${+c},${0}
-		L ${+s},${-s} L ${0},${-c}
+	<!-- small star -->
+	{@const small = `
+		M ${+0},${-c}
+		L ${-l},${-l} L ${-c},${+0}
+		L ${-s},${+s} L ${+0},${+c}
+		L ${+l},${+l} L ${+c},${+0}
+		L ${+s},${-s} L ${+0},${-c}
 	`}
 
-	<path d={path} fill="currentColor" />
-
-	{@render StarNormalPath(w, h)}
-{/snippet}
+	<svg class="hidden">
+		<symbol id={`star-normal-${uniqueId}`} viewBox={bounds}>
+			<path d={large} fill="currentColor" />
+		</symbol>
+		<symbol id={`star-hard-${uniqueId}`} viewBox={bounds}>
+			<path d={large} fill="currentColor" />
+			<path d={small} fill="currentColor" />
+		</symbol>
+	</svg>
+</svelte:boundary>
