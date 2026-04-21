@@ -84,14 +84,14 @@
 
 			<dialog
 				closedby="any"
-				class="dropdown p-1 flex flex-col open:visible backdrop:bg-transparent"
+				class="dropdown p-1 open:visible backdrop:bg-transparent"
 				role="listbox"
 				bind:this={languageDropdown}
 				use:expand={() => languageButton}
 			>
 				{#each Object.entries(languages) as [lang, name] (lang)}
 					<button
-						class="btn py-1.25 text-left hover:bg-gray-400/20"
+						class="btn block w-full py-1.25 text-left hover:bg-gray-400/20"
 						onclick={() => pickLanguage(lang as Language)}
 					>
 						{name}

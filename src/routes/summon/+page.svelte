@@ -296,7 +296,7 @@
 				{#each pastGains[selectedRarity] as gain (gain.key)}
 					{@const up = new Set(gain.pool.arcanists?.[`up${selectedRarity}`])}
 
-					<li class="flex flex-col items-center p-2 pb-4 relative">
+					<li class="p-2 pb-4 relative *:text-center">
 						<div class="aspect-4/7 m-[12%] mb-0 border border-gray-200 bg-gray-50 bg-stripe rounded-t-full overflow-hidden">
 							<div class="-mx-px">
 								<img
@@ -358,7 +358,7 @@
 			}
 
 			.count {
-				@apply flex items-center gap-0.5;
+				@apply flex justify-center items-center gap-0.5;
 
 				&::before {
 					@apply border-l;

@@ -66,7 +66,7 @@
 			<div class="relative border-b border-gray-300 flex">
 				<div class="scrap -left-1 -bottom-1"></div>
 
-				<div class="absolute left-0 top-0 h-full flex flex-col *:border-gray-300 *:flex-1">
+				<div class="absolute left-0 top-0 h-full *:h-1/10 *:border-gray-300">
 					{#each new Array(10).keys() as i (i)}
 						<div class={[i > 0 && 'border-t', i === 5 ? 'w-2' : 'w-1']}></div>
 					{/each}
