@@ -93,7 +93,7 @@
 		<tr>
 			<th>{tr({ zh: '关卡', en: 'Stage' })}</th>
 			<th class="sortable" use:sorter.th={'cost'}>
-				<button>{tr({ zh: '活性', en: 'Cost' })}</button>
+				<button>{tr({ zh: '活性', en: 'CellAct' })}</button>
 			</th>
 			<th class="sortable" use:sorter.th={'samples'}>
 				<button>{tr({ zh: '样本数', en: 'Samples' })}</button>
@@ -105,7 +105,7 @@
 				<button>{tr({ zh: '掉落率', en: 'Drop Rate' })}</button>
 			</th>
 			<th class="sortable" use:sorter.th={'expectItemCost'}>
-				<button>{tr({ zh: '单件期望活性', en: 'Cost per Item' })}</button>
+				<button>{tr({ zh: '单件期望活性', en: 'CellAct per Item' })}</button>
 			</th>
 		</tr>
 	</thead>
@@ -117,8 +117,8 @@
 						<span>{stat.stage.chapter}-{stat.stage.episode}</span>
 						<span class:text-red-800={stat.stage.difficulty === '厄险'}>
 							<Translation
-								zh={stat.stage.difficulty}
-								en={{ 普通: 'Normal', 厄险: 'Hard' }[stat.stage.difficulty] ?? stat.stage.difficulty}
+								zh={{ 普通: '故事', 厄险: '厄险' }[stat.stage.difficulty] ?? stat.stage.difficulty}
+								en={{ 普通: 'Story', 厄险: 'Hard' }[stat.stage.difficulty] ?? stat.stage.difficulty}
 							/>
 						</span>
 						<span class="icon-[ri--link-m] text-gray-400 [:hover>&]:text-gray-600"></span>

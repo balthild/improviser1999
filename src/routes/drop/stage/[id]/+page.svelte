@@ -83,8 +83,8 @@
 		<span class="text-2xl font-medium">
 			{renderChapterNum(stage.chapter)}-{stage.episode.toString().padStart(2, '0')}
 			<Translation
-				zh={stage.difficulty}
-				en={{ 普通: 'Normal', 厄险: 'Hard' }[stage.difficulty] ?? stage.difficulty}
+				zh={{ 普通: '故事', 厄险: '厄险' }[stage.difficulty] ?? stage.difficulty}
+				en={{ 普通: 'Story', 厄险: 'Hard' }[stage.difficulty] ?? stage.difficulty}
 			/>
 		</span>
 		<span class="text-ms font-normal">{tr(episode.title)}</span>
@@ -112,7 +112,7 @@
 				<button>{tr({ zh: '掉落率', en: 'Drop Rate' })}</button>
 			</th>
 			<th class="sortable" use:sorter.th={'expectItemCost'}>
-				<button>{tr({ zh: '单件期望活性', en: 'Cost per Item' })}</button>
+				<button>{tr({ zh: '单件期望活性', en: 'CellAct per Item' })}</button>
 			</th>
 		</tr>
 	</thead>

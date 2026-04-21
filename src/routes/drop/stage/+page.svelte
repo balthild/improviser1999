@@ -86,7 +86,7 @@
 									<use href="#star-normal-{uniqueId}" />
 								</svg>
 								<span class="[a:hover>&]:underline underline-offset-3">
-									{tr({ zh: '普通', en: 'Normal' })}
+									{tr({ zh: '故事', en: 'Story' })}
 								</span>
 							</a>
 						{/if}
