@@ -80,9 +80,7 @@ export type Chapter = {
 	num: ChapterNum;
 	title: { zh: string; en: string };
 	year: string;
-	episodes: {
-		[num: EpisodeNum]: Episode;
-	};
+	episodes: Record<EpisodeNum, Episode>;
 };
 
 export type Stage = {
@@ -96,7 +94,5 @@ export type Stage = {
 export type StageDropReport = {
 	cost: number;
 	count: number;
-	drops: {
-		[id: MaterialId]: number;
-	};
+	drops: Record<MaterialId, number>;
 };
