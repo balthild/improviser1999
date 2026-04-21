@@ -89,8 +89,10 @@
 		</span>
 		<span class="text-ms font-normal">{tr(episode.title)}</span>
 
-		<span class="text-ms font-light text-gray-500 ml-auto">
-			<span>{episode.year}/{episode.date.replace('.', '/')}</span>
+		<span class="text-ms font-light text-gray-500 ml-auto inline-flex">
+			{#if episode.year}<span>{episode.year}</span>{/if}
+			{#if episode.year && episode.date}<span>/</span>{/if}
+			{#if episode.date}<span>{episode.date}</span>{/if}
 			<span class="ml-2">{episode.time}</span>
 		</span>
 	</h3>
