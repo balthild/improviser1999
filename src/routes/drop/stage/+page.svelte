@@ -66,8 +66,8 @@
 				<div class="scrap -left-1 -bottom-1"></div>
 
 				<div class="absolute left-0 top-0 h-full flex flex-col *:border-gray-300 *:flex-1">
-					{#each new Array(8).keys() as i (i)}
-						<div class={[i > 0 && 'border-t', i === 4 ? 'w-2' : 'w-1']}></div>
+					{#each new Array(10).keys() as i (i)}
+						<div class={[i > 0 && 'border-t', i === 5 ? 'w-2' : 'w-1']}></div>
 					{/each}
 				</div>
 
