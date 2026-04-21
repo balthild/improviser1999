@@ -71,7 +71,7 @@ export type Material = {
 export type Episode = {
 	num: EpisodeNum;
 	title: { zh: string; en: string };
-	year: number;
+	year: string;
 	date: string;
 	time: string;
 };
@@ -79,7 +79,7 @@ export type Episode = {
 export type Chapter = {
 	num: ChapterNum;
 	title: { zh: string; en: string };
-	year: number;
+	year: string;
 	episodes: {
 		[num: EpisodeNum]: Episode;
 	};
