@@ -9,3 +9,5 @@ export type StageId = number & Brand<'StageId'>;
 
 export type ChapterNum = number & Brand<'ChapterNum'>;
 export type EpisodeNum = number & Brand<'EpisodeNum'>;
+
+export type CommonStageKey = string & Brand<'CommonStageKey'>;

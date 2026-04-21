@@ -6,20 +6,19 @@
 	import { createSorter } from '$lib/components/parts/sorting.svelte';
 	import Rarity from '$lib/components/rarity.svelte';
 	import Translation from '$lib/components/translation.svelte';
-	import { parseLevelReportKey } from '$lib/data';
+	import { commonStageKey, parseLevelReportKey } from '$lib/data';
 	import { tr } from '$lib/i18n.svelte';
 	import type { Stage } from '$lib/types/dataset';
-	import type { MaterialId, StageId } from '$lib/types/primitive';
+	import type { CommonStageKey, MaterialId, StageId } from '$lib/types/primitive';
 	import { keyBy } from '$lib/utils';
 
 	let { params, data } = $props();
 
 	const material = $derived(data.materials[params.id as unknown as MaterialId]);
 
-	const stagesByName = $derived(
-		keyBy(
-			Object.values(data.stages),
-			(stage) => `${stage.chapter}-${stage.episode}${stage.difficulty}`,
+	const stages: Record<CommonStageKey, Stage> = $derived(
+		keyBy(Object.values(data.stages), (stage) =>
+			commonStageKey(stage.chapter, stage.episode, stage.difficulty),
 		),
 	);
 
@@ -49,7 +48,7 @@
 				continue;
 			}
 
-			const stage = stagesByName[parsed.stage];
+			const stage = stages[parsed.stage];
 			if (!stage) {
 				console.warn(`Unknown stage: ${parsed.stage}`);
 				continue;

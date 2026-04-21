@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 
-	import { renderChapterNum } from '$lib/data';
+	import { commonStageKey, renderChapterNum } from '$lib/data';
 	import { tr } from '$lib/i18n.svelte';
-	import type { ChapterNum } from '$lib/types/primitive';
+	import type { Stage } from '$lib/types/dataset';
+	import type { ChapterNum, CommonStageKey } from '$lib/types/primitive';
 	import { keyBy } from '$lib/utils';
 
 	import type { Snapshot } from './$types';
@@ -12,10 +13,9 @@
 
 	const { data } = $props();
 
-	const stagesByName = $derived(
-		keyBy(
-			Object.values(data.stages),
-			(stage) => `${stage.chapter}-${stage.episode}${stage.difficulty}`,
+	const stages: Record<CommonStageKey, Stage> = $derived(
+		keyBy(Object.values(data.stages), (stage) =>
+			commonStageKey(stage.chapter, stage.episode, stage.difficulty),
 		),
 	);
 
@@ -24,8 +24,8 @@
 	const selectedEpisodes = $derived(
 		Object.values(data.chapters[selectedChapter].episodes).map((episode) => {
 			const stage = {
-				normal: stagesByName[`${selectedChapter}-${episode.num}普通`],
-				hard: stagesByName[`${selectedChapter}-${episode.num}厄险`],
+				normal: stages[commonStageKey(selectedChapter, episode.num, '普通')],
+				hard: stages[commonStageKey(selectedChapter, episode.num, '厄险')],
 			};
 
 			return { ...episode, stage };

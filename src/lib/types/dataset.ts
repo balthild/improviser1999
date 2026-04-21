@@ -89,7 +89,7 @@ export type Stage = {
 	id: StageId;
 	chapter: ChapterNum;
 	episode: EpisodeNum;
-	difficulty: string;
+	difficulty: '普通' | '厄险';
 	drops: MaterialId[];
 };
 

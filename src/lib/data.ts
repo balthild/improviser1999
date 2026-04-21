@@ -1,3 +1,5 @@
+import type { ChapterNum, CommonStageKey, EpisodeNum } from './types/primitive';
+
 export function renderChapterNum(chapter: number, uppercase = true) {
 	const upper = { zero: 'TH', one: 'ST', two: 'ND', few: 'RD', many: 'TH', other: 'TH' };
 	const lower = { zero: 'th', one: 'st', two: 'nd', few: 'rd', many: 'th', other: 'th' };
@@ -17,10 +19,21 @@ export function parseLevelReportKey(key: string) {
 	}
 
 	return {
-		stage: match.groups.stage,
+		stage: match.groups.stage as CommonStageKey,
 		chapter: Number(match.groups.chapter),
 		episode: Number(match.groups.episode),
 		difficulty: match.groups.difficulty,
 		version: match.groups.version,
 	};
+}
+
+/**
+ * Note: keep in sync with `stage` field returned by `parseLevelReportKey`
+ */
+export function commonStageKey(
+	chapter: ChapterNum,
+	episode: EpisodeNum,
+	difficulty: '普通' | '厄险',
+) {
+	return `${chapter}-${episode}${difficulty}` as CommonStageKey;
 }
