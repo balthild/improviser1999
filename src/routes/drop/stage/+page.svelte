@@ -43,12 +43,13 @@
 </script>
 
 <section class="flex w-full">
-	<aside class="w-50 pb-4 border-r border-gray-300">
+	<div class="w-50 pb-4 border-r border-gray-300" role="radiogroup">
 		{#each Object.values(data.chapters) as chapter (chapter.num)}
 			<button
 				class="btn btn-inlay px-3.5 py-1.5 border-b block w-full text-left"
-				class:active={chapter.num === selectedChapter}
+				aria-checked={chapter.num === selectedChapter}
 				onclick={() => (selectedChapter = chapter.num)}
+				role="radio"
 			>
 				<p class="text-2xl leading-8 font-medium font-garamond small-caps">
 					{renderChapterNum(chapter.num, false)}
@@ -56,11 +57,11 @@
 				<p class="text-sm mt-px mb-1">{tr(chapter.title)}</p>
 			</button>
 		{/each}
-	</aside>
+	</div>
 
 	<div class="w-2.5 border-r border-gray-300 bg-stripe"></div>
 
-	<main class="flex-1 pb-4">
+	<main class="flex-1 pb-4" aria-live="polite">
 		{#each selectedEpisodes as episode (episode.num)}
 			<div class="relative border-b border-gray-300 flex">
 				<div class="scrap -left-1 -bottom-1"></div>
@@ -111,7 +112,7 @@
 	@reference '$lib/styles/index.css';
 
 	@layer components {
-		.btn-inlay.active {
+		.btn-inlay[aria-checked='true'] {
 			@apply bg-white/50;
 			@apply cursor-default;
 		}
