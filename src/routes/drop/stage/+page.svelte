@@ -65,6 +65,12 @@
 			<div class="relative border-b border-gray-300 flex">
 				<div class="scrap -left-1 -bottom-1"></div>
 
+				<div class="absolute left-0 top-0 h-full flex flex-col *:border-gray-300 *:flex-1">
+					{#each new Array(8).keys() as i (i)}
+						<div class={[i > 0 && 'border-t', i === 4 ? 'w-2' : 'w-1']}></div>
+					{/each}
+				</div>
+
 				<div class="text-ms mx-6 mt-8 mb-3 flex items-baseline">
 					<span class="text-4xl font-medium font-garamond leading-[1em]">
 						{episode.num.toString().padStart(2, '0')}
