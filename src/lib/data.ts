@@ -1,13 +1,19 @@
 import type { ChapterNum, CommonStageKey, EpisodeNum } from './types/primitive';
 
 export function renderChapterNum(chapter: number, uppercase = true) {
-	const upper = { zero: 'TH', one: 'ST', two: 'ND', few: 'RD', many: 'TH', other: 'TH' };
-	const lower = { zero: 'th', one: 'st', two: 'nd', few: 'rd', many: 'th', other: 'th' };
-	const suffix = uppercase ? upper : lower;
+	const suffixes = {
+		zero: 'TH',
+		one: 'ST',
+		two: 'ND',
+		few: 'RD',
+		many: 'TH',
+		other: 'TH',
+	};
 
 	const rule = new Intl.PluralRules('en-US', { type: 'ordinal' }).select(chapter);
+	const suffix = uppercase ? suffixes[rule] : suffixes[rule].toLowerCase();
 
-	return `${chapter}${suffix[rule]}`;
+	return `${chapter}${suffix}`;
 }
 
 export function parseLevelReportKey(key: string) {
