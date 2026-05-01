@@ -120,7 +120,7 @@
 			if (gain.arcanist.rarity === rarity) {
 				const invested = index - last;
 
-				const up = gain.pool.arcanists?.[`up${selectedRarity}`];
+				const up = gain.pool.arcanists?.[`up${rarity as 6 | 5}`];
 				const wins = up?.includes(gain.arcanist.id);
 
 				past.push({ ...gain, invested, wins });
