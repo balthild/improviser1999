@@ -1,5 +1,5 @@
-import type { Arcanist, Material, Pool } from './types/dataset';
-import type { PoolTypeId } from './types/primitive';
+import type { Arcanist, Material, Pool } from '$lib/types/dataset';
+import type { PoolTypeId } from '$lib/types/primitive';
 
 type PartialArcanist = Partial<Arcanist> & Pick<Arcanist, 'id'>;
 type PartialMaterial = Partial<Material> & Pick<Material, 'id'>;
