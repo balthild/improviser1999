@@ -1,9 +1,19 @@
 @layer components {
 	.btn {
-		@apply text-sm text-gray-600 hover:text-gray-700;
+		@apply text-sm text-gray-600 hover:text-gray-700 disabled:text-gray-400;
 		@apply px-2.5 py-1 rounded-xs;
 		@apply transition-colors;
-		@apply cursor-pointer;
+		@apply not-disabled:cursor-pointer;
+
+		&[aria-busy='true'] {
+			@apply relative;
+
+			&::after {
+				content: '';
+				@apply icon-[ri--loader-4-line] animate-spin text-gray-400;
+				@apply absolute left-1/2 top-1/2 -translate-1/2 size-[1.25em];
+			}
+		}
 	}
 
 	.btn-light {
