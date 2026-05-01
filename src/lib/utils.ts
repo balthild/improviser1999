@@ -1,3 +1,7 @@
+export function percent(value: number): string {
+	return `${(value * 100).toFixed(2)}%`;
+}
+
 export function distinct<T>(items: Iterable<T>): T[] {
 	return Array.from(new Set(items));
 }

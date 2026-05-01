@@ -11,7 +11,7 @@
 	import type { Summon } from '$lib/idb';
 	import type { Arcanist, Pool } from '$lib/types/dataset';
 	import type { ArcanistId, PoolTypeId } from '$lib/types/primitive';
-	import { distinct } from '$lib/utils';
+	import { distinct, percent } from '$lib/utils';
 
 	import type { Snapshot } from './$types';
 	import Import from './import.svelte';
@@ -78,6 +78,7 @@
 
 	interface PastGain extends Gain {
 		invested: number;
+		wins: boolean | undefined;
 	}
 
 	const poolGains = $derived.by(() => {
@@ -117,7 +118,12 @@
 
 		for (const [index, gain] of gains.toReversed().entries()) {
 			if (gain.arcanist.rarity === rarity) {
-				past.push({ ...gain, invested: index - last });
+				const invested = index - last;
+
+				const up = gain.pool.arcanists?.[`up${selectedRarity}`];
+				const wins = up?.includes(gain.arcanist.id);
+
+				past.push({ ...gain, invested, wins });
 				last = index;
 			}
 		}
@@ -129,20 +135,26 @@
 	const pastGains = $derived({
 		6: calculatePastGain(gains, 6),
 		5: calculatePastGain(gains, 5),
+		4: calculatePastGain(gains, 4),
 	});
-
-	const count6 = $derived(gains.filter((it) => it.arcanist.rarity === 6).length ?? 0);
-	const count5 = $derived(gains.filter((it) => it.arcanist.rarity === 5).length ?? 0);
-	const count4 = $derived(gains.filter((it) => it.arcanist.rarity === 4).length ?? 0);
 
 	const average6 = $derived.by(() => {
 		const total = pastGains[6].reduce((sum, it) => sum + it.invested, 0);
-		return total / count6;
+		return total / pastGains[6].length;
 	});
 
 	const average5 = $derived.by(() => {
 		const total = pastGains[5].reduce((sum, it) => sum + it.invested, 0);
-		return total / count5;
+		return total / pastGains[5].length;
+	});
+
+	const wins6 = $derived.by(() => {
+		if (pastGains[6].every((it) => it.wins === undefined)) {
+			return undefined;
+		}
+
+		const wins = pastGains[6].filter((it) => it.wins).length;
+		return wins / pastGains[6].length;
 	});
 
 	export const snapshot: Snapshot<[string, PoolTypeId]> = {
@@ -225,22 +237,22 @@
 					{tr(poolNames.get(selectedPoolType) ?? { zh: '暂无数据', en: 'No Data' })}
 				</h3>
 
-				<dl class="space-y-1 text-sm tabular-nums">
-					<div class="flex justify-between">
+				<dl class="space-y-1 text-sm tabular-nums *:flex *:justify-between">
+					<div>
 						<dt>{tr({ zh: '总计征集次数', en: 'Total Summons' })}</dt>
 						<dd class="font-medium">{gains.length}</dd>
 					</div>
-					<div class="flex justify-between">
+					<div>
 						<dt><Rarity rarity={6} /> {tr({ zh: '获取次数', en: 'Gains' })}</dt>
-						<dd class="font-medium">{count6}</dd>
+						<dd class="font-medium">{pastGains[6].length}</dd>
 					</div>
-					<div class="flex justify-between">
+					<div>
 						<dt><Rarity rarity={5} /> {tr({ zh: '获取次数', en: 'Gains' })}</dt>
-						<dd class="font-medium">{count5}</dd>
+						<dd class="font-medium">{pastGains[5].length}</dd>
 					</div>
-					<div class="flex justify-between">
+					<div>
 						<dt><Rarity rarity={4} /> {tr({ zh: '获取次数', en: 'Gains' })}</dt>
-						<dd class="font-medium">{count4}</dd>
+						<dd class="font-medium">{pastGains[4].length}</dd>
 					</div>
 				</dl>
 			</div>
@@ -250,14 +262,22 @@
 					{tr({ zh: '运气指标', en: 'Luck Metrics' })}
 				</h3>
 
-				<dl class="space-y-1 text-sm tabular-nums">
-					<div class="flex justify-between">
+				<dl class="space-y-1 text-sm tabular-nums *:flex *:justify-between">
+					{#if wins6 !== undefined}
+						<div>
+							<dt><Rarity rarity={6} /> {tr({ zh: 'UP 不歪率', en: '50/50 Wins' })}</dt>
+							<dd class="font-medium">
+								{isNaN(wins6) ? tr({ zh: '无数据', en: 'No Data' }) : percent(wins6)}
+							</dd>
+						</div>
+					{/if}
+					<div>
 						<dt><Rarity rarity={6} /> {tr({ zh: '平均征集次数', en: 'Average Summons' })}</dt>
 						<dd class="font-medium">
 							{isNaN(average6) ? tr({ zh: '无数据', en: 'No Data' }) : average6.toFixed(2)}
 						</dd>
 					</div>
-					<div class="flex justify-between">
+					<div>
 						<dt><Rarity rarity={5} /> {tr({ zh: '平均征集次数', en: 'Average Summons' })}</dt>
 						<dd class="font-medium">
 							{isNaN(average5) ? tr({ zh: '无数据', en: 'No Data' }) : average5.toFixed(2)}

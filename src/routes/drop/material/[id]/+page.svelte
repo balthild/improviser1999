@@ -10,7 +10,7 @@
 	import { tr } from '$lib/i18n.svelte';
 	import type { Stage } from '$lib/types/dataset';
 	import type { CommonStageKey, MaterialId, StageId } from '$lib/types/primitive';
-	import { keyBy } from '$lib/utils';
+	import { keyBy, percent } from '$lib/utils';
 
 	let { params, data } = $props();
 
@@ -126,7 +126,7 @@
 				<td>{stat.cost}</td>
 				<td>{stat.samples}</td>
 				<td>{stat.drops}</td>
-				<td>{(stat.expectDropRate * 100).toFixed(2)}%</td>
+				<td>{percent(stat.expectDropRate)}</td>
 				<td>{stat.expectItemCost.toFixed(2)}</td>
 			</tr>
 		{:else}
