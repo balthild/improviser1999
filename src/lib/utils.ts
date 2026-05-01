@@ -14,14 +14,16 @@ export function keyBy<T>(array: T[], key: (item: T) => string): Record<string, T
 	return result;
 }
 
-const cache = new WeakMap<WeakKey, unknown>();
+const Absent = Symbol('Absent');
 
-export function memoize<T>(fn: () => T): () => T {
+export function lazy<T>(fn: () => T): () => T {
+	let instance: T | typeof Absent = Absent;
+
 	return () => {
-		if (!cache.has(fn)) {
-			cache.set(fn, fn());
+		if (instance === Absent) {
+			instance = fn();
 		}
 
-		return cache.get(fn) as T;
+		return instance;
 	};
 }

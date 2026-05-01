@@ -1,4 +1,4 @@
-import type { DatasetKeys, DatasetSources, DatasetTypes } from './types/dataset';
+import type { DatasetKeys, DatasetSources, DatasetTypes } from '$lib/types/dataset';
 
 const sources: DatasetSources = {
 	pools: 'https://r2.balthild.com/improviser1999/pools.json',

@@ -5,7 +5,7 @@
 
 	import { expand } from '$lib/components/parts/expand.svelte';
 	import Rarity from '$lib/components/rarity.svelte';
-	import { dummyArcanist, dummyPool } from '$lib/dummy';
+	import { dummyArcanist, dummyPool } from '$lib/data';
 	import { tr } from '$lib/i18n.svelte';
 	import { idb } from '$lib/idb';
 	import type { Summon } from '$lib/idb';

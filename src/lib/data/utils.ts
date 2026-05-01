@@ -1,4 +1,4 @@
-import type { ChapterNum, CommonStageKey, EpisodeNum } from './types/primitive';
+import type { ChapterNum, CommonStageKey, EpisodeNum } from '$lib/types/primitive';
 
 export function renderChapterNum(chapter: number, uppercase = true) {
 	const suffixes = {

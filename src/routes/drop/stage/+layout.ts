@@ -1,4 +1,4 @@
-import { fetchDataset } from '$lib/dataset';
+import { fetchDataset } from '$lib/data';
 
 import type { LayoutLoad } from './$types';
 
