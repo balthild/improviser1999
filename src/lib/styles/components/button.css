@@ -4,16 +4,6 @@
 		@apply px-2.5 py-1 rounded-xs;
 		@apply transition-colors;
 		@apply not-disabled:cursor-pointer;
-
-		&[aria-busy='true'] {
-			@apply relative;
-
-			&::after {
-				content: '';
-				@apply icon-[ri--loader-4-line] animate-spin text-gray-400;
-				@apply absolute left-1/2 top-1/2 -translate-1/2 size-[1.25em];
-			}
-		}
 	}
 
 	.btn-light {
@@ -34,5 +24,16 @@
 		@apply border-gray-300;
 		@apply hover:bg-white/60;
 		@apply a11y-ring;
+	}
+
+	.btn-spinner[aria-busy='true'] {
+		@apply relative;
+
+		&::after {
+			content: '';
+			@apply text-gray-400 text-lg;
+			@apply icon-[ri--loader-4-line] animate-spin;
+			@apply absolute left-1/2 top-1/2 -translate-1/2;
+		}
 	}
 }

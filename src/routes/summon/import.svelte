@@ -78,7 +78,7 @@
 		</label>
 
 		<div class="flex flex-row items-center justify-end gap-2 pl-2">
-			<button class="btn btn-inlay border-l relative" disabled={working} aria-busy={working}>
+			<button class="btn btn-inlay btn-spinner border-l" disabled={working} aria-busy={working}>
 				<span class:invisible={working}>{tr({ zh: '导入', en: 'Import' })}</span>
 			</button>
 		</div>
