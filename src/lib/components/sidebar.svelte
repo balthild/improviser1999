@@ -41,12 +41,12 @@
 			<ul>
 				<li class:active={pathname.startsWith('/drop/material')}>
 					<a href={resolve('/drop/material')}>
-						{tr({ zh: '按物品', en: 'By Item' })}
+						{tr({ zh: '按物品', en: 'By Materials' })}
 					</a>
 				</li>
 				<li class:active={pathname.startsWith('/drop/stage')}>
 					<a href={resolve('/drop/stage')}>
-						{tr({ zh: '按关卡', en: 'By Stage' })}
+						{tr({ zh: '按关卡', en: 'By Stages' })}
 					</a>
 				</li>
 				<li class:active={pathname === '/drop/submit'}>
