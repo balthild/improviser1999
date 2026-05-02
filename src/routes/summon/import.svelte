@@ -21,14 +21,14 @@
 	const props: Props = $props();
 
 	let url = $state('');
-	let working = $state(false);
+	let busy = $state(false);
 
 	const handleImport = async (event: Event) => {
 		event.preventDefault();
 
-		working = true;
+		busy = true;
 		const result = await doImport(url);
-		working = false;
+		busy = false;
 
 		props.onclose();
 
@@ -78,8 +78,8 @@
 		</label>
 
 		<div class="flex flex-row items-center justify-end gap-2 pl-2">
-			<button class="btn btn-inlay btn-spinner border-l" disabled={working} aria-busy={working}>
-				<span class:invisible={working}>{tr({ zh: '导入', en: 'Import' })}</span>
+			<button class="btn btn-inlay btn-spinner border-l" disabled={busy} aria-busy={busy}>
+				<span class:invisible={busy}>{tr({ zh: '导入', en: 'Import' })}</span>
 			</button>
 		</div>
 	</form>

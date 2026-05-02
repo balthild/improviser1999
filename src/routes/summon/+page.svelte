@@ -78,7 +78,7 @@
 
 	interface PastGain extends Gain {
 		invested: number;
-		wins: boolean | undefined;
+		win: boolean | undefined;
 	}
 
 	const poolGains = $derived.by(() => {
@@ -121,9 +121,9 @@
 				const invested = index - last;
 
 				const up = gain.pool.arcanists?.[`up${rarity as 6 | 5}`];
-				const wins = up?.includes(gain.arcanist.id);
+				const win = up?.includes(gain.arcanist.id);
 
-				past.push({ ...gain, invested, wins });
+				past.push({ ...gain, invested, win });
 				last = index;
 			}
 		}
@@ -132,6 +132,7 @@
 	};
 
 	let selectedRarity: 6 | 5 = $state(6);
+
 	const pastGains = $derived({
 		6: calculatePastGain(gains, 6),
 		5: calculatePastGain(gains, 5),
@@ -149,11 +150,11 @@
 	});
 
 	const wins6 = $derived.by(() => {
-		if (pastGains[6].every((it) => it.wins === undefined)) {
+		if (pastGains[6].every((it) => it.win === undefined)) {
 			return undefined;
 		}
 
-		const wins = pastGains[6].filter((it) => it.wins).length;
+		const wins = pastGains[6].filter((it) => it.win).length;
 		return wins / pastGains[6].length;
 	});
 
@@ -314,8 +315,6 @@
 				aria-label={tr({ zh: '获取的角色', en: 'Arcanist Gains' })}
 			>
 				{#each pastGains[selectedRarity] as gain (gain.key)}
-					{@const up = new Set(gain.pool.arcanists?.[`up${selectedRarity}`])}
-
 					<li class="p-2 pb-4 relative *:text-center">
 						<div class="aspect-4/7 m-[12%] mb-0 border border-gray-200 bg-gray-50 bg-stripe rounded-t-full overflow-hidden">
 							<div class="-mx-px">
@@ -327,10 +326,14 @@
 						</div>
 
 						<p class="font-medium text-gray-600 mt-3">{tr(gain.arcanist.name)}</p>
-						<p class="count text-sm text-gray-600" class:up={up.has(gain.arcanist.id)}>
-							<span class="sr-only">{tr({ zh: '征集次数：', en: 'Summons:' })}</span>
+						<p class="count text-sm text-gray-600" class:up={gain.win}>
+							<span class="sr-only">
+								{tr({ zh: '消耗征集次数：', en: 'Summons Invested:' })}
+							</span>
 							{gain.invested}
-							<span class="sr-only">{up.has(gain.arcanist.id) ? '(UP)' : ''}</span>
+							<span class="sr-only">
+								{gain.win ? tr({ zh: '(UP没歪)', en: '(50/50 win)' }) : ''}
+							</span>
 						</p>
 					</li>
 				{:else}
