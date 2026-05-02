@@ -8,12 +8,12 @@
 	import { dummyArcanist, dummyPool } from '$lib/data';
 	import { tr } from '$lib/i18n.svelte';
 	import { idb } from '$lib/idb';
-	import type { Summon } from '$lib/idb';
-	import type { Arcanist, Pool } from '$lib/types/dataset';
-	import type { ArcanistId, PoolTypeId } from '$lib/types/primitive';
-	import { distinct, percent } from '$lib/utils';
+	import type { GameUserId, PoolTypeId } from '$lib/types/primitive';
+	import { distinct } from '$lib/utils';
 
 	import type { Snapshot } from './$types';
+	import type { Gain } from './history.svelte';
+	import History from './history.svelte';
 	import Import from './import.svelte';
 
 	const { data } = $props();
@@ -21,40 +21,71 @@
 	let importButton: HTMLButtonElement;
 	let importDialog: HTMLDialogElement;
 
-	const rawSummons = liveQuery(() => idb.summons.orderBy('record.createTime').reverse().toArray());
+	const rawSummons = liveQuery(() => idb.summons.orderBy('record.createTime').toArray());
 
 	const userIds = $derived(distinct($rawSummons?.map((it) => it.userId)).sort());
 
-	const userSummons = $derived.by(() => {
-		const summons = new SvelteMap(userIds.map((id) => [id, [] as Summon[]]));
-		for (const summon of $rawSummons ?? []) {
-			summons.get(summon.userId)!.push(summon);
-		}
-
-		return summons;
-	});
-
 	// TODO: sort in predefined order
-	const poolTypes = $derived(distinct($rawSummons?.map((it) => it.record.poolType)));
+	const poolTypes = $derived(distinct($rawSummons?.map((it) => it.record.poolType)).reverse());
 
 	const poolNames = $derived.by(() => {
-		const names = new SvelteMap<PoolTypeId, { zh: string; en: string }>();
+		const result = new SvelteMap<PoolTypeId, { zh: string; en: string }>();
 
 		for (const summon of $rawSummons ?? []) {
-			if (!names.has(summon.record.poolType)) {
-				const name = data.pools[summon.record.poolId]?.name ?? {
-					zh: summon.record.poolName,
-					en: summon.record.poolName,
-				};
+			const name = data.pools[summon.record.poolId]?.name ?? {
+				zh: summon.record.poolName,
+				en: summon.record.poolName,
+			};
 
-				names.set(summon.record.poolType, name);
+			result.set(summon.record.poolType, name);
+		}
+
+		return result;
+	});
+
+	const history = $derived.by(() => {
+		const result = new SvelteMap<GameUserId, SvelteMap<PoolTypeId, Gain[]>>(
+			userIds.map((id) => [id, new SvelteMap(poolTypes.map((type) => [type, []]))]),
+		);
+
+		for (const summon of $rawSummons ?? []) {
+			const { userId } = summon;
+			const { poolId, poolType } = summon.record;
+
+			const gains = result.get(userId)!.get(poolType)!;
+
+			for (const [index, gainId] of summon.record.gainIds.entries()) {
+				const arcanist = data.arcanists[gainId] ?? dummyArcanist({ id: gainId });
+				const pool = data.pools[poolId] ?? dummyPool({ id: poolId, type: poolType });
+
+				const last = gains.findLastIndex((it) => it.arcanist.rarity === arcanist.rarity);
+				const invested = gains.length - last;
+
+				const up = pool.arcanists?.[`up${arcanist.rarity as 6 | 5}`];
+				const win = up?.includes(arcanist.id);
+
+				gains.push({
+					key: `${summon.id},${index}`,
+					id: gainId,
+					time: summon.record.createTime,
+					arcanist,
+					pool,
+					invested,
+					win,
+				});
 			}
 		}
 
-		return names;
+		for (const userGains of result.values()) {
+			for (const poolGains of userGains.values()) {
+				poolGains.reverse();
+			}
+		}
+
+		return result;
 	});
 
-	let selectedUserId = $state('');
+	let selectedUserId = $state('' as GameUserId);
 	let selectedPoolType = $state(0 as PoolTypeId);
 
 	// looks like an anti-pattern but it works as for now ¯\_(ツ)_/¯
@@ -68,97 +99,18 @@
 		}
 	});
 
-	interface Gain {
-		key: string;
-		id: ArcanistId;
-		time: string;
-		arcanist: Arcanist;
-		pool: Pool;
-	}
+	const invested6 = $derived.by(() => {
+		const result = new SvelteMap<PoolTypeId, number>();
 
-	interface PastGain extends Gain {
-		invested: number;
-		win: boolean | undefined;
-	}
-
-	const poolGains = $derived.by(() => {
-		const gains = new SvelteMap(poolTypes.map((type) => [type, [] as Gain[]]));
-
-		for (const summon of userSummons.get(selectedUserId) ?? []) {
-			const { poolId, poolType } = summon.record;
-			gains.get(poolType)!.push(
-				...summon.record.gainIds.toReversed().map((gainId, index) => ({
-					key: `${summon.id},${index}`,
-					id: gainId,
-					time: summon.record.createTime,
-					arcanist: data.arcanists[gainId] ?? dummyArcanist({ id: gainId }),
-					pool: data.pools[poolId] ?? dummyPool({ id: poolId, type: poolType }),
-				})),
-			);
+		for (const [pool, gains] of history.get(selectedUserId)?.entries() ?? []) {
+			const index = gains.findIndex((it) => it.arcanist.rarity === 6);
+			result.set(pool, index === -1 ? gains.length : index);
 		}
 
-		return gains;
+		return result;
 	});
 
-	const poolInvested6 = $derived.by(() => {
-		const invested = new SvelteMap<PoolTypeId, number>();
-		for (const [pool, gain] of poolGains.entries()) {
-			const pity = gain.findIndex((it) => it.arcanist.rarity === 6);
-			invested.set(pool, pity === -1 ? gain.length : pity);
-		}
-
-		return invested;
-	});
-
-	const gains = $derived(poolGains.get(selectedPoolType) ?? []);
-
-	const calculatePastGain = (gains: Gain[], rarity: number) => {
-		let last = -1;
-		const past: PastGain[] = [];
-
-		for (const [index, gain] of gains.toReversed().entries()) {
-			if (gain.arcanist.rarity === rarity) {
-				const invested = index - last;
-
-				const up = gain.pool.arcanists?.[`up${rarity as 6 | 5}`];
-				const win = up?.includes(gain.arcanist.id);
-
-				past.push({ ...gain, invested, win });
-				last = index;
-			}
-		}
-
-		return past.reverse();
-	};
-
-	let selectedRarity: 6 | 5 = $state(6);
-
-	const pastGains = $derived({
-		6: calculatePastGain(gains, 6),
-		5: calculatePastGain(gains, 5),
-		4: calculatePastGain(gains, 4),
-	});
-
-	const average6 = $derived.by(() => {
-		const total = pastGains[6].reduce((sum, it) => sum + it.invested, 0);
-		return total / pastGains[6].length;
-	});
-
-	const average5 = $derived.by(() => {
-		const total = pastGains[5].reduce((sum, it) => sum + it.invested, 0);
-		return total / pastGains[5].length;
-	});
-
-	const wins6 = $derived.by(() => {
-		if (pastGains[6].every((it) => it.win === undefined)) {
-			return undefined;
-		}
-
-		const wins = pastGains[6].filter((it) => it.win).length;
-		return wins / pastGains[6].length;
-	});
-
-	export const snapshot: Snapshot<[string, PoolTypeId]> = {
+	export const snapshot: Snapshot<[GameUserId, PoolTypeId]> = {
 		capture: () => {
 			return [selectedUserId, selectedPoolType];
 		},
@@ -217,7 +169,7 @@
 				onclick={() => (selectedPoolType = poolType)}
 			>
 				<p class="text-lg font-semibold">
-					{poolInvested6.get(poolType)}&ThinSpace;/&ThinSpace;{poolType === 2 ? 30 : 70}
+					{invested6.get(poolType)}&ThinSpace;/&ThinSpace;{poolType === 2 ? 30 : 70}
 				</p>
 				<p class="text-xs font-medium"><Rarity rarity={6} /> {tr({ zh: '保底', en: 'Pity' })}</p>
 				<p class="text-sm font-medium mt-2 mb-px">{tr(poolNames.get(poolType)!)}</p>
@@ -232,117 +184,10 @@
 	</aside>
 
 	<main class="pb-4 border-l border-t border-gray-300">
-		<section class="flex items-stretch">
-			<div class="flex-1 p-3" aria-live="polite">
-				<h3 class="truncate text-ml font-semibold mb-2">
-					{tr(poolNames.get(selectedPoolType) ?? { zh: '暂无数据', en: 'No Data' })}
-				</h3>
-
-				<dl class="space-y-1 text-sm tabular-nums *:flex *:justify-between">
-					<div>
-						<dt>{tr({ zh: '总计征集次数', en: 'Total Summons' })}</dt>
-						<dd class="font-medium">{gains.length}</dd>
-					</div>
-					<div>
-						<dt><Rarity rarity={6} /> {tr({ zh: '获取次数', en: 'Gains' })}</dt>
-						<dd class="font-medium">{pastGains[6].length}</dd>
-					</div>
-					<div>
-						<dt><Rarity rarity={5} /> {tr({ zh: '获取次数', en: 'Gains' })}</dt>
-						<dd class="font-medium">{pastGains[5].length}</dd>
-					</div>
-					<div>
-						<dt><Rarity rarity={4} /> {tr({ zh: '获取次数', en: 'Gains' })}</dt>
-						<dd class="font-medium">{pastGains[4].length}</dd>
-					</div>
-				</dl>
-			</div>
-			<div class="border-r border-gray-300"></div>
-			<div class="flex-1 p-3" aria-live="polite">
-				<h3 class="truncate text-ml font-semibold mb-2">
-					{tr({ zh: '运气指标', en: 'Luck Metrics' })}
-				</h3>
-
-				<dl class="space-y-1 text-sm tabular-nums *:flex *:justify-between">
-					{#if wins6 !== undefined}
-						<div>
-							<dt><Rarity rarity={6} /> {tr({ zh: 'UP 不歪率', en: '50/50 Wins' })}</dt>
-							<dd class="font-medium">
-								{isNaN(wins6) ? tr({ zh: '无数据', en: 'No Data' }) : percent(wins6)}
-							</dd>
-						</div>
-					{/if}
-					<div>
-						<dt><Rarity rarity={6} /> {tr({ zh: '平均征集次数', en: 'Average Summons' })}</dt>
-						<dd class="font-medium">
-							{isNaN(average6) ? tr({ zh: '无数据', en: 'No Data' }) : average6.toFixed(2)}
-						</dd>
-					</div>
-					<div>
-						<dt><Rarity rarity={5} /> {tr({ zh: '平均征集次数', en: 'Average Summons' })}</dt>
-						<dd class="font-medium">
-							{isNaN(average5) ? tr({ zh: '无数据', en: 'No Data' }) : average5.toFixed(2)}
-						</dd>
-					</div>
-				</dl>
-			</div>
-		</section>
-
-		<div class="h-2.5 border-t border-gray-300 bg-stripe"></div>
-
-		<section class="border-t border-b border-gray-300 bg-white/50 col-span-2">
-			<header
-				class="flex flex-row items-stretch text-ms border-b border-gray-300 p-1 gap-1"
-				role="radiogroup"
-				aria-label={tr({ zh: '选择星级', en: 'Select Rarity' })}
-			>
-				{#each [6, 5] as const as rarity (rarity)}
-					{@const selected = selectedRarity === rarity}
-					<button
-						class="py-1 flex-1 cursor-pointer rounded-xs ring-0 ring-inset ring-gray-200 aria-checked:ring-1 aria-checked:bg-gray-100"
-						onclick={() => (selectedRarity = rarity)}
-						role="radio"
-						aria-checked={selected}
-					>
-						<Rarity rarity={rarity} class={['-mr-px', !selected && 'text-neutral-400']} />
-					</button>
-				{/each}
-			</header>
-
-			<ol
-				class="gains min-h-8"
-				aria-live="polite"
-				aria-label={tr({ zh: '获取的角色', en: 'Arcanist Gains' })}
-			>
-				{#each pastGains[selectedRarity] as gain (gain.key)}
-					<li class="p-2 pb-4 relative *:text-center">
-						<div class="aspect-4/7 m-[12%] mb-0 border border-gray-200 bg-gray-50 bg-stripe rounded-t-full overflow-hidden">
-							<div class="-mx-px">
-								<img
-									src="https://cdn.jsdelivr.net/gh/myssal/Reverse-1999-CN-Asset/singlebg/headicon_middle/{gain.arcanist.id}01.png"
-									alt={tr(gain.arcanist.name)}
-								/>
-							</div>
-						</div>
-
-						<p class="font-medium text-gray-600 mt-3">{tr(gain.arcanist.name)}</p>
-						<p class="count text-sm text-gray-600" class:up={gain.win}>
-							<span class="sr-only">
-								{tr({ zh: '消耗征集次数：', en: 'Summons Invested:' })}
-							</span>
-							{gain.invested}
-							<span class="sr-only">
-								{gain.win ? tr({ zh: '(UP没歪)', en: '(50/50 win)' }) : ''}
-							</span>
-						</p>
-					</li>
-				{:else}
-					<li class="text-gray-500 text-center border-0 col-span-full p-4">
-						{tr({ zh: '无数据', en: 'No Data' })}
-					</li>
-				{/each}
-			</ol>
-		</section>
+		<History
+			pool={tr(poolNames.get(selectedPoolType) ?? { zh: '未知', en: 'Unknown' })}
+			gains={history.get(selectedUserId)?.get(selectedPoolType) ?? []}
+		/>
 	</main>
 </section>
 
@@ -360,46 +205,6 @@
 			&.active {
 				@apply bg-white/50;
 				@apply cursor-default;
-			}
-		}
-
-		.gains {
-			@apply grid grid-cols-5;
-
-			li:not(.empty) {
-				@apply border-r border-b border-gray-300;
-			}
-
-			li:nth-child(5n) {
-				@apply border-r-0;
-			}
-
-			/* https://keithclark.co.uk/articles/targeting-first-and-last-rows-in-css-grid-layouts/ */
-			li:nth-child(5n+1):nth-last-child(-n+5),
-			li:nth-child(5n+1):nth-last-child(-n+5) ~ li {
-				@apply border-b-0;
-			}
-
-			.count {
-				@apply flex justify-center items-center gap-0.5;
-
-				&::before {
-					@apply border-l;
-				}
-
-				&::after {
-					@apply border-r;
-				}
-
-				&::before, &::after {
-					content: '';
-					@apply w-1 h-4;
-					@apply border-gray-300 border-y;
-				}
-
-				&.up::before, &.up::after {
-					@apply border-amber-500;
-				}
 			}
 		}
 	}

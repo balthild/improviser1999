@@ -1,10 +1,11 @@
 import { idb } from '$lib/idb';
+import type { GameUserId } from '$lib/types/primitive';
 import type { QuerySummonRecord } from '$lib/types/summon';
 
 import { fetchSummons } from './fetch.remote';
 
 export async function doImport(url: string) {
-	const userId = new URL(url).searchParams.get('userId')!;
+	const userId = new URL(url).searchParams.get('userId')! as GameUserId;
 
 	const result = await fetchSummons(url);
 	if (result.code !== 200) {
@@ -17,7 +18,7 @@ export async function doImport(url: string) {
 	return { imported };
 }
 
-async function doImportPage(userId: string, records: QuerySummonRecord[]) {
+async function doImportPage(userId: GameUserId, records: QuerySummonRecord[]) {
 	let imported = 0;
 
 	for (const record of records) {

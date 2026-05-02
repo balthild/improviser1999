@@ -3,9 +3,11 @@ import type { EntityTable } from 'dexie';
 
 import type { QuerySummonRecord } from '$lib/types/summon';
 
+import type { GameUserId } from './types/primitive';
+
 export interface Summon {
 	id: number;
-	userId: string;
+	userId: GameUserId;
 	record: QuerySummonRecord;
 }
 
@@ -18,6 +20,7 @@ idb.version(1).stores({
 		++id,
 		userId,
 		record.poolId,
+		record.poolType,
 		record.summonType,
 		record.createTime,
 		*record.gainIds,

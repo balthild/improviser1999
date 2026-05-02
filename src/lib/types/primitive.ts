@@ -1,6 +1,8 @@
 declare const __brand: unique symbol;
 type Brand<T extends string> = { [__brand]: T };
 
+export type GameUserId = string & Brand<'GameUserId'>;
+
 export type PoolId = number & Brand<'PoolId'>;
 export type PoolTypeId = number & Brand<'PoolTypeId'>;
 export type ArcanistId = number & Brand<'ArcanistId'>;
