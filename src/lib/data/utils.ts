@@ -1,4 +1,11 @@
-import type { ChapterNum, CommonStageKey, EpisodeNum } from '$lib/types/primitive';
+import type {
+	ChapterNum,
+	CommonStageKey,
+	EpisodeNum,
+	IsolatedPoolKey,
+	PoolId,
+	PoolTypeId,
+} from '$lib/types/primitive';
 
 export function renderChapterNum(chapter: number, uppercase = true) {
 	const suffixes = {
@@ -34,7 +41,7 @@ export function parseLevelReportKey(key: string) {
 }
 
 /**
- * Note: keep in sync with `stage` field returned by `parseLevelReportKey`
+ * keep in sync with `stage` field returned by `parseLevelReportKey`
  */
 export function commonStageKey(
 	chapter: ChapterNum,
@@ -42,4 +49,16 @@ export function commonStageKey(
 	difficulty: '普通' | '厄险',
 ) {
 	return `${chapter}-${episode}${difficulty}` as CommonStageKey;
+}
+
+/**
+ * some types of pools have independent pity counters
+ */
+export function isolatedPoolKey(id: PoolId, type: PoolTypeId) {
+	// https://res1999.huijiwiki.com/wiki/征集系统
+	if ([6, 7, 21].includes(type)) {
+		return `id=${id}` as IsolatedPoolKey;
+	} else {
+		return `type=${type}` as IsolatedPoolKey;
+	}
 }

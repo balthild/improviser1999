@@ -5,10 +5,10 @@
 
 	import { expand } from '$lib/components/parts/expand.svelte';
 	import Rarity from '$lib/components/rarity.svelte';
-	import { dummyArcanist, dummyPool } from '$lib/data';
+	import { dummyArcanist, dummyPool, isolatedPoolKey } from '$lib/data';
 	import { tr } from '$lib/i18n.svelte';
 	import { idb } from '$lib/idb';
-	import type { GameUserId, PoolTypeId } from '$lib/types/primitive';
+	import type { GameUserId, IsolatedPoolKey } from '$lib/types/primitive';
 	import { distinct } from '$lib/utils';
 
 	import type { Snapshot } from './$types';
@@ -26,33 +26,38 @@
 	const userIds = $derived(distinct($rawSummons?.map((it) => it.userId)).sort());
 
 	// TODO: sort in predefined order
-	const poolTypes = $derived(distinct($rawSummons?.map((it) => it.record.poolType)).reverse());
+	const poolKeys = $derived(
+		distinct($rawSummons?.map((it) => isolatedPoolKey(it.record.poolId, it.record.poolType))),
+	);
 
 	const poolNames = $derived.by(() => {
-		const result = new SvelteMap<PoolTypeId, { zh: string; en: string }>();
+		const result = new SvelteMap<IsolatedPoolKey, { zh: string; en: string }>();
 
 		for (const summon of $rawSummons ?? []) {
-			const name = data.pools[summon.record.poolId]?.name ?? {
+			const { poolId, poolType } = summon.record;
+
+			const key = isolatedPoolKey(poolId, poolType);
+			const name = data.pools[poolId]?.name ?? {
 				zh: summon.record.poolName,
 				en: summon.record.poolName,
 			};
 
-			result.set(summon.record.poolType, name);
+			result.set(key, name);
 		}
 
 		return result;
 	});
 
 	const history = $derived.by(() => {
-		const result = new SvelteMap<GameUserId, SvelteMap<PoolTypeId, Gain[]>>(
-			userIds.map((id) => [id, new SvelteMap(poolTypes.map((type) => [type, []]))]),
+		const result = new SvelteMap<GameUserId, SvelteMap<IsolatedPoolKey, Gain[]>>(
+			userIds.map((id) => [id, new SvelteMap(poolKeys.map((key) => [key, []]))]),
 		);
 
 		for (const summon of $rawSummons ?? []) {
 			const { userId } = summon;
 			const { poolId, poolType } = summon.record;
 
-			const gains = result.get(userId)!.get(poolType)!;
+			const gains = result.get(userId)!.get(isolatedPoolKey(poolId, poolType))!;
 
 			for (const [index, gainId] of summon.record.gainIds.entries()) {
 				const arcanist = data.arcanists[gainId] ?? dummyArcanist({ id: gainId });
@@ -86,7 +91,7 @@
 	});
 
 	let selectedUserId = $state('' as GameUserId);
-	let selectedPoolType = $state(0 as PoolTypeId);
+	let selectedPoolKey = $state('' as IsolatedPoolKey);
 
 	// looks like an anti-pattern but it works as for now ¯\_(ツ)_/¯
 	$effect(() => {
@@ -94,13 +99,13 @@
 			selectedUserId = userIds[0];
 		}
 
-		if (!poolTypes.includes(untrack(() => selectedPoolType))) {
-			selectedPoolType = poolTypes[0];
+		if (!poolKeys.includes(untrack(() => selectedPoolKey))) {
+			selectedPoolKey = poolKeys[0];
 		}
 	});
 
 	const invested6 = $derived.by(() => {
-		const result = new SvelteMap<PoolTypeId, number>();
+		const result = new SvelteMap<IsolatedPoolKey, number>();
 
 		for (const [pool, gains] of history.get(selectedUserId)?.entries() ?? []) {
 			const index = gains.findIndex((it) => it.arcanist.rarity === 6);
@@ -110,12 +115,12 @@
 		return result;
 	});
 
-	export const snapshot: Snapshot<[GameUserId, PoolTypeId]> = {
+	export const snapshot: Snapshot<[GameUserId, IsolatedPoolKey]> = {
 		capture: () => {
-			return [selectedUserId, selectedPoolType];
+			return [selectedUserId, selectedPoolKey];
 		},
 		restore: (value) => {
-			[selectedUserId, selectedPoolType] = value ?? [];
+			[selectedUserId, selectedPoolKey] = value ?? [];
 		},
 	};
 </script>
@@ -162,17 +167,17 @@
 	</div>
 
 	<aside class="w-50 pb-4 border-t border-gray-300">
-		{#each poolTypes as poolType (poolType)}
+		{#each poolKeys as poolKey (poolKey)}
 			<button
 				class="pool block w-full text-left"
-				class:active={poolType === selectedPoolType}
-				onclick={() => (selectedPoolType = poolType)}
+				class:active={poolKey === selectedPoolKey}
+				onclick={() => (selectedPoolKey = poolKey)}
 			>
 				<p class="text-lg font-semibold">
-					{invested6.get(poolType)}&ThinSpace;/&ThinSpace;{poolType === 2 ? 30 : 70}
+					{invested6.get(poolKey)}&ThinSpace;/&ThinSpace;{poolKey === `type=2` ? 30 : 70}
 				</p>
 				<p class="text-xs font-medium"><Rarity rarity={6} /> {tr({ zh: '保底', en: 'Pity' })}</p>
-				<p class="text-sm font-medium mt-2 mb-px">{tr(poolNames.get(poolType)!)}</p>
+				<p class="text-sm font-medium mt-2 mb-px">{tr(poolNames.get(poolKey)!)}</p>
 			</button>
 		{:else}
 			<button class="pool block w-full text-left">
@@ -185,8 +190,8 @@
 
 	<main class="pb-4 border-l border-t border-gray-300">
 		<History
-			pool={tr(poolNames.get(selectedPoolType) ?? { zh: '未知', en: 'Unknown' })}
-			gains={history.get(selectedUserId)?.get(selectedPoolType) ?? []}
+			pool={tr(poolNames.get(selectedPoolKey) ?? { zh: '未知', en: 'Unknown' })}
+			gains={history.get(selectedUserId)?.get(selectedPoolKey) ?? []}
 		/>
 	</main>
 </section>

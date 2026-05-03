@@ -12,4 +12,5 @@ export type StageId = number & Brand<'StageId'>;
 export type ChapterNum = number & Brand<'ChapterNum'>;
 export type EpisodeNum = number & Brand<'EpisodeNum'>;
 
+export type IsolatedPoolKey = string & Brand<'IsolatedPoolKey'>;
 export type CommonStageKey = string & Brand<'CommonStageKey'>;
