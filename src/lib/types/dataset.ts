@@ -48,6 +48,7 @@ export interface Pool {
 	type: PoolTypeId;
 	name: { zh: string; en: string };
 	pity: number;
+	order: number;
 	arcanists?: {
 		options?: ArcanistId[];
 		up6?: ArcanistId[];

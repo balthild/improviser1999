@@ -14,3 +14,5 @@ export type EpisodeNum = number & Brand<'EpisodeNum'>;
 
 export type IsolatedPoolKey = string & Brand<'IsolatedPoolKey'>;
 export type CommonStageKey = string & Brand<'CommonStageKey'>;
+
+export type Comparable = string | number | boolean | bigint;

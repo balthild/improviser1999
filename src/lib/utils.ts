@@ -1,9 +1,20 @@
+import type { Comparable } from './types/primitive';
+
 export function percent(value: number): string {
 	return `${(value * 100).toFixed(2)}%`;
 }
 
 export function distinct<T>(items: Iterable<T>): T[] {
 	return Array.from(new Set(items));
+}
+
+export function compare(...pairs: [Comparable, Comparable][]): number {
+	for (const [left, right] of pairs) {
+		if (left < right) return -1;
+		if (left > right) return 1;
+	}
+
+	return 0;
 }
 
 export function keyBy<T, K extends PropertyKey>(array: T[], key: (item: T) => K): Record<K, T> {

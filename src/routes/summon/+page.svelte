@@ -9,7 +9,7 @@
 	import { tr } from '$lib/i18n.svelte';
 	import { idb } from '$lib/idb';
 	import type { GameUserId, IsolatedPoolKey } from '$lib/types/primitive';
-	import { distinct } from '$lib/utils';
+	import { compare, distinct } from '$lib/utils';
 
 	import type { Snapshot } from './$types';
 	import type { Gain } from './history.svelte';
@@ -25,10 +25,26 @@
 
 	const userIds = $derived(distinct($rawSummons?.map((it) => it.userId)).sort());
 
-	// TODO: sort in predefined order
-	const poolKeys = $derived(
-		distinct($rawSummons?.map((it) => isolatedPoolKey(it.record.poolId, it.record.poolType))),
-	);
+	const poolKeys = $derived.by(() => {
+		const info = new Map(
+			$rawSummons?.map((it) => {
+				const { poolId, poolType } = it.record;
+				const key = isolatedPoolKey(poolId, poolType);
+				const pool = data.pools[poolId];
+				const info = {
+					id: poolId,
+					order: poolId === 2 ? 999 : pool.order,
+				};
+				return [key, info];
+			}),
+		);
+
+		return Array.from(info.keys()).sort((left, right) => {
+			const a = info.get(left)!;
+			const b = info.get(right)!;
+			return compare([a.order, b.order], [b.id, a.id]);
+		});
+	});
 
 	const poolNames = $derived.by(() => {
 		const result = new SvelteMap<IsolatedPoolKey, { zh: string; en: string }>();
