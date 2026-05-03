@@ -12,8 +12,8 @@ export async function doImport(url: string) {
 		return { error: result.msg };
 	}
 
+	// although it is called `pageData`, it actually contains all records
 	const imported = await doImportPage(userId, result.data.pageData);
-	// TODO: loop through pages?
 
 	return { imported };
 }
