@@ -32,7 +32,7 @@
 
 		props.onclose();
 
-		alert(
+		await alert(
 			result.error
 				? tr({
 						zh: `导入失败：${result.error}`,
