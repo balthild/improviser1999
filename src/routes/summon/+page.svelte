@@ -115,6 +115,7 @@
 	let selectedUserId = $state('' as GameUserId);
 	let selectedPoolKey = $state('' as IsolatedPoolKey);
 
+	// do this rather than `pools.keys()` to maintain the order
 	const investedPools = $derived.by(() => {
 		const pools = history.get(selectedUserId);
 		return poolKeys.filter((key) => pools?.has(key));
