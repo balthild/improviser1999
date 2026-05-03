@@ -66,14 +66,16 @@
 
 	const history = $derived.by(() => {
 		const result = new SvelteMap<GameUserId, SvelteMap<IsolatedPoolKey, Gain[]>>(
-			userIds.map((id) => [id, new SvelteMap(poolKeys.map((key) => [key, []]))]),
+			userIds.map((id) => [id, new SvelteMap()]),
 		);
 
 		for (const summon of $rawSummons ?? []) {
 			const { userId } = summon;
 			const { poolId, poolType } = summon.record;
+			const poolKey = isolatedPoolKey(poolId, poolType);
 
-			const gains = result.get(userId)!.get(isolatedPoolKey(poolId, poolType))!;
+			const pools = result.get(userId)!;
+			const gains = pools.get(poolKey) ?? [];
 
 			for (const [index, gainId] of summon.record.gainIds.entries()) {
 				const arcanist = data.arcanists[gainId] ?? dummyArcanist({ id: gainId });
@@ -95,11 +97,15 @@
 					win,
 				});
 			}
+
+			if (gains.length > 0) {
+				pools.set(poolKey, gains);
+			}
 		}
 
-		for (const userGains of result.values()) {
-			for (const poolGains of userGains.values()) {
-				poolGains.reverse();
+		for (const pools of result.values()) {
+			for (const gains of pools.values()) {
+				gains.reverse();
 			}
 		}
 
@@ -183,7 +189,7 @@
 	</div>
 
 	<aside class="w-50 pb-4 border-t border-gray-300">
-		{#each poolKeys as poolKey (poolKey)}
+		{#each history.get(selectedUserId)?.keys() as poolKey (poolKey)}
 			<button
 				class="pool block w-full text-left"
 				class:active={poolKey === selectedPoolKey}
