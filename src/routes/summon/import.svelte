@@ -44,7 +44,7 @@
 					}),
 		);
 
-		if (!result.error) {
+		if (result.error) {
 			props.onopen();
 		}
 	};
