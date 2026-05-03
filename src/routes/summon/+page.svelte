@@ -115,14 +115,19 @@
 	let selectedUserId = $state('' as GameUserId);
 	let selectedPoolKey = $state('' as IsolatedPoolKey);
 
+	const investedPools = $derived.by(() => {
+		const pools = history.get(selectedUserId);
+		return poolKeys.filter((key) => pools?.has(key));
+	});
+
 	// looks like an anti-pattern but it works as for now ¯\_(ツ)_/¯
 	$effect(() => {
 		if (!userIds.includes(untrack(() => selectedUserId))) {
 			selectedUserId = userIds[0];
 		}
 
-		if (!poolKeys.includes(untrack(() => selectedPoolKey))) {
-			selectedPoolKey = poolKeys[0];
+		if (!investedPools.includes(untrack(() => selectedPoolKey))) {
+			selectedPoolKey = investedPools[0];
 		}
 	});
 
@@ -189,7 +194,7 @@
 	</div>
 
 	<aside class="w-50 pb-4 border-t border-gray-300">
-		{#each history.get(selectedUserId)?.keys() as poolKey (poolKey)}
+		{#each investedPools as poolKey (poolKey)}
 			<button
 				class="pool block w-full text-left"
 				class:active={poolKey === selectedPoolKey}
