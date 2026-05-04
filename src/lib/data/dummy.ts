@@ -37,6 +37,7 @@ export function dummyPool(pool: PartialPool): Pool {
 			en: pool.name?.en ?? String(pool.id),
 		},
 		pity: pool.pity ?? 70,
+		order: pool.order ?? 4,
 		arcanists: pool.arcanists ?? {},
 	};
 }
