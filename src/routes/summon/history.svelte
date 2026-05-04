@@ -43,7 +43,7 @@
 		return wins / gains[6].length;
 	});
 
-	const satisfied6 = $derived.by(() => {
+	const expect6 = $derived.by(() => {
 		const first = gains[6].findIndex((it) => it.win !== undefined);
 		if (first === -1) {
 			return undefined;
@@ -117,13 +117,13 @@
 					</dd>
 				</div>
 			{/if}
-			{#if satisfied6 !== undefined}
+			{#if expect6 !== undefined}
 				<div>
 					<dt>
 						<Rarity rarity={6} /> {tr({ zh: 'UP 不歪期望值', en: '50/50 Win Expectation' })}
 					</dt>
 					<dd class="font-medium">
-						{isNaN(satisfied6) ? tr({ zh: '无数据', en: 'No Data' }) : satisfied6.toFixed(2)}
+						{isNaN(expect6) ? tr({ zh: '无数据', en: 'No Data' }) : expect6.toFixed(2)}
 					</dd>
 				</div>
 			{/if}
