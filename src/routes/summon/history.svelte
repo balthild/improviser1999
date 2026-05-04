@@ -42,6 +42,17 @@
 		const wins = gains[6].filter((it) => it.win).length;
 		return wins / gains[6].length;
 	});
+
+	const satisfied6 = $derived.by(() => {
+		const first = gains[6].findIndex((it) => it.win !== undefined);
+		if (first === -1) {
+			return undefined;
+		}
+
+		const count = gains[6].filter((it) => it.win).length;
+		const total = gains[6].slice(first).reduce((sum, it) => sum + it.invested, 0);
+		return total / count;
+	});
 </script>
 
 <script lang="ts" module>
@@ -66,16 +77,16 @@
 				<dd class="font-medium">{props.gains.length}</dd>
 			</div>
 			<div>
-				<dt><Rarity rarity={6} /> {tr({ zh: '获取次数', en: 'Gains' })}</dt>
-				<dd class="font-medium">{gains[6].length}</dd>
+				<dt><Rarity rarity={4} /> {tr({ zh: '获取次数', en: 'Gains' })}</dt>
+				<dd class="font-medium">{gains[4].length}</dd>
 			</div>
 			<div>
 				<dt><Rarity rarity={5} /> {tr({ zh: '获取次数', en: 'Gains' })}</dt>
 				<dd class="font-medium">{gains[5].length}</dd>
 			</div>
 			<div>
-				<dt><Rarity rarity={4} /> {tr({ zh: '获取次数', en: 'Gains' })}</dt>
-				<dd class="font-medium">{gains[4].length}</dd>
+				<dt><Rarity rarity={6} /> {tr({ zh: '获取次数', en: 'Gains' })}</dt>
+				<dd class="font-medium">{gains[6].length}</dd>
 			</div>
 		</dl>
 	</div>
@@ -86,26 +97,36 @@
 		</h3>
 
 		<dl class="space-y-1 text-sm tabular-nums *:flex *:justify-between">
-			{#if wins6 !== undefined}
-				<div>
-					<dt><Rarity rarity={6} /> {tr({ zh: 'UP 不歪率', en: '50/50 Wins' })}</dt>
-					<dd class="font-medium">
-						{isNaN(wins6) ? tr({ zh: '无数据', en: 'No Data' }) : percent(wins6)}
-					</dd>
-				</div>
-			{/if}
-			<div>
-				<dt><Rarity rarity={6} /> {tr({ zh: '平均征集次数', en: 'Average Summons' })}</dt>
-				<dd class="font-medium">
-					{isNaN(average6) ? tr({ zh: '无数据', en: 'No Data' }) : average6.toFixed(2)}
-				</dd>
-			</div>
 			<div>
 				<dt><Rarity rarity={5} /> {tr({ zh: '平均征集次数', en: 'Average Summons' })}</dt>
 				<dd class="font-medium">
 					{isNaN(average5) ? tr({ zh: '无数据', en: 'No Data' }) : average5.toFixed(2)}
 				</dd>
 			</div>
+			<div>
+				<dt><Rarity rarity={6} /> {tr({ zh: '平均征集次数', en: 'Average Summons' })}</dt>
+				<dd class="font-medium">
+					{isNaN(average6) ? tr({ zh: '无数据', en: 'No Data' }) : average6.toFixed(2)}
+				</dd>
+			</div>
+			{#if wins6 !== undefined}
+				<div>
+					<dt><Rarity rarity={6} /> {tr({ zh: 'UP 不歪率', en: '50/50 Win Rate' })}</dt>
+					<dd class="font-medium">
+						{isNaN(wins6) ? tr({ zh: '无数据', en: 'No Data' }) : percent(wins6)}
+					</dd>
+				</div>
+			{/if}
+			{#if satisfied6 !== undefined}
+				<div>
+					<dt>
+						<Rarity rarity={6} /> {tr({ zh: 'UP 不歪期望值', en: '50/50 Win Expectation' })}
+					</dt>
+					<dd class="font-medium">
+						{isNaN(satisfied6) ? tr({ zh: '无数据', en: 'No Data' }) : satisfied6.toFixed(2)}
+					</dd>
+				</div>
+			{/if}
 		</dl>
 	</div>
 </section>
