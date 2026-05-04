@@ -19,7 +19,7 @@
 		),
 	);
 
-	let selectedChapter = $state(1 as unknown as ChapterNum);
+	let selectedChapter = $state(1 as ChapterNum);
 
 	const selectedEpisodes = $derived(
 		Object.values(data.chapters[selectedChapter].episodes).map((episode) => {
@@ -76,7 +76,12 @@
 					<span class="text-4xl font-medium font-garamond leading-[1em]">
 						{episode.num.toString().padStart(2, '0')}
 					</span>
-					<span class="h-5 mx-2 border-r border-gray-400 translate-y-0.5 -skew-x-25"></span>
+
+					<div class="mx-2 flex flex-col items-center self-end rotate-24">
+						<div class="size-0.5 rounded-full bg-gray-400 mb-0.75"></div>
+						<div class="h-4 w-px bg-gray-400 mb-0.5"></div>
+					</div>
+
 					<div class="ml-1 -mb-px flex gap-5 items-center h-6">
 						<span>{tr(episode.title)}</span>
 
