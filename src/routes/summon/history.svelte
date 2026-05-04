@@ -93,7 +93,7 @@
 	<div class="border-r border-gray-300"></div>
 	<div class="flex-1 p-3" aria-live="polite">
 		<h3 class="truncate text-ml font-semibold mb-2">
-			{tr({ zh: '运气指标', en: 'Luck Metrics' })}
+			{tr({ zh: '幸运指数', en: 'Luckiness' })}
 		</h3>
 
 		<dl class="space-y-1 text-sm tabular-nums *:flex *:justify-between">
