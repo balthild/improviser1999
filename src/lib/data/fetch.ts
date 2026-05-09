@@ -6,6 +6,7 @@ const sources: DatasetSources = {
 	materials: 'https://r2.balthild.com/improviser1999/materials.json',
 	chapters: 'https://r2.balthild.com/improviser1999/chapters.json',
 	stages: 'https://r2.balthild.com/improviser1999/stages.json',
+	resonances: 'https://r2.balthild.com/improviser1999/resonances.json',
 
 	drops:
 		'https://cdn.jsdelivr.net/gh/SaionjiReisaki/cpp-data/files/reverse1999-hisboundenduty-drops-china.json',

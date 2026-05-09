@@ -9,6 +9,10 @@ export type ArcanistId = number & Brand<'ArcanistId'>;
 export type MaterialId = number & Brand<'MaterialId'>;
 export type StageId = number & Brand<'StageId'>;
 
+export type ResonanceModelId = number & Brand<'ResonanceModelId'>;
+export type ResonanceCubeId = number & Brand<'ResonanceCubeId'>;
+export type ResonancePatternId = number & Brand<'ResonancePatternId'>;
+
 export type ChapterNum = number & Brand<'ChapterNum'>;
 export type EpisodeNum = number & Brand<'EpisodeNum'>;
 
