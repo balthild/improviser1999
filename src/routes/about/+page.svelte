@@ -29,6 +29,13 @@
 
 	<p>
 		<Translation
+			zh="本项目所使用或展示的游戏资源（包括但不限于：游戏图片、动画、音频、文本原文或其转译版本等）仅用于更好地表现游戏资料、增强用户体验，其版权属于广州深蓝互动网络科技有限公司或其关联公司。"
+			en="The game assets used or displayed in this project (including but not limited to: game images, animations, audio, original texts or their translations, etc.) are only used to better present the game information and enhance user experience. The copyright belongs to Bluepoch Game Co., Ltd. or its affiliates."
+		/>
+	</p>
+
+	<p>
+		<Translation
 			zh="本项目还使用或展示了来自以下项目的数据或资源文件，它们的许可协议请参阅各自的项目页面："
 			en="This project also uses or displays data or resource files from the following projects. Please refer to their homepages for licenses:"
 		/>
