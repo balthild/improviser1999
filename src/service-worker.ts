@@ -12,12 +12,12 @@ worker.addEventListener('fetch', (event) => {
 	if (event.request.url.includes('//cdn.jsdelivr.net/gh/myssal/Reverse-1999-CN-Asset/')) {
 		event.respondWith(
 			(async () => {
-				const cache = await caches.open('reverse1999-assets');
-				const cached = await cache.match(event.request);
-				if (cached) return cached;
+				const storage = await caches.open('reverse1999-assets');
+				const cached = await storage.match(event.request);
+				if (cached?.ok) return cached;
 
 				const fresh = await fetch(event.request);
-				cache.put(event.request, fresh.clone());
+				if (fresh.ok) storage.put(event.request, fresh.clone());
 				return fresh;
 			})(),
 		);
