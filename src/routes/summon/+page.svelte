@@ -84,8 +84,9 @@
 				const last = gains.findLastIndex((it) => it.arcanist.rarity === arcanist.rarity);
 				const invested = gains.length - last;
 
-				const up = pool.arcanists?.[`up${arcanist.rarity as 6 | 5}`];
-				const win = up?.includes(arcanist.id);
+				const rarity = arcanist.rarity as 6 | 5;
+				const up = pool.arcanists?.[`up${rarity}`]?.includes(arcanist.id);
+				const win = up && (last == -1 ? true : gains[last].up);
 
 				gains.push({
 					key: `${summon.id},${index}`,
@@ -94,6 +95,7 @@
 					arcanist,
 					pool,
 					invested,
+					up,
 					win,
 				});
 			}

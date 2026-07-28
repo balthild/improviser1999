@@ -40,16 +40,18 @@
 		}
 
 		const wins = gains[6].filter((it) => it.win).length;
-		return wins / gains[6].length;
+		const total = (gains[6].length + wins) / 2;
+
+		return wins / total;
 	});
 
 	const expect6 = $derived.by(() => {
-		const first = gains[6].findIndex((it) => it.win !== undefined);
+		const first = gains[6].findIndex((it) => it.up !== undefined);
 		if (first === -1) {
 			return undefined;
 		}
 
-		const count = gains[6].filter((it) => it.win).length;
+		const count = gains[6].filter((it) => it.up).length;
 		const total = gains[6].slice(first).reduce((sum, it) => sum + it.invested, 0);
 		return total / count;
 	});
@@ -63,6 +65,7 @@
 		arcanist: Arcanist;
 		pool: Pool;
 		invested: number;
+		up: boolean | undefined;
 		win: boolean | undefined;
 	}
 </script>
@@ -169,14 +172,22 @@
 				</div>
 
 				<p class="font-medium text-gray-600 mt-3">{tr(gain.arcanist.name)}</p>
-				<p class="count text-sm text-gray-600" class:up={gain.win}>
+				<p class="count text-sm text-gray-600" class:win={gain.win}>
 					<span class="sr-only">
 						{tr({ zh: '消耗征集次数：', en: 'Summons Invested:' })}
 					</span>
 					{gain.invested}
-					<span class="sr-only">
-						{gain.win ? tr({ zh: '(UP没歪)', en: '(50/50 win)' }) : ''}
-					</span>
+
+					{#if gain.up || gain.win}
+						{@const texts = [
+							gain.up && tr({ zh: 'UP角色', en: 'Rate-Up' }),
+							gain.win && tr({ zh: '没歪', en: '50/50 Win' }),
+						]}
+
+						<span class="sr-only">
+							({texts.filter(Boolean).join(', ')})
+						</span>
+					{/if}
 				</p>
 			</li>
 		{:else}
@@ -225,7 +236,7 @@
 					@apply border-gray-300 border-y;
 				}
 
-				&.up::before, &.up::after {
+				&.win::before, &.win::after {
 					@apply border-amber-500;
 				}
 			}
