@@ -207,16 +207,8 @@
 
 			li:not(.empty) {
 				@apply border-r border-b border-gray-300;
-			}
-
-			li:nth-child(5n) {
-				@apply border-r-0;
-			}
-
-			/* https://keithclark.co.uk/articles/targeting-first-and-last-rows-in-css-grid-layouts/ */
-			li:nth-child(5n+1):nth-last-child(-n+5),
-			li:nth-child(5n+1):nth-last-child(-n+5) ~ li {
-				@apply border-b-0;
+				@apply last-col-[5]:border-r-0;
+				@apply last-row-[5]:border-b-0;
 			}
 
 			.count {
