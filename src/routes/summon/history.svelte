@@ -114,7 +114,7 @@
 			</div>
 			{#if wins6 !== undefined}
 				<div>
-					<dt><Rarity rarity={6} /> {tr({ zh: 'UP 不歪率', en: '50/50 Win Rate' })}</dt>
+					<dt><Rarity rarity={6} /> {tr({ zh: 'UP 不歪率', en: 'Rate-Up 50/50 Win Rate' })}</dt>
 					<dd class="font-medium">
 						{isNaN(wins6) ? tr({ zh: '无数据', en: 'No Data' }) : percent(wins6)}
 					</dd>
@@ -123,7 +123,7 @@
 			{#if expect6 !== undefined}
 				<div>
 					<dt>
-						<Rarity rarity={6} /> {tr({ zh: 'UP 不歪期望值', en: '50/50 Win Expectation' })}
+						<Rarity rarity={6} /> {tr({ zh: 'UP 获取期望值', en: 'Rate-Up Average Summons' })}
 					</dt>
 					<dd class="font-medium">
 						{isNaN(expect6) ? tr({ zh: '无数据', en: 'No Data' }) : expect6.toFixed(2)}
