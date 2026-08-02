@@ -57,6 +57,8 @@ export interface ValuesDataset {
 
 // #endregion
 
+// #region object
+
 export interface Pool {
 	id: PoolId;
 	type: PoolTypeId;
@@ -111,6 +113,8 @@ export type StageDropReport = {
 	count: number;
 	drops: Record<MaterialId, number>;
 };
+
+// #endregion
 
 // #region resonance
 

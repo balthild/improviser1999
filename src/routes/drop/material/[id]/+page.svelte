@@ -12,6 +12,8 @@
 	import type { CommonStageKey, MaterialId, StageId } from '$lib/types/primitive';
 	import { keyBy, percent } from '$lib/utils';
 
+	import Attribution from '../../attribution.svelte';
+
 	let { params, data } = $props();
 
 	const material = $derived(data.materials[params.id as unknown as MaterialId]);
@@ -137,4 +139,11 @@
 			</tr>
 		{/each}
 	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="6">
+				<Attribution drops={data.drops} />
+			</td>
+		</tr>
+	</tfoot>
 </table>
