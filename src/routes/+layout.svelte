@@ -3,6 +3,7 @@
 
 	import { computePosition, offset, shift } from '@floating-ui/dom';
 	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
+	import { tick } from 'svelte';
 
 	import favicon from '$lib/assets/favicon.svg';
 	import Alert from '$lib/components/alert.svelte';
@@ -49,7 +50,7 @@
 		},
 		restore: (value) => {
 			const elements = container?.osInstance()?.elements();
-			requestAnimationFrame(() => elements?.viewport.scrollTo({ top: value }));
+			void tick().then(() => elements?.viewport.scrollTo({ top: value }));
 		},
 	};
 </script>
