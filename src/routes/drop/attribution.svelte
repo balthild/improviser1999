@@ -14,7 +14,7 @@
 </script>
 
 <div class="flex items-center gap-2 text-xs">
-	<img src={asset('/image/by-nc.svg')} alt="CC BY-NC" />
+	<img src={asset('/image/by-nc.svg')} width="80" height="15" alt="CC BY-NC" />
 	<span>
 		<a
 			href={source}
