@@ -30,7 +30,7 @@
 			$rawSummons?.map((it) => {
 				const { poolId, poolType } = it.record;
 				const key = isolatedPoolKey(poolId, poolType);
-				const pool = data.pools[poolId];
+				const pool = data.pools[poolId] ?? dummyPool({ id: poolId, type: poolType });
 				const info = {
 					id: poolId,
 					order: poolId === 2 ? 999 : pool.order,
