@@ -6,6 +6,7 @@
 	import { page } from '$app/state';
 
 	import { alert } from '$lib/components/alert.svelte';
+	import External from '$lib/components/external.svelte';
 	import { validate } from '$lib/components/parts/validate.svelte';
 	import Translation from '$lib/components/translation.svelte';
 	import { tr } from '$lib/i18n.svelte';
@@ -123,31 +124,25 @@
 			</div>
 		{:else if selectedPlatform === 'Windows'}
 			<p>
-				{tr({ zh: '参见：', en: 'See: ' })}<a
+				{tr({ zh: '参见：', en: 'See: ' })}<External
 					href="https://www.timekeeper.top/auto_import.html"
-					target="_blank"
-					rel="external noopener noreferrer"
 					class="text-link"
-				>https://www.timekeeper.top/auto_import.html</a>
+				/>
 			</p>
 		{:else}
 			<p class="mb-0.5">{tr({ zh: '参见：', en: 'See: ' })}</p>
 			<ul class="list-disc ml-3.75 space-y-0.5">
 				<li>
-					<a
+					<External
 						href="https://mp.weixin.qq.com/s/bKMB42_hl8uLgWxUvLVQtQ"
-						target="_blank"
-						rel="external noopener noreferrer"
 						class="text-link"
-					>https://mp.weixin.qq.com/s/bKMB42_hl8uLgWxUvLVQtQ</a>
+					/>
 				</li>
 				<li>
-					<a
+					<External
 						href="https://mp.weixin.qq.com/s/LcH2a2FYdq_yX379haodPA"
-						target="_blank"
-						rel="external noopener noreferrer"
 						class="text-link"
-					>https://mp.weixin.qq.com/s/LcH2a2FYdq_yX379haodPA</a>
+					/>
 				</li>
 			</ul>
 		{/if}

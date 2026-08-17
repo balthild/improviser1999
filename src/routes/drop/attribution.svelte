@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { asset } from '$app/paths';
 
+	import External from '$lib/components/external.svelte';
 	import type { DropsDataset } from '$lib/types/dataset';
 
 	interface Props {
@@ -14,13 +15,11 @@
 </script>
 
 <div class="flex items-center gap-2 text-xs">
-	<img src={asset('/image/by-nc.svg')} width="80" height="15" alt="CC BY-NC" />
+	<External href="https://creativecommons.org/licenses/by-nc/4.0/">
+		<img src={asset('/image/by-nc.svg')} width="80" height="15" alt="CC BY-NC" />
+	</External>
 	<span>
-		<a
-			href={source}
-			rel="external noopener noreferrer"
-			target="_blank"
-			class="text-link no-underline"
-		>Source</a>. Data aggregated and reformatted. Last updated at {date}.
+		<External href={source} class="text-link no-underline">Source</External>. Data aggregated and
+		reformatted. Last updated at {date}.
 	</span>
 </div>

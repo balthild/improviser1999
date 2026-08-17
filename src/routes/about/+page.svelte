@@ -1,11 +1,8 @@
 <script lang="ts">
+	import External from '$lib/components/external.svelte';
 	import Translation from '$lib/components/translation.svelte';
 	import { tr } from '$lib/i18n.svelte';
 </script>
-
-{#snippet external(url: string)}
-	<a href={url} target="_blank" rel="external noopener noreferrer" class="text-link">{url}</a>
-{/snippet}
 
 <section class="p-6 space-y-3">
 	<h2 class="text-xl font-bold mb-5">{tr({ zh: '关于', en: 'About' })}</h2>
@@ -21,7 +18,7 @@
 		<li>
 			GitHub Repository
 			<br />
-			{@render external('https://github.com/balthild/improviser1999')}
+			<External href="https://github.com/balthild/improviser1999" class="text-link" />
 		</li>
 	</ul>
 
@@ -45,27 +42,27 @@
 		<li>
 			Reverse1999 Assets
 			<br />
-			{@render external('https://github.com/myssal/Reverse-1999-CN-Asset')}
+			<External href="https://github.com/myssal/Reverse-1999-CN-Asset" class="text-link" />
 		</li>
 		<li>
 			必要的记录 by 伴春风而归
 			<br />
-			{@render external('https://www.kdocs.cn/l/cd5MWeCl5bKw')}
+			<External href="https://www.kdocs.cn/l/cd5MWeCl5bKw" class="text-link" />
 		</li>
 		<li>
 			Closure[REVERSE1999][""]++
 			<br />
-			{@render external('https://cpp.orz.tools/reverse1999')}
+			<External href="https://cpp.orz.tools/reverse1999" class="text-link" />
 		</li>
 		<li>
 			重返未来 1999 中文维基
 			<br />
-			{@render external('https://res1999.huijiwiki.com')}
+			<External href="https://res1999.huijiwiki.com" class="text-link" />
 		</li>
 		<li>
 			Reverse: 1999 Wiki
 			<br />
-			{@render external('https://reverse1999.fandom.com')}
+			<External href="https://reverse1999.fandom.com" class="text-link" />
 		</li>
 	</ul>
 
