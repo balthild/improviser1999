@@ -114,7 +114,7 @@
 		{#each sorted as stat (stat.id)}
 			<tr>
 				<td>
-					<a href={resolve(`/drop/stage/${stat.id}`)} class="flex items-center gap-1">
+					<a href={resolve(`/drop/stage/${stat.id}`)} class="inline-flex items-center gap-1">
 						<span>{stat.stage.chapter}-{stat.stage.episode}</span>
 						<span class:text-red-800={stat.stage.difficulty === '厄险'}>
 							<Translation

@@ -19,6 +19,7 @@
 	const episode = $derived(data.chapters[stage.chapter].episodes[stage.episode]);
 
 	interface MaterialStat {
+		id: MaterialId;
 		material: Material;
 		samples: number;
 		drops: number;
@@ -59,10 +60,12 @@
 					return drops || stage.drops.includes(id);
 				})
 				.map(([id, drops]) => {
+					const material = data.materials[id] ?? dummyMaterial({ id });
 					const expectDropRate = drops / report.count;
 					const expectItemCost = report.cost / expectDropRate;
 					return {
-						material: data.materials[id] ?? dummyMaterial({ id }),
+						id,
+						material,
 						samples: report.count,
 						drops,
 						expectDropRate,
@@ -119,10 +122,10 @@
 		</tr>
 	</thead>
 	<tbody>
-		{#each sorted as stat (stat.material.id)}
+		{#each sorted as stat (stat.id)}
 			<tr>
 				<td>
-					<a href={resolve(`/drop/material/${stat.material.id}`)} class="flex items-center gap-1">
+					<a href={resolve(`/drop/material/${stat.id}`)} class="inline-flex items-center gap-1">
 						{tr(stat.material.name)}
 						<span class="icon-[ri--link-m] text-gray-400 [:hover>&]:text-gray-600"></span>
 					</a>
