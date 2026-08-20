@@ -25,7 +25,7 @@
 		resolve: () => void;
 	}
 
-	export const queue: Alert[] = $state([]);
+	const queue: Alert[] = $state([]);
 
 	export function alert(message: string) {
 		const { promise, resolve } = Promise.withResolvers<void>();
