@@ -1,3 +1,4 @@
+import type { Cookies } from '@sveltejs/kit';
 import Negotiator from 'negotiator';
 
 import { browser } from '$app/environment';
@@ -28,43 +29,56 @@ export function setLanguage(language: Language) {
 
 function getDefaultLanguage(): Language {
 	if (browser) {
-		return resolveRenderedLanguage() ?? resolveNavigatorLanguage() ?? 'zh';
+		return DefaultBrowserLanguage.resolve();
 	} else {
-		return resolveCookiesLanguage() ?? resolveAcceptLanguage() ?? 'zh';
+		return DefaultServerLanguage.resolve();
 	}
 }
 
-function resolveRenderedLanguage(): Language | undefined {
-	const language = document.documentElement.lang;
-	if (Object.hasOwn(languages, language)) {
-		return language as Language;
-	}
-}
+class DefaultBrowserLanguage {
+	private static language: Language | undefined;
 
-function resolveNavigatorLanguage(): Language | undefined {
-	for (const language of navigator.languages) {
-		const short = language.substring(0, 2);
-		if (Object.hasOwn(languages, short)) {
-			return short as Language;
+	public static resolve(): Language {
+		this.language ??= this.rendered() ?? this.navigator() ?? 'zh';
+		return this.language;
+	}
+
+	private static rendered(): Language | undefined {
+		const language = document.documentElement.lang;
+		if (Object.hasOwn(languages, language)) {
+			return language as Language;
+		}
+	}
+
+	private static navigator(): Language | undefined {
+		for (const language of navigator.languages) {
+			const short = language.substring(0, 2);
+			if (Object.hasOwn(languages, short)) {
+				return short as Language;
+			}
 		}
 	}
 }
 
-function resolveCookiesLanguage(): Language | undefined {
-	const { cookies } = getRequestEvent();
-
-	const language = cookies.get('improviser1999_language');
-	if (language && Object.hasOwn(languages, language)) {
-		return language as Language;
+class DefaultServerLanguage {
+	public static resolve(): Language {
+		const { request, cookies, locals } = getRequestEvent();
+		locals.language ??= this.cookies(cookies) ?? this.accept(request) ?? 'zh';
+		return locals.language;
 	}
-}
 
-function resolveAcceptLanguage(): Language | undefined {
-	const { request } = getRequestEvent();
+	private static cookies(cookies: Cookies): Language | undefined {
+		const language = cookies.get('improviser1999_language');
+		if (language && Object.hasOwn(languages, language)) {
+			return language as Language;
+		}
+	}
 
-	const headers = { 'accept-language': request.headers.get('accept-language') ?? '' };
-	const negotiator = new Negotiator({ headers });
-	const language = negotiator.language(Object.keys(languages));
+	private static accept(request: Request): Language | undefined {
+		const headers = { 'accept-language': request.headers.get('accept-language') ?? '' };
+		const negotiator = new Negotiator({ headers });
+		const language = negotiator.language(Object.keys(languages));
 
-	return language as Language | undefined;
+		return language as Language | undefined;
+	}
 }
