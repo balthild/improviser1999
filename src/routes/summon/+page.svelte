@@ -206,7 +206,7 @@
 	</div>
 
 	<aside class="w-50 pb-4 border-t border-gray-300">
-		<div class="text-xs p-2 border-b border-gray-300 flex gap-0.75" role="group">
+		<div class="text-xs py-1.75 px-2 border-b border-gray-300 flex gap-px" role="group">
 			<label class="filter" class:active={selectedPoolCategory === 'all'}>
 				<input type="radio" value="all" bind:group={selectedPoolCategory} />
 				{tr({ zh: '全部', en: 'All' })}
@@ -253,7 +253,7 @@
 	@layer components {
 		.filter {
 			@apply font-medium;
-			@apply px-1 py-0.25 rounded-xs;
+			@apply px-1.25 py-0.5 rounded-xs;
 			@apply cursor-pointer;
 			@apply transition-colors;
 			@apply a11y-ring;
@@ -265,6 +265,7 @@
 			&.active {
 				@apply bg-gray-500/25;
 				@apply text-gray-900;
+				@apply cursor-default;
 			}
 
 			input {
