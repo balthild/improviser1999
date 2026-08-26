@@ -117,37 +117,28 @@
 		}
 	});
 
-	let showStandardPools = $state(false);
-	let showLimitedPools = $state(false);
-	let showSpecialPools = $state(false);
+	type PoolCategory = 'all' | 'limited' | 'other';
+	let selectedPoolCategory = $state<PoolCategory>('all');
 
-	const shownPools = $derived.by(() => {
+	const filteredPoolKeys = $derived.by(() => {
+		switch (selectedPoolCategory) {
+			case 'limited':
+				return investedPoolKeys.filter((key) => key.startsWith('id='));
+			case 'other':
+				return investedPoolKeys.filter((key) => key.startsWith('type='));
+			default:
+				return investedPoolKeys;
+		}
+	});
+
+	const filteredPools = $derived.by(() => {
 		const pools = history.get(selectedUserId);
 		if (!pools) return new Map<IsolatedPoolKey, Pool>();
 
-		const entries = investedPoolKeys.values().map((key) => {
-			const [gain] = pools.get(key)!;
-			return [key, gain.pool] as const;
-		});
-
-		const filtered = showStandardPools || showLimitedPools || showSpecialPools;
-		if (!filtered) return new Map(entries);
-
 		return new Map(
-			entries.filter(([, pool]) => {
-				switch (pool.type) {
-					case 2:
-					case 3:
-						return showStandardPools;
-
-					case 6:
-					case 7:
-					case 21:
-						return showLimitedPools;
-
-					default:
-						return showSpecialPools;
-				}
+			filteredPoolKeys.values().map((key) => {
+				const [gain] = pools.get(key)!;
+				return [key, gain.pool] as const;
 			}),
 		);
 	});
@@ -216,21 +207,21 @@
 
 	<aside class="w-50 pb-4 border-t border-gray-300">
 		<div class="text-xs p-2 border-b border-gray-300 flex gap-0.75" role="group">
-			<label class="filter" class:active={showStandardPools}>
-				<input type="checkbox" bind:checked={showStandardPools} class="sr-only" />
-				{tr({ zh: '常驻', en: 'Standard' })}
+			<label class="filter" class:active={selectedPoolCategory === 'all'}>
+				<input type="radio" value="all" bind:group={selectedPoolCategory} />
+				{tr({ zh: '全部', en: 'All' })}
 			</label>
-			<label class="filter" class:active={showLimitedPools}>
-				<input type="checkbox" bind:checked={showLimitedPools} class="sr-only" />
+			<label class="filter" class:active={selectedPoolCategory === 'limited'}>
+				<input type="radio" value="limited" bind:group={selectedPoolCategory} />
 				{tr({ zh: '限定', en: 'Limited' })}
 			</label>
-			<label class="filter" class:active={showSpecialPools}>
-				<input type="checkbox" bind:checked={showSpecialPools} class="sr-only" />
-				{tr({ zh: '特殊', en: 'Special' })}
+			<label class="filter" class:active={selectedPoolCategory === 'other'}>
+				<input type="radio" value="other" bind:group={selectedPoolCategory} />
+				{tr({ zh: '其他', en: 'Other' })}
 			</label>
 		</div>
 
-		{#each shownPools as [key, pool] (key)}
+		{#each filteredPools as [key, pool] (key)}
 			<button
 				class="pool block w-full text-left"
 				class:active={key === selectedPoolKey}
@@ -274,6 +265,10 @@
 			&.active {
 				@apply bg-gray-500/25;
 				@apply text-gray-900;
+			}
+
+			input {
+				@apply sr-only;
 			}
 		}
 
