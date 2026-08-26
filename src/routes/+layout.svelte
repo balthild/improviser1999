@@ -7,7 +7,7 @@
 
 	import favicon from '$lib/assets/favicon.svg';
 	import Alert from '$lib/components/alert.svelte';
-	import { expand } from '$lib/components/parts/expand.svelte';
+	import { expander } from '$lib/components/parts/aria.svelte';
 	import Sidebar from '$lib/components/sidebar.svelte';
 	import { getLanguage, languages, setLanguage, tr } from '$lib/i18n.svelte';
 	import type { Language } from '$lib/i18n.svelte';
@@ -19,7 +19,7 @@
 	let languageButton: HTMLButtonElement;
 	let languageDropdown: HTMLDialogElement;
 
-	const toggleLanguagePicker = async (event: MouseEvent) => {
+	const showLanguagePicker = async (event: MouseEvent) => {
 		languageDropdown.showModal();
 
 		const button = event.currentTarget as HTMLButtonElement;
@@ -74,7 +74,7 @@
 
 			<button
 				class="btn p-1.5 size-8 rounded hover:bg-gray-400/20"
-				onclick={toggleLanguagePicker}
+				onclick={showLanguagePicker}
 				aria-label={tr({ zh: '选择语言', en: 'Select Language' })}
 				aria-haspopup="listbox"
 				aria-expanded="false"
@@ -88,7 +88,7 @@
 				class="dropdown p-1 open:visible backdrop:bg-transparent"
 				role="listbox"
 				bind:this={languageDropdown}
-				use:expand={() => languageButton}
+				use:expander={() => languageButton}
 			>
 				{#each Object.entries(languages) as [lang, name] (lang)}
 					<button

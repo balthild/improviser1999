@@ -3,7 +3,7 @@
 	import { untrack } from 'svelte';
 	import { SvelteMap } from 'svelte/reactivity';
 
-	import { expand } from '$lib/components/parts/expand.svelte';
+	import { expander } from '$lib/components/parts/aria.svelte';
 	import Rarity from '$lib/components/rarity.svelte';
 	import { dummyArcanist, dummyPool, isolatedPoolKey } from '$lib/data';
 	import { tr } from '$lib/i18n.svelte';
@@ -168,7 +168,7 @@
 	closedby="any"
 	class="dialog w-160 h-120"
 	bind:this={importDialog}
-	use:expand={() => importButton}
+	use:expander={() => importButton}
 >
 	<Import
 		onopen={() => importDialog.showModal()}
