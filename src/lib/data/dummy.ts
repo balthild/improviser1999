@@ -1,43 +1,49 @@
 import type { Arcanist, Material, Pool } from '$lib/types/dataset';
 import type { PoolTypeId } from '$lib/types/primitive';
 
-type PartialArcanist = Partial<Arcanist> & Pick<Arcanist, 'id'>;
-type PartialMaterial = Partial<Material> & Pick<Material, 'id'>;
-type PartialPool = Partial<Pool> & Pick<Pool, 'id'>;
+type Name = { zh: string; en: string };
 
-export function dummyArcanist(arcanist: PartialArcanist): Arcanist {
+type Info<T extends { id: unknown }> = Pick<T, 'id'> & {
+	[K in keyof T]?: T[K] extends Name ? Partial<Name> | string : T[K];
+};
+
+type Factory<T extends { id: unknown }> = (info: Info<T>) => T;
+
+export const dummyArcanist: Factory<Arcanist> = (arcanist) => {
 	return {
 		id: arcanist.id,
-		name: {
-			zh: arcanist.name?.zh ?? String(arcanist.id),
-			en: arcanist.name?.en ?? String(arcanist.id),
-		},
+		name: dummyName(arcanist.name, String(arcanist.id)),
 		rarity: arcanist.rarity ?? 6,
 		career: arcanist.career ?? 0,
 	};
-}
+};
 
-export function dummyMaterial(material: PartialMaterial): Material {
+export const dummyMaterial: Factory<Material> = (material) => {
 	return {
 		id: material.id,
-		name: {
-			zh: material.name?.zh ?? String(material.id),
-			en: material.name?.en ?? String(material.id),
-		},
+		name: dummyName(material.name, String(material.id)),
 		rarity: material.rarity ?? 6,
 	};
-}
+};
 
-export function dummyPool(pool: PartialPool): Pool {
+export const dummyPool: Factory<Pool> = (pool) => {
 	return {
 		id: pool.id,
 		type: pool.type ?? (0 as PoolTypeId),
-		name: {
-			zh: pool.name?.zh ?? String(pool.id),
-			en: pool.name?.en ?? String(pool.id),
-		},
+		name: dummyName(pool.name, String(pool.id)),
 		pity: pool.pity ?? 70,
 		order: pool.order ?? 4,
 		arcanists: pool.arcanists ?? {},
+	};
+};
+
+function dummyName(name: Partial<Name> | string | undefined, fallback: string): Name {
+	if (typeof name === 'string') {
+		return { zh: name, en: name };
+	}
+
+	return {
+		zh: name?.zh ?? fallback,
+		en: name?.en ?? fallback,
 	};
 }

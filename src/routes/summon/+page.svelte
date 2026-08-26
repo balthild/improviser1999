@@ -8,6 +8,7 @@
 	import { dummyArcanist, dummyPool, isolatedPoolKey } from '$lib/data';
 	import { tr } from '$lib/i18n.svelte';
 	import { idb } from '$lib/idb';
+	import type { Pool } from '$lib/types/dataset';
 	import type { GameUserId, IsolatedPoolKey } from '$lib/types/primitive';
 	import { compare, distinct } from '$lib/utils';
 
@@ -23,9 +24,9 @@
 
 	const rawSummons = liveQuery(() => idb.summons.orderBy('record.createTime').toArray());
 
-	const userIds = $derived(distinct($rawSummons?.map((it) => it.userId)).sort());
+	const allUserIds = $derived(distinct($rawSummons?.map((it) => it.userId)).sort());
 
-	const poolKeys = $derived.by(() => {
+	const allPoolKeys = $derived.by(() => {
 		const info = new Map(
 			$rawSummons?.map((it) => {
 				const { poolId, poolType } = it.record;
@@ -46,32 +47,14 @@
 		});
 	});
 
-	const poolNames = $derived.by(() => {
-		const result = new SvelteMap<IsolatedPoolKey, { zh: string; en: string }>();
-
-		for (const summon of $rawSummons ?? []) {
-			const { poolId, poolType } = summon.record;
-
-			const key = isolatedPoolKey(poolId, poolType);
-			const name = data.pools[poolId]?.name ?? {
-				zh: summon.record.poolName,
-				en: summon.record.poolName,
-			};
-
-			result.set(key, name);
-		}
-
-		return result;
-	});
-
 	const history = $derived.by(() => {
 		const result = new SvelteMap<GameUserId, SvelteMap<IsolatedPoolKey, Gain[]>>(
-			userIds.map((id) => [id, new SvelteMap()]),
+			allUserIds.map((id) => [id, new SvelteMap()]),
 		);
 
 		for (const summon of $rawSummons ?? []) {
 			const { userId } = summon;
-			const { poolId, poolType } = summon.record;
+			const { poolId, poolType, poolName } = summon.record;
 			const poolKey = isolatedPoolKey(poolId, poolType);
 
 			const pools = result.get(userId)!;
@@ -79,7 +62,7 @@
 
 			for (const [index, gainId] of summon.record.gainIds.entries()) {
 				const arcanist = data.arcanists[gainId] ?? dummyArcanist({ id: gainId });
-				const pool = data.pools[poolId] ?? dummyPool({ id: poolId, type: poolType });
+				const pool = data.pools[poolId] ?? dummyPool({ id: poolId, type: poolType, name: poolName });
 
 				const last = gains.findLastIndex((it) => it.arcanist.rarity === arcanist.rarity);
 				const invested = gains.length - last;
@@ -118,20 +101,55 @@
 	let selectedPoolKey = $state('' as IsolatedPoolKey);
 
 	// do this rather than `pools.keys()` to maintain the order
-	const investedPools = $derived.by(() => {
+	const investedPoolKeys = $derived.by(() => {
 		const pools = history.get(selectedUserId);
-		return poolKeys.filter((key) => pools?.has(key));
+		return allPoolKeys.filter((key) => pools?.has(key));
 	});
 
 	// looks like an anti-pattern but it works as for now ¯\_(ツ)_/¯
 	$effect(() => {
-		if (!userIds.includes(untrack(() => selectedUserId))) {
-			selectedUserId = userIds[0];
+		if (!allUserIds.includes(untrack(() => selectedUserId))) {
+			selectedUserId = allUserIds[0];
 		}
 
-		if (!investedPools.includes(untrack(() => selectedPoolKey))) {
-			selectedPoolKey = investedPools[0];
+		if (!investedPoolKeys.includes(untrack(() => selectedPoolKey))) {
+			selectedPoolKey = investedPoolKeys[0];
 		}
+	});
+
+	let showStandardPools = $state(false);
+	let showLimitedPools = $state(false);
+	let showSpecialPools = $state(false);
+
+	const shownPools = $derived.by(() => {
+		const pools = history.get(selectedUserId);
+		if (!pools) return new Map<IsolatedPoolKey, Pool>();
+
+		const entries = investedPoolKeys.values().map((key) => {
+			const [gain] = pools.get(key)!;
+			return [key, gain.pool] as const;
+		});
+
+		const filtered = showStandardPools || showLimitedPools || showSpecialPools;
+		if (!filtered) return new Map(entries);
+
+		return new Map(
+			entries.filter(([, pool]) => {
+				switch (pool.type) {
+					case 2:
+					case 3:
+						return showStandardPools;
+
+					case 6:
+					case 7:
+					case 21:
+						return showLimitedPools;
+
+					default:
+						return showSpecialPools;
+				}
+			}),
+		);
 	});
 
 	const invested6 = $derived.by(() => {
@@ -178,7 +196,7 @@
 			class="w-full px-3 py-0 text-sm border-0 bg-transparent a11y-ring"
 			bind:value={selectedUserId}
 		>
-			{#each userIds as userId (userId)}
+			{#each allUserIds as userId (userId)}
 				<option value={userId}>{userId}</option>
 			{/each}
 		</select>
@@ -197,17 +215,32 @@
 	</div>
 
 	<aside class="w-50 pb-4 border-t border-gray-300">
-		{#each investedPools as poolKey (poolKey)}
+		<div class="text-xs p-2 border-b border-gray-300 flex gap-0.75" role="group">
+			<label class="filter" class:active={showStandardPools}>
+				<input type="checkbox" bind:checked={showStandardPools} class="sr-only" />
+				{tr({ zh: '常驻', en: 'Standard' })}
+			</label>
+			<label class="filter" class:active={showLimitedPools}>
+				<input type="checkbox" bind:checked={showLimitedPools} class="sr-only" />
+				{tr({ zh: '限定', en: 'Limited' })}
+			</label>
+			<label class="filter" class:active={showSpecialPools}>
+				<input type="checkbox" bind:checked={showSpecialPools} class="sr-only" />
+				{tr({ zh: '特殊', en: 'Special' })}
+			</label>
+		</div>
+
+		{#each shownPools as [key, pool] (key)}
 			<button
 				class="pool block w-full text-left"
-				class:active={poolKey === selectedPoolKey}
-				onclick={() => (selectedPoolKey = poolKey)}
+				class:active={key === selectedPoolKey}
+				onclick={() => (selectedPoolKey = key)}
 			>
 				<p class="text-lg font-semibold">
-					{invested6.get(poolKey)}&ThinSpace;/&ThinSpace;{poolKey === `type=2` ? 30 : 70}
+					{invested6.get(key)}&ThinSpace;/&ThinSpace;{key === `type=2` ? 30 : 70}
 				</p>
 				<p class="text-xs font-medium"><Rarity rarity={6} /> {tr({ zh: '保底', en: 'Pity' })}</p>
-				<p class="text-sm font-medium mt-2 mb-px">{tr(poolNames.get(poolKey)!)}</p>
+				<p class="text-sm font-medium mt-2 mb-px">{tr(pool.name)}</p>
 			</button>
 		{:else}
 			<button class="pool block w-full text-left">
@@ -219,10 +252,7 @@
 	</aside>
 
 	<main class="pb-4 border-l border-t border-gray-300">
-		<History
-			pool={tr(poolNames.get(selectedPoolKey) ?? { zh: '未知', en: 'Unknown' })}
-			gains={history.get(selectedUserId)?.get(selectedPoolKey) ?? []}
-		/>
+		<History gains={history.get(selectedUserId)?.get(selectedPoolKey) ?? []} />
 	</main>
 </section>
 
@@ -230,6 +260,23 @@
 	@reference '$lib/styles/index.css';
 
 	@layer components {
+		.filter {
+			@apply font-medium;
+			@apply px-1 py-0.25 rounded-xs;
+			@apply cursor-pointer;
+			@apply transition-colors;
+			@apply a11y-ring;
+
+			&:has(input:focus-visible) {
+				@apply ring-1;
+			}
+
+			&.active {
+				@apply bg-gray-500/25;
+				@apply text-gray-900;
+			}
+		}
+
 		.pool {
 			@apply border-b border-gray-300;
 			@apply px-3 py-2;

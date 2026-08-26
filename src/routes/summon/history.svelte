@@ -6,7 +6,6 @@
 	import { groupBy, percent } from '$lib/utils';
 
 	interface Props {
-		pool: string;
 		gains: Gain[];
 	}
 
@@ -72,7 +71,9 @@
 
 <section class="flex items-stretch">
 	<div class="flex-1 p-3" aria-live="polite">
-		<h3 class="truncate text-ml font-semibold mb-2">{props.pool}</h3>
+		<h3 class="truncate text-ml font-semibold mb-2">
+			{tr(props.gains[0]?.pool.name ?? { zh: '未知', en: 'Unknown' })}
+		</h3>
 
 		<dl class="space-y-1 text-sm tabular-nums *:flex *:justify-between">
 			<div>
