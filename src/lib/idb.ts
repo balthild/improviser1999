@@ -1,7 +1,7 @@
 import { Dexie } from 'dexie';
 import type { EntityTable } from 'dexie';
 
-import type { QuerySummonRecord } from '$lib/types/summon';
+import type { QuerySummonRecord } from '#lib/types/summon';
 
 import type { GameUserId } from './types/primitive';
 

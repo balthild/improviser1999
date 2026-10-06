@@ -3,16 +3,17 @@
 	import { untrack } from 'svelte';
 	import { SvelteMap } from 'svelte/reactivity';
 
-	import { expander } from '$lib/components/parts/aria.svelte';
-	import Rarity from '$lib/components/rarity.svelte';
-	import { dummyArcanist, dummyPool, isolatedPoolKey } from '$lib/data';
-	import { tr } from '$lib/i18n.svelte';
-	import { idb } from '$lib/idb';
-	import type { Pool } from '$lib/types/dataset';
-	import type { GameUserId, IsolatedPoolKey } from '$lib/types/primitive';
-	import { compare, distinct } from '$lib/utils';
+	import { snapshot } from '$app/navigation';
 
-	import type { Snapshot } from './$types';
+	import { expander } from '#lib/components/parts/aria.svelte';
+	import Rarity from '#lib/components/rarity.svelte';
+	import { dummyArcanist, dummyPool, isolatedPoolKey } from '#lib/data';
+	import { tr } from '#lib/i18n';
+	import { idb } from '#lib/idb';
+	import type { Pool } from '#lib/types/dataset';
+	import type { GameUserId, IsolatedPoolKey } from '#lib/types/primitive';
+	import { compare, distinct } from '#lib/utils';
+
 	import type { Gain } from './history.svelte';
 	import History from './history.svelte';
 	import Import from './import.svelte';
@@ -154,14 +155,14 @@
 		return result;
 	});
 
-	export const snapshot: Snapshot<[GameUserId, IsolatedPoolKey]> = {
+	snapshot({
 		capture: () => {
-			return [selectedUserId, selectedPoolKey];
+			return [selectedUserId, selectedPoolKey] as const;
 		},
 		restore: (value) => {
 			[selectedUserId, selectedPoolKey] = value ?? [];
 		},
-	};
+	});
 </script>
 
 <dialog
@@ -248,7 +249,7 @@
 </section>
 
 <style lang="postcss">
-	@reference '$lib/styles/index.css';
+	@reference '#lib/styles/index.css';
 
 	@layer components {
 		.filter {

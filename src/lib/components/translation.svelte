@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	import { getLanguage } from '$lib/i18n.svelte';
-	import type { Language } from '$lib/i18n.svelte';
+	import { getLanguage } from '#lib/i18n';
+	import type { Language } from '#lib/i18n';
 
 	const props: Record<Language, Snippet | string> = $props();
 

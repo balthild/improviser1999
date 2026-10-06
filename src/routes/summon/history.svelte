@@ -1,9 +1,9 @@
 <script lang="ts">
-	import Rarity from '$lib/components/rarity.svelte';
-	import { tr } from '$lib/i18n.svelte';
-	import type { Arcanist, Pool } from '$lib/types/dataset';
-	import type { ArcanistId } from '$lib/types/primitive';
-	import { groupBy, percent } from '$lib/utils';
+	import Rarity from '#lib/components/rarity.svelte';
+	import { tr } from '#lib/i18n';
+	import type { Arcanist, Pool } from '#lib/types/dataset';
+	import type { ArcanistId } from '#lib/types/primitive';
+	import { groupBy, percent } from '#lib/utils';
 
 	interface Props {
 		gains: Gain[];
@@ -200,7 +200,7 @@
 </section>
 
 <style lang="postcss">
-	@reference '$lib/styles/index.css';
+	@reference '#lib/styles/index.css';
 
 	@layer components {
 		.gains {

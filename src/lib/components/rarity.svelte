@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { ClassValue } from 'svelte/elements';
 
-	import { tr } from '$lib/i18n.svelte';
+	import { tr } from '#lib/i18n';
 
 	interface Props {
 		rarity: 6 | 5 | 4 | 3 | 2;
@@ -20,7 +20,7 @@
 </span>
 
 <style lang="postcss">
-	@reference '$lib/styles/index.css';
+	@reference '#lib/styles/index.css';
 
 	@layer components {
 		.rarity-6 {

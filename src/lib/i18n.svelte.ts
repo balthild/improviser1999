@@ -1,7 +1,7 @@
 import type { Cookies } from '@sveltejs/kit';
 import Negotiator from 'negotiator';
 
-import { browser } from '$app/environment';
+import { browser } from '$app/env';
 import { getRequestEvent } from '$app/server';
 
 export const languages = {

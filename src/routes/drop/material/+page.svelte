@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 
-	import Rarity from '$lib/components/rarity.svelte';
-	import { tr } from '$lib/i18n.svelte';
-	import type { MaterialId } from '$lib/types/primitive';
+	import Rarity from '#lib/components/rarity.svelte';
+	import { tr } from '#lib/i18n';
+	import type { MaterialId } from '#lib/types/primitive';
 
 	const { data } = $props();
 
@@ -19,7 +19,7 @@
 	{@const material = data.materials[id as unknown as MaterialId]}
 
 	<a
-		href={resolve(`/drop/material/${id}`)}
+		href={resolve(`drop/material/${id}`)}
 		class="btn btn-inlay flex items-center gap-1 p-2"
 	>
 		<img
@@ -103,7 +103,7 @@
 </section>
 
 <style lang="postcss">
-	@reference '$lib/styles/index.css';
+	@reference '#lib/styles/index.css';
 
 	@layer components {
 		.materials {

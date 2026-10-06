@@ -5,7 +5,7 @@ import type {
 	IsolatedPoolKey,
 	PoolId,
 	PoolTypeId,
-} from '$lib/types/primitive';
+} from '#lib/types/primitive';
 
 export function renderChapterNum(chapter: number, uppercase = true) {
 	const suffixes = {

@@ -1,4 +1,4 @@
-import { fetchDataset } from '$lib/data';
+import { fetchDataset } from '#lib/data';
 
 import type { PageLoad } from './$types';
 

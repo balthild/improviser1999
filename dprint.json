@@ -30,11 +30,11 @@
 				["parent", "sibling", "index"],
 				["unknown"],
 			],
-			"internalPattern": ["~/", "@/", "$lib/"],
+			"internalPattern": ["#lib/"],
 			"customGroups": [
 				{
 					"groupName": "svelte",
-					"elementNamePattern": ["$app/**", "$env/**", "$service-worker"],
+					"elementNamePattern": ["$app/**"],
 				},
 			],
 		},
@@ -61,9 +61,9 @@
 		],
 	},
 	"plugins": [
-		"https://plugins.dprint.dev/oxc-0.14.0.wasm",
-		"https://plugins.dprint.dev/json-0.21.3.wasm",
-		"https://plugins.dprint.dev/g-plane/markup_fmt-v0.27.0.wasm",
-		"https://plugins.dprint.dev/g-plane/malva-v0.15.2.wasm",
+		"npm:@dprint/oxc@0.42.0",
+		"npm:@dprint/json@0.25.1",
+		"npm:dprint-plugin-markup@0.27.1",
+		"npm:dprint-plugin-malva@0.16.0",
 	],
 }

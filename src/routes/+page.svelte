@@ -1,5 +1,5 @@
 <script>
-	import Translation from '$lib/components/translation.svelte';
+	import Translation from '#lib/components/translation.svelte';
 </script>
 
 <section class="p-6">

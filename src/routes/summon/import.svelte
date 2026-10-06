@@ -5,11 +5,11 @@
 	import { asset } from '$app/paths';
 	import { page } from '$app/state';
 
-	import { alert } from '$lib/components/alert.svelte';
-	import External from '$lib/components/external.svelte';
-	import { validate } from '$lib/components/parts/validate.svelte';
-	import Translation from '$lib/components/translation.svelte';
-	import { tr } from '$lib/i18n.svelte';
+	import { alert } from '#lib/components/alert.svelte';
+	import External from '#lib/components/external.svelte';
+	import { validate } from '#lib/components/parts/validate.svelte';
+	import Translation from '#lib/components/translation.svelte';
+	import { tr } from '#lib/i18n';
 
 	import { doImport } from './import';
 	import { ImportUrlScheme, QUERY_SUMMON_URL_BASE } from './validation';
@@ -120,7 +120,7 @@
 			</Translation>
 
 			<div class="bg-gray-400/10 rounded py-2 px-3 text-sm">
-				<pre class="whitespace-normal break-all">curl -fsSL {page.url.origin}{asset('/summon/macos.sh')} | bash</pre>
+				<pre class="whitespace-normal break-all">curl -fsSL {page.url.origin}{asset('summon/macos.sh')} | bash</pre>
 			</div>
 		{:else if selectedPlatform === 'Windows'}
 			<p>

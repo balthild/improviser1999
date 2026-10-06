@@ -1,13 +1,12 @@
 <script lang="ts">
+	import { snapshot } from '$app/navigation';
 	import { resolve } from '$app/paths';
 
-	import { commonStageKey, renderChapterNum } from '$lib/data';
-	import { tr } from '$lib/i18n.svelte';
-	import type { Stage } from '$lib/types/dataset';
-	import type { ChapterNum, CommonStageKey } from '$lib/types/primitive';
-	import { keyBy } from '$lib/utils';
-
-	import type { Snapshot } from './$types';
+	import { commonStageKey, renderChapterNum } from '#lib/data';
+	import { tr } from '#lib/i18n';
+	import type { Stage } from '#lib/types/dataset';
+	import type { ChapterNum, CommonStageKey } from '#lib/types/primitive';
+	import { keyBy } from '#lib/utils';
 
 	const uniqueId = $props.id();
 
@@ -32,14 +31,14 @@
 		}),
 	);
 
-	export const snapshot: Snapshot<ChapterNum> = {
+	snapshot({
 		capture: () => {
 			return selectedChapter;
 		},
 		restore: (value) => {
 			selectedChapter = value;
 		},
-	};
+	});
 </script>
 
 <section class="flex w-full">
@@ -86,7 +85,7 @@
 						<span>{tr(episode.title)}</span>
 
 						{#if episode.stage.normal}
-							<a href={resolve(`/drop/stage/${episode.stage.normal.id}`)} class="flex items-center">
+							<a href={resolve(`drop/stage/${episode.stage.normal.id}`)} class="flex items-center">
 								<svg class="mr-0.5 size-4.5 text-amber-600">
 									<use href="#star-normal-{uniqueId}" />
 								</svg>
@@ -97,7 +96,7 @@
 						{/if}
 
 						{#if episode.stage.hard}
-							<a href={resolve(`/drop/stage/${episode.stage.hard.id}`)} class="flex items-center">
+							<a href={resolve(`drop/stage/${episode.stage.hard.id}`)} class="flex items-center">
 								<svg class="mr-0.5 size-4.5 text-orange-700">
 									<use href="#star-hard-{uniqueId}" />
 								</svg>
@@ -114,7 +113,7 @@
 </section>
 
 <style lang="postcss">
-	@reference '$lib/styles/index.css';
+	@reference '#lib/styles/index.css';
 
 	@layer components {
 		.btn-inlay[aria-checked='true'] {

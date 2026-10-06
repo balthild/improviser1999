@@ -1,7 +1,7 @@
 <script lang="ts">
-	import External from '$lib/components/external.svelte';
-	import Translation from '$lib/components/translation.svelte';
-	import { tr } from '$lib/i18n.svelte';
+	import External from '#lib/components/external.svelte';
+	import Translation from '#lib/components/translation.svelte';
+	import { tr } from '#lib/i18n';
 </script>
 
 <section class="p-6 space-y-3">

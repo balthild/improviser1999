@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { on } from 'svelte/events';
 
-	import { tr } from '$lib/i18n.svelte';
+	import { tr } from '#lib/i18n';
 
 	let dialog: HTMLDialogElement;
 

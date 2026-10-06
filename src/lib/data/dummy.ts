@@ -1,5 +1,5 @@
-import type { Arcanist, Material, Pool } from '$lib/types/dataset';
-import type { PoolTypeId } from '$lib/types/primitive';
+import type { Arcanist, Material, Pool } from '#lib/types/dataset';
+import type { PoolTypeId } from '#lib/types/primitive';
 
 type Name = { zh: string; en: string };
 

@@ -3,14 +3,13 @@
 
 	import { resolve } from '$app/paths';
 
-	import { createSorter } from '$lib/components/parts/sorting.svelte';
-	import Rarity from '$lib/components/rarity.svelte';
-	import Translation from '$lib/components/translation.svelte';
-	import { commonStageKey, parseLevelReportKey } from '$lib/data';
-	import { tr } from '$lib/i18n.svelte';
-	import type { Stage } from '$lib/types/dataset';
-	import type { CommonStageKey, MaterialId, StageId } from '$lib/types/primitive';
-	import { keyBy, percent } from '$lib/utils';
+	import { createSorter } from '#lib/components/parts/sorting.svelte';
+	import Rarity from '#lib/components/rarity.svelte';
+	import { commonStageKey, parseLevelReportKey } from '#lib/data';
+	import { tr } from '#lib/i18n';
+	import type { Stage } from '#lib/types/dataset';
+	import type { CommonStageKey, MaterialId, StageId } from '#lib/types/primitive';
+	import { keyBy, percent } from '#lib/utils';
 
 	import Attribution from '../../attribution.svelte';
 
@@ -114,13 +113,16 @@
 		{#each sorted as stat (stat.id)}
 			<tr>
 				<td>
-					<a href={resolve(`/drop/stage/${stat.id}`)} class="inline-flex items-center gap-1">
+					<a href={resolve(`drop/stage/${stat.id}`)} class="inline-flex items-center gap-1">
 						<span>{stat.stage.chapter}-{stat.stage.episode}</span>
 						<span class:text-red-800={stat.stage.difficulty === '厄险'}>
-							<Translation
-								zh={{ 普通: '故事', 厄险: '厄险' }[stat.stage.difficulty] ?? stat.stage.difficulty}
-								en={{ 普通: 'Story', 厄险: 'Hard' }[stat.stage.difficulty] ?? stat.stage.difficulty}
-							/>
+							{#if stat.stage.difficulty === '普通'}
+								{tr({ zh: '故事', en: 'Story' })}
+							{:else if stat.stage.difficulty === '厄险'}
+								{tr({ zh: '厄险', en: 'Hard' })}
+							{:else}
+								{stat.stage.difficulty}
+							{/if}
 						</span>
 						<span class="icon-[ri--link-m] text-gray-400 [:hover>&]:text-gray-600"></span>
 					</a>

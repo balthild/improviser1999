@@ -1,6 +1,6 @@
-import { idb } from '$lib/idb';
-import type { GameUserId } from '$lib/types/primitive';
-import type { QuerySummonRecord } from '$lib/types/summon';
+import { idb } from '#lib/idb';
+import type { GameUserId } from '#lib/types/primitive';
+import type { QuerySummonRecord } from '#lib/types/summon';
 
 import { fetchSummons } from './fetch.remote';
 

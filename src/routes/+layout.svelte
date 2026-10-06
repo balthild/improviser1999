@@ -1,18 +1,18 @@
 <script lang="ts">
-	import '$lib/styles/index.css';
+	import '#lib/styles/index.css';
 
 	import { computePosition, offset, shift } from '@floating-ui/dom';
 	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
 	import { tick } from 'svelte';
 
-	import favicon from '$lib/assets/favicon.svg';
-	import Alert from '$lib/components/alert.svelte';
-	import { expander } from '$lib/components/parts/aria.svelte';
-	import Sidebar from '$lib/components/sidebar.svelte';
-	import { getLanguage, languages, setLanguage, tr } from '$lib/i18n.svelte';
-	import type { Language } from '$lib/i18n.svelte';
+	import { snapshot } from '$app/navigation';
 
-	import type { Snapshot } from './$types';
+	import favicon from '#lib/assets/favicon.svg';
+	import Alert from '#lib/components/alert.svelte';
+	import { expander } from '#lib/components/parts/aria.svelte';
+	import Sidebar from '#lib/components/sidebar.svelte';
+	import { getLanguage, languages, setLanguage, tr } from '#lib/i18n';
+	import type { Language } from '#lib/i18n';
 
 	let { children } = $props();
 
@@ -43,7 +43,7 @@
 
 	let container: OverlayScrollbarsComponent | null;
 
-	export const snapshot: Snapshot<number> = {
+	snapshot({
 		capture: () => {
 			const elements = container?.osInstance()?.elements();
 			return elements?.viewport.scrollTop ?? 0;
@@ -52,7 +52,7 @@
 			const elements = container?.osInstance()?.elements();
 			void tick().then(() => elements?.viewport.scrollTo({ top: value }));
 		},
-	};
+	});
 </script>
 
 <svelte:head>

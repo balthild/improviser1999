@@ -2,8 +2,8 @@
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 
-	import { tooltip } from '$lib/components/parts/tooltip.svelte';
-	import { tr } from '$lib/i18n.svelte';
+	import { tooltip } from '#lib/components/parts/tooltip.svelte';
+	import { tr } from '#lib/i18n';
 
 	const pathname = $derived(page.url.pathname);
 </script>
@@ -22,7 +22,7 @@
 		</div>
 
 		<div class="nav-group" class:active={pathname === '/summon'}>
-			<a href={resolve('/summon')} class="nav-title">
+			<a href={resolve('summon')} class="nav-title">
 				<span class="icon-[ri--suitcase-line]"></span>
 				<span class="text-sm ml-1.5">
 					{tr({ zh: '征集记录', en: 'Summon History' })}
@@ -40,17 +40,17 @@
 			</summary>
 			<ul>
 				<li class:active={pathname.startsWith('/drop/material')}>
-					<a href={resolve('/drop/material')}>
+					<a href={resolve('drop/material')}>
 						{tr({ zh: '按物品', en: 'By Materials' })}
 					</a>
 				</li>
 				<li class:active={pathname.startsWith('/drop/stage')}>
-					<a href={resolve('/drop/stage')}>
+					<a href={resolve('drop/stage')}>
 						{tr({ zh: '按关卡', en: 'By Stages' })}
 					</a>
 				</li>
 				<li class:active={pathname === '/drop/submit'}>
-					<a href={resolve('/drop/submit')} use:tooltip={'开发中'}>
+					<a href={resolve('drop/submit')} use:tooltip={'开发中'}>
 						{tr({ zh: '上报', en: 'Submit' })}
 					</a>
 				</li>
@@ -58,7 +58,7 @@
 		</details>
 
 		<div class="nav-group" class:active={pathname === '/about'}>
-			<a href={resolve('/about')} class="nav-title">
+			<a href={resolve('about')} class="nav-title">
 				<span class="icon-[ri--information-line]"></span>
 				<span class="text-sm ml-1.5">
 					{tr({ zh: '关于', en: 'About' })}
@@ -69,7 +69,7 @@
 </aside>
 
 <style lang="postcss">
-	@reference '$lib/styles/index.css';
+	@reference '#lib/styles/index.css';
 
 	@layer components {
 		.nav-group {

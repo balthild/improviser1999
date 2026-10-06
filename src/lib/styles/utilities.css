@@ -1,9 +1,9 @@
 @utility bg-noise {
-	background-image: url('$lib/assets/noise.svg');
+	background-image: url('../assets/noise.svg');
 }
 
 @utility bg-stripe {
-	background-image: url('$lib/assets/stripe.svg');
+	background-image: url('../assets/stripe.svg');
 }
 
 @utility small-caps {

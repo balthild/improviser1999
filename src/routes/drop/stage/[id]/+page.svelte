@@ -3,13 +3,12 @@
 
 	import { resolve } from '$app/paths';
 
-	import { createSorter } from '$lib/components/parts/sorting.svelte';
-	import Translation from '$lib/components/translation.svelte';
-	import { dummyMaterial, parseLevelReportKey, renderChapterNum } from '$lib/data';
-	import { tr } from '$lib/i18n.svelte';
-	import type { Material } from '$lib/types/dataset';
-	import type { MaterialId, StageId } from '$lib/types/primitive';
-	import { percent } from '$lib/utils';
+	import { createSorter } from '#lib/components/parts/sorting.svelte';
+	import { dummyMaterial, parseLevelReportKey, renderChapterNum } from '#lib/data';
+	import { tr } from '#lib/i18n';
+	import type { Material } from '#lib/types/dataset';
+	import type { MaterialId, StageId } from '#lib/types/primitive';
+	import { percent } from '#lib/utils';
 
 	import Attribution from '../../attribution.svelte';
 
@@ -87,10 +86,13 @@
 	<h3 class="flex items-baseline gap-4">
 		<span class="text-2xl font-medium">
 			{renderChapterNum(stage.chapter)}-{stage.episode.toString().padStart(2, '0')}
-			<Translation
-				zh={{ 普通: '故事', 厄险: '厄险' }[stage.difficulty] ?? stage.difficulty}
-				en={{ 普通: 'Story', 厄险: 'Hard' }[stage.difficulty] ?? stage.difficulty}
-			/>
+			{#if stage.difficulty === '普通'}
+				{tr({ zh: '故事', en: 'Story' })}
+			{:else if stage.difficulty === '厄险'}
+				{tr({ zh: '厄险', en: 'Hard' })}
+			{:else}
+				{stage.difficulty}
+			{/if}
 		</span>
 		<span class="text-ms font-normal">{tr(episode.title)}</span>
 
@@ -125,7 +127,7 @@
 		{#each sorted as stat (stat.id)}
 			<tr>
 				<td>
-					<a href={resolve(`/drop/material/${stat.id}`)} class="inline-flex items-center gap-1">
+					<a href={resolve(`drop/material/${stat.id}`)} class="inline-flex items-center gap-1">
 						{tr(stat.material.name)}
 						<span class="icon-[ri--link-m] text-gray-400 [:hover>&]:text-gray-600"></span>
 					</a>
