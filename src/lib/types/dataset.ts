@@ -6,7 +6,7 @@ import type {
 	EpisodeNum,
 	PoolId,
 	PoolTypeId,
-	ResonanceModelId,
+	ResonanceMouldId,
 	ResonanceCubeId,
 	ResonancePatternId,
 } from './primitive';
@@ -35,7 +35,7 @@ export type StagesDataset = Record<StageId, Stage>;
 
 export type ResonancesDataset = {
 	characters: Record<ArcanistId, ResonanceConfig>;
-	models: Record<ResonanceModelId, ResonanceModel>;
+	moulds: Record<ResonanceMouldId, ResonanceMould>;
 	cubes: Record<ResonanceCubeId, ResonanceCube>;
 };
 
@@ -119,7 +119,7 @@ export type StageDropReport = {
 // #region resonance
 
 type ResonanceConfig = {
-	model: ResonanceModelId;
+	mould: ResonanceMouldId;
 	main: {
 		cube: ResonanceCubeId;
 		levels: Record<number, number>;
@@ -127,7 +127,7 @@ type ResonanceConfig = {
 	reference: ResonanceAttrsFixed;
 };
 
-type ResonanceModel = {
+type ResonanceMould = {
 	levels: {
 		[level: number]: {
 			size: [number, number];
